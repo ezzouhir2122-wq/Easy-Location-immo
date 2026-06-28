@@ -1,0 +1,52 @@
+# === SECRETS ===
+.env
+.env.local
+.env.*.local
+credentials.json
+*.pem
+*.key
+
+# === CLAUDE CODE ===
+CLAUDE.local.md
+.claude/settings.local.json
+
+# === NODE.JS ===
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+dist/
+build/
+.next/
+.cache/
+
+# === TEMPORAIRES ===
+.tmp/
+*.log
+*.tmp
+*.bak
+*.swp
+*~
+
+# === OS ===
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# === IDE ===
+.vscode/settings.json
+.idea/
+
+# === TESTS ===
+coverage/
+.nyc_output/
+
+# === UPLOADS LOCAUX ===
+uploads/
+storage/local/
+
+# === NEXT.JS ===
+.next/
+out/
+next-env.d.ts
