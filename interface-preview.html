@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Easy Location IMMO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0B1A2F;--navy2:#0F2347;--navy3:#1A3260;
+  --blue:#2563EB;--blue2:#3B82F6;--blue3:#60A5FA;--blue-bg:#EFF6FF;--blue-border:#DBEAFE;
+  --green:#10B981;--green-bg:#D1FAE5;
+  --red:#EF4444;--red-bg:#FEE2E2;
+  --amber:#F59E0B;--amber-bg:#FEF3C7;
+  --purple:#7C3AED;
+  --s50:#F8FAFC;--s100:#F1F5F9;--s200:#E2E8F0;--s300:#CBD5E1;--s400:#94A3B8;
+  --s500:#64748B;--s600:#475569;--s700:#334155;--s800:#1E293B;--s900:#0F172A;
+  --white:#fff;
+  --r:10px;
+  --sh:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+  --sh2:0 4px 16px rgba(0,0,0,.08),0 2px 4px rgba(0,0,0,.04);
+  --fd:'Syne',sans-serif;--fb:'DM Sans',sans-serif;
+}
+html,body{height:100%;font-family:var(--fb);background:var(--s100);color:var(--s800);font-size:14px;-webkit-font-smoothing:antialiased}
+
+/* ── Layout ── */
+.app{display:flex;height:100vh;overflow:hidden}
+
+/* ── Sidebar ── */
+.sidebar{
+  width:232px;min-width:232px;height:100vh;
+  background:linear-gradient(175deg,var(--navy) 0%,var(--navy2) 55%,#091629 100%);
+  display:flex;flex-direction:column;position:relative;overflow:hidden;z-index:10;
+}
+.sidebar::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background-image:radial-gradient(circle,rgba(255,255,255,.04) 1px,transparent 1px);
+  background-size:20px 20px;
+}
+.sidebar::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--blue),var(--blue3),var(--blue));
+  background-size:200% 100%;animation:shimmer 3s ease-in-out infinite;
+}
+@keyframes shimmer{0%,100%{background-position:0% 0%}50%{background-position:100% 0%}}
+
+.logo{
+  display:flex;align-items:center;gap:11px;padding:18px 16px 14px;
+  border-bottom:1px solid rgba(255,255,255,.07);position:relative;
+}
+.logo-icon{
+  width:36px;height:36px;border-radius:9px;flex-shrink:0;
+  background:linear-gradient(135deg,var(--blue),var(--blue2));
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 12px rgba(37,99,235,.4);
+}
+.logo-icon svg{width:18px;height:18px}
+.logo-text{display:flex;flex-direction:column}
+.logo-name{font-family:var(--fd);font-weight:800;font-size:14px;color:#fff;letter-spacing:.01em;line-height:1.1}
+.logo-tag{font-size:9px;font-weight:600;color:rgba(148,163,184,.55);letter-spacing:.12em;text-transform:uppercase}
+
+.nav-sep{font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(148,163,184,.35);padding:14px 18px 5px}
+.nav-list{list-style:none;padding:0 8px;display:flex;flex-direction:column;gap:1px}
+.nav-item{position:relative}
+.nav-link{
+  display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:7px;
+  cursor:pointer;color:rgba(148,163,184,.7);transition:all .15s ease;user-select:none;position:relative;
+}
+.nav-link:hover{color:rgba(255,255,255,.85);background:rgba(255,255,255,.06)}
+.nav-link.active{
+  color:#fff;background:linear-gradient(135deg,rgba(37,99,235,.35),rgba(59,130,246,.16));
+  box-shadow:inset 0 0 0 1px rgba(59,130,246,.22);
+}
+.nav-link.active::before{
+  content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);
+  width:3px;height:58%;background:var(--blue2);border-radius:0 3px 3px 0;
+}
+.nav-icon{width:16px;height:16px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.nav-icon svg{width:15px;height:15px}
+.nav-label{font-size:13px;font-weight:500;letter-spacing:-.01em}
+
+.sidebar-nav{flex:1;overflow-y:auto;padding:6px 0;scrollbar-width:none}
+.sidebar-nav::-webkit-scrollbar{display:none}
+
+.sidebar-foot{padding:12px 8px;border-top:1px solid rgba(255,255,255,.07)}
+.user-row{
+  display:flex;align-items:center;gap:9px;padding:7px 10px;border-radius:7px;
+  cursor:pointer;transition:background .15s ease;
+}
+.user-row:hover{background:rgba(255,255,255,.06)}
+.av{
+  width:30px;height:30px;border-radius:7px;flex-shrink:0;
+  background:linear-gradient(135deg,var(--blue),var(--purple));
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--fd);font-weight:700;font-size:11px;color:#fff;
+}
+.u-name{font-size:12.5px;font-weight:600;color:rgba(255,255,255,.8);line-height:1.2}
+.u-role{font-size:10.5px;color:rgba(148,163,184,.5)}
+
+/* ── Main ── */
+.main{flex:1;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+
+.topbar{
+  height:60px;background:var(--white);border-bottom:1px solid var(--s200);
+  display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;
+}
+.page-title{font-family:var(--fd);font-size:17px;font-weight:700;color:var(--s900);letter-spacing:-.02em}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.chip{
+  background:var(--blue-bg);border:1px solid var(--blue-border);color:var(--blue);
+  font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;letter-spacing:.02em;
+}
+.icon-btn{
+  width:34px;height:34px;border-radius:7px;border:1px solid var(--s200);background:var(--white);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--s500);
+  transition:all .15s ease;position:relative;
+}
+.icon-btn:hover{background:var(--s50);color:var(--s700)}
+.icon-btn svg{width:15px;height:15px}
+.notif-dot{
+  width:7px;height:7px;background:var(--red);border-radius:50%;
+  position:absolute;top:6px;right:6px;border:1.5px solid #fff;
+}
+.av-top{
+  width:34px;height:34px;border-radius:7px;
+  background:linear-gradient(135deg,var(--blue),var(--purple));
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--fd);font-weight:700;font-size:12px;color:#fff;cursor:pointer;
+}
+
+/* ── Content ── */
+.content{flex:1;overflow-y:auto;padding:22px 24px;scrollbar-width:thin;scrollbar-color:var(--s300) transparent}
+.content::-webkit-scrollbar{width:5px}
+.content::-webkit-scrollbar-thumb{background:var(--s300);border-radius:3px}
+
+.section{display:none;animation:fadeUp .22s ease}
+.section.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── KPI Grid ── */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+.kpi{
+  background:var(--white);border-radius:var(--r);padding:18px;
+  border:1px solid var(--s200);box-shadow:var(--sh);position:relative;overflow:hidden;
+  transition:transform .2s ease,box-shadow .2s ease;cursor:default;
+}
+.kpi:hover{transform:translateY(-1px);box-shadow:var(--sh2)}
+.kpi::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px}
+.kpi.c-blue::after{background:linear-gradient(90deg,var(--blue),var(--blue3))}
+.kpi.c-red::after{background:linear-gradient(90deg,var(--red),#F87171)}
+.kpi.c-slate::after{background:linear-gradient(90deg,var(--s600),var(--s400))}
+.kpi.c-amber::after{background:linear-gradient(90deg,var(--amber),#FCD34D)}
+.kpi-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px}
+.kpi-lbl{font-size:11px;font-weight:600;color:var(--s400);text-transform:uppercase;letter-spacing:.06em}
+.kpi-ico{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center}
+.kpi-ico svg{width:17px;height:17px}
+.kpi-ico.blue{background:var(--blue-border);color:var(--blue)}
+.kpi-ico.red{background:var(--red-bg);color:var(--red)}
+.kpi-ico.slate{background:var(--s100);color:var(--s600)}
+.kpi-ico.amber{background:var(--amber-bg);color:var(--amber)}
+.kpi-val{font-family:var(--fd);font-size:24px;font-weight:800;color:var(--s900);letter-spacing:-.03em;line-height:1;margin-bottom:8px}
+.kpi-foot{display:flex;align-items:center;gap:6px;font-size:12px}
+.trend{display:inline-flex;align-items:center;gap:3px;font-weight:600;font-size:11.5px;padding:2px 7px;border-radius:20px}
+.trend svg{width:9px;height:9px}
+.trend.up{background:var(--green-bg);color:#059669}
+.trend.dn{background:var(--red-bg);color:var(--red)}
+.trend.nu{background:var(--s100);color:var(--s500)}
+.kpi-meta{color:var(--s400);font-size:12px}
+
+/* ── Charts row ── */
+.charts-row{display:grid;grid-template-columns:1fr 360px;gap:14px;margin-bottom:18px}
+
+/* ── Card ── */
+.card{background:var(--white);border-radius:var(--r);border:1px solid var(--s200);box-shadow:var(--sh);overflow:hidden}
+.card-hd{display:flex;align-items:center;justify-content:space-between;padding:16px 18px 12px;border-bottom:1px solid var(--s100)}
+.card-title{font-family:var(--fd);font-size:13.5px;font-weight:700;color:var(--s800);letter-spacing:-.01em}
+.card-sub{font-size:11.5px;color:var(--s400);margin-top:1px}
+.card-act{font-size:12px;color:var(--blue);font-weight:500;cursor:pointer;padding:3px 9px;border-radius:6px;border:1px solid var(--blue-border);background:var(--blue-bg);transition:all .15s ease}
+.card-act:hover{background:var(--blue-border)}
+.card-body{padding:14px 18px}
+
+/* Bar chart */
+.chart-wrap{display:flex;gap:8px;align-items:flex-start}
+.y-axis{display:flex;flex-direction:column;justify-content:space-between;height:155px;padding:4px 0;min-width:40px}
+.y-lbl{font-size:10px;color:var(--s400);font-weight:500;text-align:right}
+.bars-area{flex:1}
+.bars-svg{width:100%;height:155px;overflow:visible}
+.bar-lbl-row{display:flex;justify-content:space-around;padding:5px 0 0}
+.bar-lbl{font-size:10.5px;color:var(--s400);text-align:center;font-weight:500}
+
+/* Donut chart */
+.donut-wrap{display:flex;align-items:center;gap:18px;padding:4px 0}
+.donut-rel{position:relative;width:144px;height:144px;flex-shrink:0}
+.donut-rel svg{position:absolute;inset:0}
+.donut-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.donut-num{font-family:var(--fd);font-size:17px;font-weight:800;color:var(--s900);line-height:1}
+.donut-lbl{font-size:9px;font-weight:600;color:var(--s400);text-transform:uppercase;letter-spacing:.07em}
+.leg-list{list-style:none;display:flex;flex-direction:column;gap:7px;flex:1}
+.leg-item{display:flex;align-items:center;gap:7px;font-size:12px}
+.leg-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+.leg-name{flex:1;color:var(--s600);font-weight:500}
+.leg-pct{font-family:var(--fd);font-weight:700;color:var(--s800);font-size:12px}
+
+/* Tables row */
+.tables-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{text-align:left;font-size:10px;font-weight:600;color:var(--s400);text-transform:uppercase;letter-spacing:.07em;padding:7px 12px;border-bottom:1px solid var(--s100);background:var(--s50)}
+.tbl td{padding:10px 12px;border-bottom:1px solid var(--s100);font-size:12.5px;color:var(--s700);vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:var(--s50)}
+.cell-a{font-weight:600;color:var(--s800);font-size:13px}
+.cell-b{font-size:11px;color:var(--s400);margin-top:1px}
+.amt{font-family:var(--fd);font-weight:700;font-size:13.5px;color:var(--s900)}
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:600;padding:2px 8px;border-radius:20px}
+.badge::before{content:'';width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.badge.paid{background:var(--green-bg);color:#059669}.badge.paid::before{background:var(--green)}
+.badge.late{background:var(--red-bg);color:var(--red)}.badge.late::before{background:var(--red)}
+.badge.pend{background:var(--amber-bg);color:#D97706}.badge.pend::before{background:var(--amber)}
+.badge.info{background:var(--blue-bg);color:var(--blue)}.badge.info::before{background:var(--blue2)}
+
+/* ── Section toolbars ── */
+.sec-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.sec-h{font-family:var(--fd);font-size:20px;font-weight:700;color:var(--s900);letter-spacing:-.02em}
+.toolbar{display:flex;align-items:center;gap:8px}
+.btn{display:inline-flex;align-items:center;gap:6px;border-radius:8px;font-family:var(--fb);font-size:13px;font-weight:600;cursor:pointer;transition:all .15s ease;padding:8px 16px;border:none}
+.btn-pri{background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;box-shadow:0 2px 8px rgba(37,99,235,.3)}
+.btn-pri:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(37,99,235,.4)}
+.btn-pri svg{width:14px;height:14px}
+.btn-out{background:var(--white);color:var(--s700);border:1px solid var(--s300)}
+.btn-out:hover{background:var(--s50)}
+.btn-out svg{width:13px;height:13px}
+.search{display:flex;align-items:center;gap:7px;background:var(--white);border:1px solid var(--s200);border-radius:8px;padding:0 11px;height:36px}
+.search svg{width:14px;height:14px;color:var(--s400);flex-shrink:0}
+.search input{border:none;outline:none;font-family:var(--fb);font-size:13px;color:var(--s700);width:180px;background:transparent}
+.search input::placeholder{color:var(--s400)}
+
+/* ── Property grid ── */
+.prop-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.prop-card{background:var(--white);border-radius:var(--r);border:1px solid var(--s200);overflow:hidden;cursor:pointer;transition:all .2s ease}
+.prop-card:hover{transform:translateY(-2px);box-shadow:var(--sh2)}
+.prop-img{height:130px;position:relative;display:flex;align-items:flex-end;padding:10px}
+.prop-img-grad{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 30%,rgba(0,0,0,.4))}
+.prop-img-num{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--fd);font-size:52px;font-weight:800;color:rgba(255,255,255,.1);letter-spacing:-.05em}
+.prop-info{padding:13px}
+.prop-name{font-family:var(--fd);font-weight:700;font-size:14px;color:var(--s900);margin-bottom:2px}
+.prop-addr{font-size:11.5px;color:var(--s400);margin-bottom:9px}
+.prop-foot{display:flex;justify-content:space-between;align-items:center}
+.prop-rent{font-family:var(--fd);font-weight:800;font-size:15px;color:var(--s900)}
+.prop-rent-lbl{font-size:9.5px;color:var(--s400);font-weight:500}
+
+/* ── Fiscal ── */
+.fiscal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:18px}
+.fiscal-card{background:var(--white);border-radius:var(--r);border:1px solid var(--s200);padding:18px;box-shadow:var(--sh)}
+.fiscal-lbl{font-size:10.5px;font-weight:600;color:var(--s400);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px}
+.fiscal-val{font-family:var(--fd);font-size:22px;font-weight:800;color:var(--s900);letter-spacing:-.02em}
+.fiscal-note{font-size:11.5px;color:var(--s400);margin-top:4px}
+
+/* ── Settings ── */
+.settings-grid{display:grid;grid-template-columns:220px 1fr;gap:16px}
+.settings-nav{background:var(--white);border-radius:var(--r);border:1px solid var(--s200);padding:8px;height:fit-content}
+.sn-item{padding:8px 11px;border-radius:6px;font-size:13px;font-weight:500;color:var(--s600);cursor:pointer;transition:all .15s ease}
+.sn-item:hover{background:var(--s50);color:var(--s800)}
+.sn-item.active{background:var(--blue-bg);color:var(--blue);font-weight:600}
+.settings-body{background:var(--white);border-radius:var(--r);border:1px solid var(--s200);padding:22px}
+.sett-h{font-family:var(--fd);font-size:15px;font-weight:700;color:var(--s900);margin-bottom:18px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+.form-g{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.form-lbl{font-size:12.5px;font-weight:600;color:var(--s700)}
+.form-inp{border:1px solid var(--s300);border-radius:7px;padding:8px 12px;font-family:var(--fb);font-size:13.5px;color:var(--s800);outline:none;transition:border-color .15s ease;width:100%}
+.form-inp:focus{border-color:var(--blue2);box-shadow:0 0 0 3px rgba(59,130,246,.1)}
+.form-inp::placeholder{color:var(--s400)}
+
+/* ── Rapport ── */
+.period-bar{display:flex;gap:6px;margin-bottom:18px}
+.period-btn{padding:5px 13px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--s200);background:var(--white);color:var(--s600);transition:all .15s ease}
+.period-btn.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.rapport-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+.rp-card{background:var(--white);border-radius:var(--r);border:1px solid var(--s200);padding:16px;box-shadow:var(--sh)}
+.rp-lbl{font-size:11px;font-weight:600;color:var(--s400);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.rp-val{font-family:var(--fd);font-size:20px;font-weight:800;color:var(--s900)}
+
+/* Donut animation */
+.donut-seg{transform-origin:72px 72px;transition:stroke-dasharray .8s cubic-bezier(.4,0,.2,1)}
+
+/* Bar animation */
+.bar-r{animation:growB .6s cubic-bezier(.4,0,.2,1) both}
+@keyframes growB{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+.bar-r:nth-child(1){animation-delay:.05s}
+.bar-r:nth-child(2){animation-delay:.1s}
+.bar-r:nth-child(3){animation-delay:.15s}
+.bar-r:nth-child(4){animation-delay:.2s}
+.bar-r:nth-child(5){animation-delay:.25s}
+.bar-r:nth-child(6){animation-delay:.3s}
+
+/* Quittances */
+.quit-list{display:flex;flex-direction:column;gap:10px}
+.quit-item{background:var(--white);border-radius:var(--r);border:1px solid var(--s200);padding:14px 16px;display:flex;align-items:center;gap:14px;transition:all .15s ease;cursor:pointer}
+.quit-item:hover{box-shadow:var(--sh2);transform:translateX(2px)}
+.quit-ico{width:40px;height:40px;border-radius:8px;background:var(--blue-bg);border:1px solid var(--blue-border);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--blue)}
+.quit-ico svg{width:18px;height:18px}
+.quit-info{flex:1}
+.quit-name{font-weight:600;color:var(--s800);font-size:13.5px}
+.quit-meta{font-size:11.5px;color:var(--s400);margin-top:2px}
+.quit-right{display:flex;flex-direction:column;align-items:flex-end;gap:5px}
+.quit-amt{font-family:var(--fd);font-weight:800;font-size:15px;color:var(--s900)}
+
+/* Documents grid */
+.doc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.doc-card{background:var(--white);border-radius:var(--r);border:1px solid var(--s200);padding:16px;display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;transition:all .2s ease;text-align:center}
+.doc-card:hover{box-shadow:var(--sh2);transform:translateY(-2px)}
+.doc-ico{width:48px;height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center}
+.doc-ico svg{width:24px;height:24px}
+.doc-name{font-size:12.5px;font-weight:600;color:var(--s800)}
+.doc-size{font-size:11px;color:var(--s400)}
+
+/* ── Utility ── */
+.mt8{margin-top:8px}
+.divider{height:1px;background:var(--s200);margin:16px 0}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- ═══ SIDEBAR ═══ -->
+<aside class="sidebar">
+  <div class="logo">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M3 9L12 2L21 9V20C21 20.55 20.55 21 20 21H15V15H9V21H4C3.45 21 3 20.55 3 20V9Z" fill="rgba(255,255,255,.9)"/><rect x="8" y="13" width="3" height="4" rx=".5" fill="#2563EB" opacity=".7"/><rect x="13" y="10" width="3" height="7" rx=".5" fill="#2563EB" opacity=".5"/></svg>
+    </div>
+    <div class="logo-text">
+      <span class="logo-name">Easy Location</span>
+      <span class="logo-tag">IMMO</span>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-sep">Principal</div>
+    <ul class="nav-list">
+      <li class="nav-item"><div class="nav-link active" onclick="nav(this,'dashboard','Tableau de bord')"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg></span><span class="nav-label">Tableau de bord</span></div></li>
+      <li class="nav-item"><div class="nav-link" onclick="nav(this,'biens','Biens')"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9L12 2L21 9V20C21 20.55 20.55 21 20 21H15V15H9V21H4C3.45 21 3 20.55 3 20V9Z"/></svg></span><span class="nav-label">Biens</span></div></li>
+      <li class="nav-item"><div class="nav-link" onclick="nav(this,'locataires','Locataires')"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><span class="nav-label">Locataires</span></div></li>
+    </ul>
+    <div class="nav-sep">Finances</div>
+    <ul class="nav-list">
+      <li class="nav-item"><div class="nav-link" onclick="nav(this,'loyers','Loyers')"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg></span><span class="nav-label">Loyers</span></div></li>
+      <li class="nav-item"><div class="nav-link" onclick="nav(this,'charges','Charges')"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></span><span class="nav-label">Charges</span></div></li>
+      <li class="nav-item"><div class="nav-link" onclick="nav(this,'quittances','Quittances')"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span><span class="nav-label">Quittances</span></div></li>
+    </ul>
+    <div class="nav-sep">Gestion</div>
+    <ul class="nav-list">
+      <li class="nav-item"><div class="nav-link" onclick="nav(this,'documents','Documents')"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></span><span class="nav-label">Documents</span></div></li>
+      <li class="nav-item"><div class="nav-link" onclick="nav(this,'fiscalite','Fiscalité')"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span><span class="nav-label">Fiscalité</span></div></li>
+      <li class="nav-item"><div class="nav-link" onclick="nav(this,'rapports','Rapports')"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span><span class="nav-label">Rapports</span></div></li>
+      <li class="nav-item"><div class="nav-link" onclick="nav(this,'parametres','Paramètres')"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span><span class="nav-label">Paramètres</span></div></li>
+    </ul>
+  </nav>
+
+  <div class="sidebar-foot">
+    <div class="user-row">
+      <div class="av">AB</div>
+      <div><div class="u-name">Antoine Bernard</div><div class="u-role">Propriétaire</div></div>
+    </div>
+  </div>
+</aside>
+
+<!-- ═══ MAIN ═══ -->
+<div class="main">
+  <header class="topbar">
+    <h1 class="page-title" id="pageTitle">Tableau de bord</h1>
+    <div class="topbar-right">
+      <span class="chip">Juin 2024</span>
+      <button class="icon-btn" title="Notifications">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <span class="notif-dot"></span>
+      </button>
+      <div class="av-top">AB</div>
+    </div>
+  </header>
+
+  <div class="content" id="content">
+
+    <!-- ═══ DASHBOARD ═══ -->
+    <div class="section active" id="sec-dashboard">
+
+      <div class="kpi-grid">
+        <div class="kpi c-blue">
+          <div class="kpi-head">
+            <span class="kpi-lbl">Loyers encaissés</span>
+            <div class="kpi-ico blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg></div>
+          </div>
+          <div class="kpi-val" id="kv1">12 540 €</div>
+          <div class="kpi-foot"><span class="trend up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>+8,5%</span><span class="kpi-meta">ce mois</span></div>
+        </div>
+        <div class="kpi c-red">
+          <div class="kpi-head">
+            <span class="kpi-lbl">Loyers en retard</span>
+            <div class="kpi-ico red"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+          </div>
+          <div class="kpi-val" id="kv2">1 250 €</div>
+          <div class="kpi-foot"><span class="trend dn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>5 loyers</span><span class="kpi-meta">en retard</span></div>
+        </div>
+        <div class="kpi c-slate">
+          <div class="kpi-head">
+            <span class="kpi-lbl">Biens</span>
+            <div class="kpi-ico slate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9L12 2L21 9V20C21 20.55 20.55 21 20 21H15V15H9V21H4C3.45 21 3 20.55 3 20V9Z"/></svg></div>
+          </div>
+          <div class="kpi-val">8</div>
+          <div class="kpi-foot"><span class="trend nu">6 occupés</span><span class="kpi-meta">· 2 libres</span></div>
+        </div>
+        <div class="kpi c-amber">
+          <div class="kpi-head">
+            <span class="kpi-lbl">Charges à répartir</span>
+            <div class="kpi-ico amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+          </div>
+          <div class="kpi-val">890 €</div>
+          <div class="kpi-foot"><span class="trend nu">Ce mois</span></div>
+        </div>
+      </div>
+
+      <div class="charts-row">
+        <!-- Bar chart -->
+        <div class="card">
+          <div class="card-hd">
+            <div><div class="card-title">Encaissements</div><div class="card-sub">6 derniers mois</div></div>
+            <span class="card-act">Voir tout</span>
+          </div>
+          <div class="card-body">
+            <div class="chart-wrap">
+              <div class="y-axis">
+                <span class="y-lbl">14k</span><span class="y-lbl">12k</span>
+                <span class="y-lbl">10k</span><span class="y-lbl">8k</span>
+                <span class="y-lbl">6k</span><span class="y-lbl">0</span>
+              </div>
+              <div class="bars-area">
+                <svg class="bars-svg" viewBox="0 0 360 155" preserveAspectRatio="none">
+                  <defs>
+                    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#93C5FD"/><stop offset="100%" stop-color="#DBEAFE"/></linearGradient>
+                    <linearGradient id="ba" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1D4ED8"/><stop offset="100%" stop-color="#3B82F6"/></linearGradient>
+                  </defs>
+                  <!-- Grid -->
+                  <line x1="0" y1="6" x2="360" y2="6" stroke="#E2E8F0" stroke-width=".8"/>
+                  <line x1="0" y1="34" x2="360" y2="34" stroke="#E2E8F0" stroke-width=".8"/>
+                  <line x1="0" y1="62" x2="360" y2="62" stroke="#E2E8F0" stroke-width=".8"/>
+                  <line x1="0" y1="90" x2="360" y2="90" stroke="#E2E8F0" stroke-width=".8"/>
+                  <line x1="0" y1="118" x2="360" y2="118" stroke="#E2E8F0" stroke-width=".8"/>
+                  <line x1="0" y1="146" x2="360" y2="146" stroke="#E2E8F0" stroke-width=".8"/>
+                  <!-- Bars: max=14000, usable h=140 (6..146). height = val/14000*140 -->
+                  <!-- Jan 11200: h=112, y=34 --> <rect class="bar-r" x="6" y="34" width="48" height="112" rx="4" fill="url(#bg)" opacity=".8" style="transform-origin:6px 146px;transform-box:fill-box"/>
+                  <!-- Fév 10800: h=108, y=38 --> <rect class="bar-r" x="64" y="38" width="48" height="108" rx="4" fill="url(#bg)" opacity=".8" style="transform-origin:64px 146px;transform-box:fill-box"/>
+                  <!-- Mar 11500: h=115, y=31 --> <rect class="bar-r" x="122" y="31" width="48" height="115" rx="4" fill="url(#bg)" opacity=".8" style="transform-origin:122px 146px;transform-box:fill-box"/>
+                  <!-- Avr 12100: h=121, y=25 --> <rect class="bar-r" x="180" y="25" width="48" height="121" rx="4" fill="url(#bg)" opacity=".8" style="transform-origin:180px 146px;transform-box:fill-box"/>
+                  <!-- Mai 11900: h=119, y=27 --> <rect class="bar-r" x="238" y="27" width="48" height="119" rx="4" fill="url(#bg)" opacity=".8" style="transform-origin:238px 146px;transform-box:fill-box"/>
+                  <!-- Jun 12540: h=125.4, y=20.6 → highlight --> <rect class="bar-r" x="296" y="21" width="48" height="125" rx="4" fill="url(#ba)" style="transform-origin:296px 146px;transform-box:fill-box"/>
+                  <text x="320" y="16" text-anchor="middle" font-size="8.5" font-weight="700" fill="#2563EB" font-family="Syne,sans-serif">12 540 €</text>
+                </svg>
+                <div class="bar-lbl-row">
+                  <span class="bar-lbl">Jan</span><span class="bar-lbl">Fév</span>
+                  <span class="bar-lbl">Mar</span><span class="bar-lbl">Avr</span>
+                  <span class="bar-lbl">Mai</span><span class="bar-lbl">Jun</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Donut chart -->
+        <div class="card">
+          <div class="card-hd">
+            <div><div class="card-title">Répartition des charges</div><div class="card-sub">Ce mois — 2 340 €</div></div>
+          </div>
+          <div class="card-body">
+            <div class="donut-wrap">
+              <div class="donut-rel">
+                <!-- C = 2*PI*52 = 326.73 -->
+                <svg width="144" height="144" viewBox="0 0 144 144">
+                  <!-- BG track -->
+                  <circle cx="72" cy="72" r="52" fill="none" stroke="#F1F5F9" stroke-width="20"/>
+                  <!-- Eau 40% = 130.7 -->
+                  <circle cx="72" cy="72" r="52" fill="none" stroke="#2563EB" stroke-width="20"
+                    stroke-dasharray="130.7 326.73" stroke-dashoffset="81.68"
+                    transform="rotate(-90 72 72)" style="transition:stroke-dasharray .8s"/>
+                  <!-- Entretien 25% = 81.68 -->
+                  <circle cx="72" cy="72" r="52" fill="none" stroke="#10B981" stroke-width="20"
+                    stroke-dasharray="81.68 326.73" stroke-dashoffset="-49.02"
+                    transform="rotate(-90 72 72)"/>
+                  <!-- Taxe ordure 15% = 49.01 -->
+                  <circle cx="72" cy="72" r="52" fill="none" stroke="#F59E0B" stroke-width="20"
+                    stroke-dasharray="49.01 326.73" stroke-dashoffset="-130.7"
+                    transform="rotate(-90 72 72)"/>
+                  <!-- Assurance 10% = 32.67 -->
+                  <circle cx="72" cy="72" r="52" fill="none" stroke="#8B5CF6" stroke-width="20"
+                    stroke-dasharray="32.67 326.73" stroke-dashoffset="-179.71"
+                    transform="rotate(-90 72 72)"/>
+                  <!-- Autres 10% = 32.67 -->
+                  <circle cx="72" cy="72" r="52" fill="none" stroke="#94A3B8" stroke-width="20"
+                    stroke-dasharray="32.67 326.73" stroke-dashoffset="-212.38"
+                    transform="rotate(-90 72 72)"/>
+                </svg>
+                <div class="donut-center">
+                  <span class="donut-num">2 340 €</span>
+                  <span class="donut-lbl">Total</span>
+                </div>
+              </div>
+              <ul class="leg-list">
+                <li class="leg-item"><span class="leg-dot" style="background:#2563EB"></span><span class="leg-name">Eau</span><span class="leg-pct">40%</span></li>
+                <li class="leg-item"><span class="leg-dot" style="background:#10B981"></span><span class="leg-name">Entretien</span><span class="leg-pct">25%</span></li>
+                <li class="leg-item"><span class="leg-dot" style="background:#F59E0B"></span><span class="leg-name">Taxe ordure</span><span class="leg-pct">15%</span></li>
+                <li class="leg-item"><span class="leg-dot" style="background:#8B5CF6"></span><span class="leg-name">Assurance</span><span class="leg-pct">10%</span></li>
+                <li class="leg-item"><span class="leg-dot" style="background:#94A3B8"></span><span class="leg-name">Autres</span><span class="leg-pct">10%</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tables-row">
+        <div class="card">
+          <div class="card-hd"><div><div class="card-title">Derniers loyers</div></div><span class="card-act">Voir tout</span></div>
+          <table class="tbl">
+            <thead><tr><th>Bien / Locataire</th><th>Montant</th><th>Statut</th></tr></thead>
+            <tbody>
+              <tr><td><div class="cell-a">Appt T2 — Lyon 3e</div><div class="cell-b">Marie Dupont</div></td><td><span class="amt">750 €</span></td><td><span class="badge paid">Payé</span></td></tr>
+              <tr><td><div class="cell-a">Studio — Bordeaux</div><div class="cell-b">Thomas Martin</div></td><td><span class="amt">550 €</span></td><td><span class="badge paid">Payé</span></td></tr>
+              <tr><td><div class="cell-a">Appt T3 — Nantes</div><div class="cell-b">Sophie Bernard</div></td><td><span class="amt">820 €</span></td><td><span class="badge late">En retard</span></td></tr>
+              <tr><td><div class="cell-a">Studio — Paris 11e</div><div class="cell-b">Lucas Petit</div></td><td><span class="amt">980 €</span></td><td><span class="badge pend">En attente</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card">
+          <div class="card-hd"><div><div class="card-title">Prochaines échéances</div></div><span class="card-act">Voir tout</span></div>
+          <table class="tbl">
+            <thead><tr><th>Loyer / Bien</th><th>Montant</th><th>Échéance</th></tr></thead>
+            <tbody>
+              <tr><td><div class="cell-a">Juillet 2024</div><div class="cell-b">Appt T2 — Lyon 3e</div></td><td><span class="amt">750 €</span></td><td><span class="badge info">05/07/2024</span></td></tr>
+              <tr><td><div class="cell-a">Juillet 2024</div><div class="cell-b">Studio — Bordeaux</div></td><td><span class="amt">550 €</span></td><td><span class="badge info">05/07/2024</span></td></tr>
+              <tr><td><div class="cell-a">Juillet 2024</div><div class="cell-b">Appt T3 — Nantes</div></td><td><span class="amt">820 €</span></td><td><span class="badge late">05/07/2024</span></td></tr>
+              <tr><td><div class="cell-a">Juillet 2024</div><div class="cell-b">Studio — Paris 11e</div></td><td><span class="amt">980 €</span></td><td><span class="badge info">05/07/2024</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ BIENS ═══ -->
+    <div class="section" id="sec-biens">
+      <div class="sec-top">
+        <span class="sec-h">Mes Biens</span>
+        <div class="toolbar">
+          <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" placeholder="Rechercher un bien…"/></div>
+          <button class="btn btn-out"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>Filtrer</button>
+          <button class="btn btn-pri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Ajouter un bien</button>
+        </div>
+      </div>
+      <div class="prop-grid">
+        <!-- Card 1 -->
+        <div class="prop-card">
+          <div class="prop-img" style="background:linear-gradient(135deg,#1D4ED8,#3B82F6)">
+            <div class="prop-img-grad"></div><div class="prop-img-num">T2</div>
+            <span class="badge paid" style="position:relative;z-index:1">Occupé</span>
+          </div>
+          <div class="prop-info">
+            <div class="prop-name">Appartement T2</div>
+            <div class="prop-addr">12 rue Victor Hugo — Lyon 3e</div>
+            <div class="prop-foot"><div><div class="prop-rent">750 €<span style="font-size:10px;font-family:var(--fb);font-weight:500;color:var(--s400)">/mois</span></div><div class="prop-rent-lbl">Locataire : Marie Dupont</div></div><span class="badge paid">Payé</span></div>
+          </div>
+        </div>
+        <!-- Card 2 -->
+        <div class="prop-card">
+          <div class="prop-img" style="background:linear-gradient(135deg,#065F46,#10B981)">
+            <div class="prop-img-grad"></div><div class="prop-img-num">ST</div>
+            <span class="badge paid" style="position:relative;z-index:1">Occupé</span>
+          </div>
+          <div class="prop-info">
+            <div class="prop-name">Studio</div>
+            <div class="prop-addr">8 allée des Roses — Bordeaux</div>
+            <div class="prop-foot"><div><div class="prop-rent">550 €<span style="font-size:10px;font-family:var(--fb);font-weight:500;color:var(--s400)">/mois</span></div><div class="prop-rent-lbl">Locataire : T. Martin</div></div><span class="badge paid">Payé</span></div>
+          </div>
+        </div>
+        <!-- Card 3 -->
+        <div class="prop-card">
+          <div class="prop-img" style="background:linear-gradient(135deg,#7C3AED,#A78BFA)">
+            <div class="prop-img-grad"></div><div class="prop-img-num">T3</div>
+            <span class="badge late" style="position:relative;z-index:1">En retard</span>
+          </div>
+          <div class="prop-info">
+            <div class="prop-name">Appartement T3</div>
+            <div class="prop-addr">3 place du Commerce — Nantes</div>
+            <div class="prop-foot"><div><div class="prop-rent">820 €<span style="font-size:10px;font-family:var(--fb);font-weight:500;color:var(--s400)">/mois</span></div><div class="prop-rent-lbl">Locataire : S. Bernard</div></div><span class="badge late">Retard</span></div>
+          </div>
+        </div>
+        <!-- Card 4 -->
+        <div class="prop-card">
+          <div class="prop-img" style="background:linear-gradient(135deg,#92400E,#F59E0B)">
+            <div class="prop-img-grad"></div><div class="prop-img-num">ST</div>
+            <span class="badge pend" style="position:relative;z-index:1">En attente</span>
+          </div>
+          <div class="prop-info">
+            <div class="prop-name">Studio</div>
+            <div class="prop-addr">47 rue de la Roquette — Paris 11e</div>
+            <div class="prop-foot"><div><div class="prop-rent">980 €<span style="font-size:10px;font-family:var(--fb);font-weight:500;color:var(--s400)">/mois</span></div><div class="prop-rent-lbl">Locataire : L. Petit</div></div><span class="badge pend">Attente</span></div>
+          </div>
+        </div>
+        <!-- Card 5 -->
+        <div class="prop-card">
+          <div class="prop-img" style="background:linear-gradient(135deg,#0F172A,#334155)">
+            <div class="prop-img-grad"></div><div class="prop-img-num">T4</div>
+            <span class="badge" style="position:relative;z-index:1;background:rgba(255,255,255,.15);color:#fff">Libre</span>
+          </div>
+          <div class="prop-info">
+            <div class="prop-name">Appartement T4</div>
+            <div class="prop-addr">15 cours Mirabeau — Aix-en-Provence</div>
+            <div class="prop-foot"><div><div class="prop-rent">1 100 €<span style="font-size:10px;font-family:var(--fb);font-weight:500;color:var(--s400)">/mois</span></div><div class="prop-rent-lbl">Disponible immédiatement</div></div><span class="badge" style="background:var(--s100);color:var(--s500)">Libre</span></div>
+          </div>
+        </div>
+        <!-- Add card -->
+        <div class="prop-card" style="border:2px dashed var(--s300);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;min-height:220px;cursor:pointer" onclick="">
+          <div style="width:44px;height:44px;border-radius:10px;background:var(--s100);display:flex;align-items:center;justify-content:center;color:var(--s400)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+          <span style="font-size:13px;font-weight:600;color:var(--s400)">Ajouter un bien</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ LOCATAIRES ═══ -->
+    <div class="section" id="sec-locataires">
+      <div class="sec-top">
+        <span class="sec-h">Locataires</span>
+        <div class="toolbar">
+          <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" placeholder="Rechercher…"/></div>
+          <button class="btn btn-pri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Nouveau locataire</button>
+        </div>
+      </div>
+      <div class="card">
+        <table class="tbl">
+          <thead><tr><th>Locataire</th><th>Bien loué</th><th>Loyer</th><th>Bail</th><th>Statut</th><th></th></tr></thead>
+          <tbody>
+            <tr><td><div class="cell-a">Marie Dupont</div><div class="cell-b">marie.dupont@email.fr</div></td><td>Appt T2 — Lyon 3e</td><td><span class="amt">750 €</span></td><td><div class="cell-b">01/09/2022 → 31/08/2025</div></td><td><span class="badge paid">Actif</span></td><td><button class="btn btn-out" style="padding:5px 11px;font-size:12px">Voir</button></td></tr>
+            <tr><td><div class="cell-a">Thomas Martin</div><div class="cell-b">t.martin@email.fr</div></td><td>Studio — Bordeaux</td><td><span class="amt">550 €</span></td><td><div class="cell-b">01/03/2023 → 28/02/2026</div></td><td><span class="badge paid">Actif</span></td><td><button class="btn btn-out" style="padding:5px 11px;font-size:12px">Voir</button></td></tr>
+            <tr><td><div class="cell-a">Sophie Bernard</div><div class="cell-b">s.bernard@email.fr</div></td><td>Appt T3 — Nantes</td><td><span class="amt">820 €</span></td><td><div class="cell-b">15/06/2021 → 14/06/2024</div></td><td><span class="badge late">En retard</span></td><td><button class="btn btn-out" style="padding:5px 11px;font-size:12px">Voir</button></td></tr>
+            <tr><td><div class="cell-a">Lucas Petit</div><div class="cell-b">l.petit@email.fr</div></td><td>Studio — Paris 11e</td><td><span class="amt">980 €</span></td><td><div class="cell-b">01/01/2024 → 31/12/2024</div></td><td><span class="badge pend">En attente</span></td><td><button class="btn btn-out" style="padding:5px 11px;font-size:12px">Voir</button></td></tr>
+            <tr><td><div class="cell-a">Camille Rousseau</div><div class="cell-b">c.rousseau@email.fr</div></td><td>Appt T3 — Paris 15e</td><td><span class="amt">1 250 €</span></td><td><div class="cell-b">01/04/2023 → 31/03/2026</div></td><td><span class="badge paid">Actif</span></td><td><button class="btn btn-out" style="padding:5px 11px;font-size:12px">Voir</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ═══ LOYERS ═══ -->
+    <div class="section" id="sec-loyers">
+      <div class="sec-top">
+        <span class="sec-h">Loyers</span>
+        <div class="toolbar">
+          <button class="btn btn-out"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Juin 2024</button>
+          <button class="btn btn-pri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Enregistrer un paiement</button>
+        </div>
+      </div>
+      <div class="card">
+        <table class="tbl">
+          <thead><tr><th>Bien / Locataire</th><th>Loyer HC</th><th>Charges</th><th>Total</th><th>Échéance</th><th>Paiement</th><th>Statut</th></tr></thead>
+          <tbody>
+            <tr><td><div class="cell-a">Appt T2 — Lyon 3e</div><div class="cell-b">Marie Dupont</div></td><td>650 €</td><td>100 €</td><td><span class="amt">750 €</span></td><td>05/06/2024</td><td><div class="cell-b">Virement · 03/06/2024</div></td><td><span class="badge paid">Payé</span></td></tr>
+            <tr><td><div class="cell-a">Studio — Bordeaux</div><div class="cell-b">Thomas Martin</div></td><td>500 €</td><td>50 €</td><td><span class="amt">550 €</span></td><td>05/06/2024</td><td><div class="cell-b">Virement · 04/06/2024</div></td><td><span class="badge paid">Payé</span></td></tr>
+            <tr><td><div class="cell-a">Appt T3 — Nantes</div><div class="cell-b">Sophie Bernard</div></td><td>750 €</td><td>70 €</td><td><span class="amt">820 €</span></td><td>05/06/2024</td><td><div class="cell-b">—</div></td><td><span class="badge late">En retard</span></td></tr>
+            <tr><td><div class="cell-a">Studio — Paris 11e</div><div class="cell-b">Lucas Petit</div></td><td>900 €</td><td>80 €</td><td><span class="amt">980 €</span></td><td>05/06/2024</td><td><div class="cell-b">—</div></td><td><span class="badge pend">En attente</span></td></tr>
+            <tr><td><div class="cell-a">Appt T3 — Paris 15e</div><div class="cell-b">Camille Rousseau</div></td><td>1 150 €</td><td>100 €</td><td><span class="amt">1 250 €</span></td><td>05/06/2024</td><td><div class="cell-b">Virement · 02/06/2024</div></td><td><span class="badge paid">Payé</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ═══ CHARGES ═══ -->
+    <div class="section" id="sec-charges">
+      <div class="sec-top">
+        <span class="sec-h">Charges</span>
+        <div class="toolbar">
+          <button class="btn btn-out"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>Toutes les charges</button>
+          <button class="btn btn-pri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Ajouter une charge</button>
+        </div>
+      </div>
+      <div class="card">
+        <table class="tbl">
+          <thead><tr><th>Libellé</th><th>Bien</th><th>Catégorie</th><th>Montant</th><th>Date</th><th>Récupérable</th></tr></thead>
+          <tbody>
+            <tr><td><div class="cell-a">Facture eau</div><div class="cell-b">Trimestre 2 - 2024</div></td><td>Appt T2 — Lyon 3e</td><td><span class="badge info">Eau</span></td><td><span class="amt">320 €</span></td><td>15/06/2024</td><td><span class="badge paid">Oui</span></td></tr>
+            <tr><td><div class="cell-a">Entretien chaudière</div><div class="cell-b">Révision annuelle</div></td><td>Appt T3 — Nantes</td><td><span class="badge" style="background:#EDE9FE;color:#7C3AED">Entretien</span></td><td><span class="amt">185 €</span></td><td>10/06/2024</td><td><span class="badge paid">Oui</span></td></tr>
+            <tr><td><div class="cell-a">Taxe ordures ménagères</div><div class="cell-b">Annuelle 2024</div></td><td>Studio — Bordeaux</td><td><span class="badge pend">Taxe</span></td><td><span class="amt">240 €</span></td><td>01/06/2024</td><td><span class="badge paid">Oui</span></td></tr>
+            <tr><td><div class="cell-a">Assurance PNO</div><div class="cell-b">Propriétaire non-occupant</div></td><td>Studio — Paris 11e</td><td><span class="badge" style="background:#EDE9FE;color:#7C3AED">Assurance</span></td><td><span class="amt">145 €</span></td><td>01/06/2024</td><td><span class="badge late">Non</span></td></tr>
+            <tr><td><div class="cell-a">Travaux peinture</div><div class="cell-b">Remise en état après départ</div></td><td>Appt T4 — Aix</td><td><span class="badge" style="background:var(--s100);color:var(--s600)">Travaux</span></td><td><span class="amt">1 200 €</span></td><td>20/06/2024</td><td><span class="badge late">Non</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ═══ QUITTANCES ═══ -->
+    <div class="section" id="sec-quittances">
+      <div class="sec-top">
+        <span class="sec-h">Quittances</span>
+        <div class="toolbar">
+          <button class="btn btn-out"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>Tout imprimer</button>
+          <button class="btn btn-pri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Générer quittance</button>
+        </div>
+      </div>
+      <div class="quit-list">
+        <div class="quit-item"><div class="quit-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg></div><div class="quit-info"><div class="quit-name">Quittance Juin 2024 — Marie Dupont</div><div class="quit-meta">Appt T2, Lyon 3e · Loyer 650 € + Charges 100 €</div></div><div class="quit-right"><span class="quit-amt">750 €</span><div style="display:flex;gap:6px"><button class="btn btn-out" style="padding:4px 10px;font-size:11.5px">PDF</button><button class="btn btn-pri" style="padding:4px 10px;font-size:11.5px">Envoyer</button></div></div></div>
+        <div class="quit-item"><div class="quit-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg></div><div class="quit-info"><div class="quit-name">Quittance Juin 2024 — Thomas Martin</div><div class="quit-meta">Studio, Bordeaux · Loyer 500 € + Charges 50 €</div></div><div class="quit-right"><span class="quit-amt">550 €</span><div style="display:flex;gap:6px"><button class="btn btn-out" style="padding:4px 10px;font-size:11.5px">PDF</button><button class="btn btn-pri" style="padding:4px 10px;font-size:11.5px">Envoyer</button></div></div></div>
+        <div class="quit-item"><div class="quit-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg></div><div class="quit-info"><div class="quit-name">Quittance Juin 2024 — Camille Rousseau</div><div class="quit-meta">Appt T3, Paris 15e · Loyer 1 150 € + Charges 100 €</div></div><div class="quit-right"><span class="quit-amt">1 250 €</span><div style="display:flex;gap:6px"><button class="btn btn-out" style="padding:4px 10px;font-size:11.5px">PDF</button><button class="btn btn-pri" style="padding:4px 10px;font-size:11.5px">Envoyer</button></div></div></div>
+        <div class="quit-item" style="opacity:.55"><div class="quit-ico" style="background:var(--red-bg);border-color:#FECACA;color:var(--red)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="quit-info"><div class="quit-name">Quittance Juin 2024 — Sophie Bernard</div><div class="quit-meta">Appt T3, Nantes · Paiement non reçu</div></div><div class="quit-right"><span class="quit-amt" style="color:var(--red)">820 €</span><span class="badge late">En retard</span></div></div>
+      </div>
+    </div>
+
+    <!-- ═══ DOCUMENTS ═══ -->
+    <div class="section" id="sec-documents">
+      <div class="sec-top">
+        <span class="sec-h">Documents</span>
+        <div class="toolbar">
+          <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" placeholder="Rechercher un document…"/></div>
+          <button class="btn btn-pri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Importer</button>
+        </div>
+      </div>
+      <div class="doc-grid">
+        <div class="doc-card"><div class="doc-ico" style="background:#DBEAFE"><svg viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div class="doc-name">Bail T2 Lyon - Marie Dupont</div><div class="doc-size">PDF · 245 Ko · 01/09/2022</div></div>
+        <div class="doc-card"><div class="doc-ico" style="background:#D1FAE5"><svg viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div class="doc-name">État des lieux entrée T2 Lyon</div><div class="doc-size">PDF · 1.2 Mo · 01/09/2022</div></div>
+        <div class="doc-card"><div class="doc-ico" style="background:#FEF3C7"><svg viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div class="doc-name">DPE Appartement Lyon</div><div class="doc-size">PDF · 380 Ko · 15/08/2022</div></div>
+        <div class="doc-card"><div class="doc-ico" style="background:#EDE9FE"><svg viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><div class="doc-name">Photos bien T2 Lyon</div><div class="doc-size">ZIP · 8.4 Mo · 30/08/2022</div></div>
+        <div class="doc-card"><div class="doc-ico" style="background:#DBEAFE"><svg viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div class="doc-name">Bail Studio Bordeaux</div><div class="doc-size">PDF · 198 Ko · 01/03/2023</div></div>
+        <div class="doc-card"><div class="doc-ico" style="background:var(--s100)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--s500)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div class="doc-name">Assurance PNO Paris 11e</div><div class="doc-size">PDF · 156 Ko · 01/01/2024</div></div>
+        <div class="doc-card"><div class="doc-ico" style="background:#D1FAE5"><svg viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div class="doc-name">Facture entretien chaudière</div><div class="doc-size">PDF · 89 Ko · 10/06/2024</div></div>
+        <div class="doc-card" style="border:2px dashed var(--s300);cursor:pointer;align-items:center;justify-content:center;gap:8px">
+          <div style="color:var(--s400)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="28" height="28"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+          <span style="font-size:12.5px;font-weight:600;color:var(--s400)">Importer</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ FISCALITÉ ═══ -->
+    <div class="section" id="sec-fiscalite">
+      <div class="sec-top">
+        <span class="sec-h">Fiscalité 2024</span>
+        <div class="toolbar">
+          <button class="btn btn-out"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>Exporter en PDF</button>
+        </div>
+      </div>
+      <div class="fiscal-grid">
+        <div class="fiscal-card"><div class="fiscal-lbl">Revenus bruts 2024</div><div class="fiscal-val">75 240 €</div><div class="fiscal-note">Loyers encaissés Jan–Jun : 37 620 €</div></div>
+        <div class="fiscal-card"><div class="fiscal-lbl">Charges déductibles</div><div class="fiscal-val">14 380 €</div><div class="fiscal-note">Travaux, assurances, intérêts d'emprunt</div></div>
+        <div class="fiscal-card"><div class="fiscal-lbl">Revenu net imposable</div><div class="fiscal-val">60 860 €</div><div class="fiscal-note">Régime réel — Micro-foncier non applicable</div></div>
+        <div class="fiscal-card"><div class="fiscal-lbl">Prélèvements sociaux (17,2%)</div><div class="fiscal-val">10 468 €</div><div class="fiscal-note">CSG + CRDS + prélèvement solidarité</div></div>
+        <div class="fiscal-card"><div class="fiscal-lbl">Impôt estimé (TMI 30%)</div><div class="fiscal-val">18 258 €</div><div class="fiscal-note">Estimation — à confirmer avec votre expert</div></div>
+        <div class="fiscal-card" style="border-color:var(--blue);background:var(--blue-bg)"><div class="fiscal-lbl" style="color:var(--blue)">Solde fiscal prévisionnel</div><div class="fiscal-val" style="color:var(--blue)">28 726 €</div><div class="fiscal-note" style="color:var(--blue-600)">À provisionner avant déclaration mai 2025</div></div>
+      </div>
+      <div class="card">
+        <div class="card-hd"><div><div class="card-title">Déclaration 2042-C-PRO</div><div class="card-sub">Éléments à reporter</div></div></div>
+        <div class="card-body">
+          <table class="tbl">
+            <thead><tr><th>Bien</th><th>Revenus bruts</th><th>Charges</th><th>Revenu net</th><th>Régime</th></tr></thead>
+            <tbody>
+              <tr><td><div class="cell-a">Appt T2 — Lyon 3e</div></td><td>9 000 €</td><td>1 200 €</td><td>7 800 €</td><td>Réel</td></tr>
+              <tr><td><div class="cell-a">Studio — Bordeaux</div></td><td>6 600 €</td><td>800 €</td><td>5 800 €</td><td>Réel</td></tr>
+              <tr><td><div class="cell-a">Appt T3 — Nantes</div></td><td>9 840 €</td><td>2 100 €</td><td>7 740 €</td><td>Réel</td></tr>
+              <tr><td><div class="cell-a">Studio — Paris 11e</div></td><td>11 760 €</td><td>1 500 €</td><td>10 260 €</td><td>Réel</td></tr>
+              <tr><td><div class="cell-a">Appt T3 — Paris 15e</div></td><td>15 000 €</td><td>2 400 €</td><td>12 600 €</td><td>Réel</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ RAPPORTS ═══ -->
+    <div class="section" id="sec-rapports">
+      <div class="sec-top">
+        <span class="sec-h">Rapports</span>
+        <div class="toolbar">
+          <button class="btn btn-out"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>Exporter</button>
+        </div>
+      </div>
+      <div class="period-bar">
+        <button class="period-btn">Jan 2024</button><button class="period-btn">Fév</button><button class="period-btn">Mar</button><button class="period-btn">Avr</button><button class="period-btn">Mai</button><button class="period-btn active">Jun 2024</button>
+      </div>
+      <div class="rapport-grid">
+        <div class="rp-card"><div class="rp-lbl">Revenus du mois</div><div class="rp-val">12 540 €</div></div>
+        <div class="rp-card"><div class="rp-lbl">Charges du mois</div><div class="rp-val">2 340 €</div></div>
+        <div class="rp-card"><div class="rp-lbl">Résultat net</div><div class="rp-val" style="color:var(--green)">10 200 €</div></div>
+        <div class="rp-card"><div class="rp-lbl">Taux d'occupation</div><div class="rp-val">75 %</div></div>
+      </div>
+      <div class="card">
+        <div class="card-hd"><div><div class="card-title">Synthèse par bien — Juin 2024</div></div></div>
+        <div class="card-body" style="padding:0">
+          <table class="tbl">
+            <thead><tr><th>Bien</th><th>Loyer perçu</th><th>Charges</th><th>Net</th><th>Taux occup.</th><th>Statut</th></tr></thead>
+            <tbody>
+              <tr><td><div class="cell-a">Appt T2 — Lyon 3e</div></td><td>750 €</td><td>320 €</td><td>430 €</td><td>100%</td><td><span class="badge paid">OK</span></td></tr>
+              <tr><td><div class="cell-a">Studio — Bordeaux</div></td><td>550 €</td><td>240 €</td><td>310 €</td><td>100%</td><td><span class="badge paid">OK</span></td></tr>
+              <tr><td><div class="cell-a">Appt T3 — Nantes</div></td><td>0 €</td><td>185 €</td><td class="cell-a" style="color:var(--red)">–185 €</td><td>100%</td><td><span class="badge late">Retard</span></td></tr>
+              <tr><td><div class="cell-a">Studio — Paris 11e</div></td><td>0 €</td><td>145 €</td><td class="cell-a" style="color:var(--red)">–145 €</td><td>100%</td><td><span class="badge pend">Attente</span></td></tr>
+              <tr><td><div class="cell-a">Appt T4 — Aix</div></td><td>0 €</td><td>1 200 €</td><td class="cell-a" style="color:var(--red)">–1 200 €</td><td>0%</td><td><span class="badge" style="background:var(--s100);color:var(--s500)">Libre</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ PARAMÈTRES ═══ -->
+    <div class="section" id="sec-parametres">
+      <div class="sec-top"><span class="sec-h">Paramètres</span></div>
+      <div class="settings-grid">
+        <div class="settings-nav">
+          <div class="sn-item active">Mon profil</div>
+          <div class="sn-item">Sécurité</div>
+          <div class="sn-item">Notifications</div>
+          <div class="sn-item">Facturation</div>
+          <div class="sn-item">Intégrations</div>
+        </div>
+        <div class="settings-body">
+          <div class="sett-h">Informations personnelles</div>
+          <div class="form-row">
+            <div class="form-g"><label class="form-lbl">Prénom</label><input class="form-inp" value="Antoine"/></div>
+            <div class="form-g"><label class="form-lbl">Nom</label><input class="form-inp" value="Bernard"/></div>
+          </div>
+          <div class="form-g"><label class="form-lbl">Email</label><input class="form-inp" type="email" value="antoine.bernard@email.fr"/></div>
+          <div class="form-g"><label class="form-lbl">Téléphone</label><input class="form-inp" value="+33 6 12 34 56 78"/></div>
+          <div class="form-row">
+            <div class="form-g"><label class="form-lbl">Ville</label><input class="form-inp" value="Lyon"/></div>
+            <div class="form-g"><label class="form-lbl">Code postal</label><input class="form-inp" value="69003"/></div>
+          </div>
+          <div class="divider"></div>
+          <div class="sett-h">Préférences</div>
+          <div class="form-g"><label class="form-lbl">Jour d'échéance par défaut</label><input class="form-inp" value="5" style="max-width:100px"/></div>
+          <div class="form-g"><label class="form-lbl">Devise</label><input class="form-inp" value="Euro (€)" style="max-width:200px"/></div>
+          <div class="mt8" style="display:flex;gap:8px">
+            <button class="btn btn-pri">Enregistrer</button>
+            <button class="btn btn-out">Annuler</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+</div><!-- /app -->
+
+<script>
+function nav(el, section, title) {
+  document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('pageTitle').textContent = title;
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById('sec-' + section).classList.add('active');
+}
+
+document.querySelectorAll('.period-btn').forEach(b => {
+  b.addEventListener('click', function() {
+    document.querySelectorAll('.period-btn').forEach(x => x.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+document.querySelectorAll('.sn-item').forEach(b => {
+  b.addEventListener('click', function() {
+    document.querySelectorAll('.sn-item').forEach(x => x.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
