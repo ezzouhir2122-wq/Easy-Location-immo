@@ -1,7 +1,7 @@
 # État de Session — Easy Location Immo
 
-**Dernière mise à jour :** 2026-06-28
-**Statut :** Phase 1 — En cours
+**Dernière mise à jour :** 2026-07-01
+**Statut :** Phase 2 — Modules Biens & Locataires livrés ✅
 
 ## Contexte Rapide
 Application de gestion locative. Stack : Next.js 14 + Supabase + Tailwind CSS.
@@ -18,17 +18,26 @@ Supabase project : duyueirlwrlekdhubuul.supabase.co
 - [x] .env.local configuré avec clés Supabase
 - [x] Supabase client (browser + server + middleware auth)
 - [x] Pages Auth : /login, /register, /auth/callback
+- [x] Module Biens : CRUD complet (liste cards, slide-over form, modal preview, fiche /biens/[id])
+- [x] Module Locataires : CRUD complet (liste cards, slide-over form, modal preview, fiche /locataires/[id])
+- [x] Tables Supabase biens + locataires avec RLS (4 policies chacune)
+- [x] Composants UI partagés : SlideOver, Modal, StatusBadge, Toast
+- [x] Déployé sur Vercel (commit 2113f58)
 
 ## Ce Qui Est En Cours
-- Schéma SQL Supabase à appliquer (blueprints/02-schema-supabase.md)
+- Rien — en attente de la prochaine demande
 
 ## Blocages
 - Aucun
 
-## Prochaine Action
-1. Appliquer le schéma SQL dans Supabase (6 tables + RLS)
-2. Tester login/register
-3. Brancher les vraies données sur le dashboard
+## Prochaine Action (à confirmer)
+1. Module Loyers : saisie des paiements, historique, alertes retard
+2. Dashboard : brancher les vraies données (taux d'occupation, revenus réels)
+3. Contrats : génération de baux PDF
+
+## Déploiement
+- GitHub : https://github.com/ezzouhir2122-wq/Easy-Location-immo
+- Vercel : https://easy-location-immo.vercel.app ✅ (login/register fonctionnels)
 
 ---
 *Mettre à jour ce fichier à chaque fin de session.*
