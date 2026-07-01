@@ -6,17 +6,21 @@ import { Locataire, getLocataire, deleteLocataire } from "@/lib/supabase/locatai
 import SlideOver from "@/components/ui/SlideOver";
 import LocataireForm from "@/components/locataires/LocataireForm";
 import Toast from "@/components/ui/Toast";
+import { Document, getDocuments, getSignedUrl, CATEGORIES, formatFileSize } from "@/lib/supabase/documents";
 
 export default function LocataireDetailPage() {
   const id = (useParams() as { id: string }).id;
   const router = useRouter();
   const [locataire, setLocataire] = useState<Locataire | null>(null);
+  const [docs, setDocs] = useState<Document[]>([]);
   const [loading, setLoading] = useState(true);
   const [formOpen, setFormOpen] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
 
   useEffect(() => {
-    getLocataire(id).then(l => { setLocataire(l); setLoading(false); });
+    Promise.all([getLocataire(id), getDocuments({ locataire_id: id })])
+      .then(([l, d]) => { setLocataire(l); setDocs(d); })
+      .finally(() => setLoading(false));
   }, [id]);
 
   async function handleDelete() {
@@ -100,6 +104,46 @@ export default function LocataireDetailPage() {
         >
           Supprimer
         </button>
+      </div>
+
+      {/* Section Documents */}
+      <div className="mt-6 bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+        <h2 className="text-sm font-bold text-slate-700 mb-4" style={{ fontFamily: "Syne, sans-serif" }}>
+          Documents ({docs.length})
+        </h2>
+        {docs.length === 0 ? (
+          <p className="text-slate-400 text-sm">Aucun document lié à ce locataire.</p>
+        ) : (
+          <div className="space-y-0">
+            {docs.map(doc => {
+              const cat = CATEGORIES.find(c => c.value === doc.categorie);
+              return (
+                <div key={doc.id} className="flex items-center justify-between py-3 border-b border-slate-100 last:border-0">
+                  <div className="flex items-center gap-3">
+                    <span className="text-lg">{cat?.icon ?? "📎"}</span>
+                    <div>
+                      <p className="text-sm font-medium text-slate-800">{doc.nom}</p>
+                      <p className="text-xs text-slate-400">{cat?.label} · {formatFileSize(doc.taille)}</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={async () => {
+                      try {
+                        const url = await getSignedUrl(doc.fichier_url);
+                        window.open(url, "_blank");
+                      } catch {
+                        setToast({ message: "Erreur lors de l'ouverture", type: "error" });
+                      }
+                    }}
+                    className="text-xs font-medium text-blue-600 hover:underline"
+                  >
+                    Ouvrir
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       <SlideOver open={formOpen} onClose={() => setFormOpen(false)} title="Modifier le locataire">
