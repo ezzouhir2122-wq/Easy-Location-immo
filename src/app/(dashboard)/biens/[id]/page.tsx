@@ -9,7 +9,7 @@ import BienForm from "@/components/biens/BienForm";
 import Toast from "@/components/ui/Toast";
 
 export default function BienDetailPage() {
-  const { id } = useParams<{ id: string }>();
+  const id = (useParams() as { id: string }).id;
   const router = useRouter();
   const [bien, setBien] = useState<Bien | null>(null);
   const [loading, setLoading] = useState(true);

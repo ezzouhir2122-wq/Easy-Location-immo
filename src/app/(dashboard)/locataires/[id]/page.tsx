@@ -8,7 +8,7 @@ import LocataireForm from "@/components/locataires/LocataireForm";
 import Toast from "@/components/ui/Toast";
 
 export default function LocataireDetailPage() {
-  const { id } = useParams<{ id: string }>();
+  const id = (useParams() as { id: string }).id;
   const router = useRouter();
   const [locataire, setLocataire] = useState<Locataire | null>(null);
   const [loading, setLoading] = useState(true);
