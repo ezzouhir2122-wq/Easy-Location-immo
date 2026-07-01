@@ -66,7 +66,7 @@ export default function LocataireForm({ locataire, onSuccess, onError }: Props) 
           <input className={inputCls} value={form.telephone} onChange={e => set("telephone", e.target.value)} placeholder="06 12 34 56 78" />
         </div>
         <div>
-          <label className={labelCls}>Revenus mensuels (€)</label>
+          <label className={labelCls}>Revenus mensuels (DH)</label>
           <input className={inputCls} type="number" value={form.revenus_mensuels || ""} onChange={e => set("revenus_mensuels", parseFloat(e.target.value) || 0)} placeholder="2500" />
         </div>
         <div>

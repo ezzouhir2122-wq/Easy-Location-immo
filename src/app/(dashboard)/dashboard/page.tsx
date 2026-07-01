@@ -13,7 +13,7 @@ export default function DashboardPage() {
       <div className="grid grid-cols-4 gap-5 mb-8">
         <KpiCard
           label="Loyers encaissés"
-          value="12 540 €"
+          value="12 540 DH"
           trend="+3.2%"
           trendUp
           borderColor="#10B981"
@@ -21,7 +21,7 @@ export default function DashboardPage() {
         />
         <KpiCard
           label="En retard"
-          value="1 250 €"
+          value="1 250 DH"
           trend="1 locataire"
           borderColor="#EF4444"
           icon="⚠️"
@@ -35,7 +35,7 @@ export default function DashboardPage() {
         />
         <KpiCard
           label="Charges du mois"
-          value="890 €"
+          value="890 DH"
           trend="-5.1%"
           trendUp={false}
           borderColor="#F59E0B"
@@ -109,7 +109,7 @@ export default function DashboardPage() {
               strokeDasharray="32.67 326.73" strokeDashoffset="-261.39" transform="rotate(-90 72 72)" />
             <circle cx="72" cy="72" r="52" fill="none" stroke="#8B5CF6" strokeWidth="18"
               strokeDasharray="32.67 326.73" strokeDashoffset="-294.06" transform="rotate(-90 72 72)" />
-            <text x="72" y="76" textAnchor="middle" fontSize={13} fontWeight={700} fill="#1E293B">890€</text>
+            <text x="72" y="76" textAnchor="middle" fontSize={13} fontWeight={700} fill="#1E293B">890 DH</text>
           </svg>
           <div className="space-y-1.5 mt-3">
             {[
@@ -146,10 +146,10 @@ export default function DashboardPage() {
             </thead>
             <tbody className="divide-y divide-slate-50">
               {[
-                { name: "M. Dupont", amount: "850 €", status: "Payé", color: "#10B981" },
-                { name: "Mme. Martin", amount: "720 €", status: "Payé", color: "#10B981" },
-                { name: "M. Bernard", amount: "1 200 €", status: "En retard", color: "#EF4444" },
-                { name: "Mme. Durand", amount: "650 €", status: "Payé", color: "#10B981" },
+                { name: "M. Dupont", amount: "850 DH", status: "Payé", color: "#10B981" },
+                { name: "Mme. Martin", amount: "720 DH", status: "Payé", color: "#10B981" },
+                { name: "M. Bernard", amount: "1 200 DH", status: "En retard", color: "#EF4444" },
+                { name: "Mme. Durand", amount: "650 DH", status: "Payé", color: "#10B981" },
               ].map((r) => (
                 <tr key={r.name}>
                   <td className="py-3 text-slate-700 font-medium">{r.name}</td>

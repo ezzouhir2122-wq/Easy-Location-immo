@@ -34,7 +34,7 @@ export default function LoyersPage() {
   function handleEdit(l: Loyer) { setEditTarget(l); setFormOpen(true); }
 
   async function handleDelete(l: Loyer) {
-    if (!confirm(`Supprimer ce paiement de ${l.montant} € ?`)) return;
+    if (!confirm(`Supprimer ce paiement de ${l.montant} DH ?`)) return;
     try {
       await deleteLoyer(l.id);
       setLoyers(prev => prev.filter(x => x.id !== l.id));
@@ -88,7 +88,7 @@ export default function LoyersPage() {
           <div key={label} className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
             <p className="text-xs text-slate-400 mb-1">{label}</p>
             <p className="text-2xl font-bold" style={{ color, fontFamily: "Syne, sans-serif" }}>
-              {value.toLocaleString("fr-FR")} €
+              {value.toLocaleString("fr-FR")} DH
             </p>
           </div>
         ))}
@@ -161,13 +161,13 @@ export default function LoyersPage() {
                   <td className="px-5 py-3.5 text-slate-600">{l.locataire_nom ?? "—"}</td>
                   <td className="px-5 py-3.5 text-slate-500">{TYPE_LABELS[l.type] ?? l.type}</td>
                   <td className="px-5 py-3.5 text-right font-semibold text-slate-800">
-                    {l.montant.toLocaleString("fr-FR")} €
+                    {l.montant.toLocaleString("fr-FR")} DH
                   </td>
                   <td className="px-5 py-3.5 text-slate-500">
                     {new Date(l.date_echeance).toLocaleDateString("fr-FR")}
                   </td>
                   <td className="px-5 py-3.5 text-slate-500">
-                    {l.date_paiement ? new Date(l.date_paiement).toLocaleDateString("fr-FR") : "—"}
+                    {l.date_paiement ? new Date(l.date_paiement).toLocaleDateString("fr-FR") : "�DH�"}
                   </td>
                   <td className="px-5 py-3.5">
                     <LoyerStatusBadge statut={l.statut} />

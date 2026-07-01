@@ -39,7 +39,7 @@ export default function LocatairePreview({ locataire, onClose, onEdit, onDelete 
             { label: "Email", value: locataire.email || "—" },
             { label: "Téléphone", value: locataire.telephone || "—" },
             { label: "Âge", value: age ? `${age} ans` : "—" },
-            { label: "Revenus", value: locataire.revenus_mensuels ? `${locataire.revenus_mensuels.toLocaleString("fr-FR")} €/mois` : "—" },
+            { label: "Revenus", value: locataire.revenus_mensuels ? `${locataire.revenus_mensuels.toLocaleString("fr-FR")} DH/mois` : "—" },
           ].map(({ label, value }) => (
             <div key={label} className="bg-slate-50 rounded-xl p-3">
               <p className="text-xs text-slate-400 mb-0.5">{label}</p>

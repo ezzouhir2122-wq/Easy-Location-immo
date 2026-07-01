@@ -49,7 +49,7 @@ export default function LocataireCard({ locataire, onPreview }: Props) {
         {locataire.revenus_mensuels > 0 && (
           <div className="flex items-center justify-between mt-3 pt-3 border-t border-slate-100">
             <span className="text-xs text-slate-400">Revenus mensuels</span>
-            <span className="text-sm font-bold text-slate-800">{locataire.revenus_mensuels.toLocaleString("fr-FR")} €</span>
+            <span className="text-sm font-bold text-slate-800">{locataire.revenus_mensuels.toLocaleString("fr-FR")} DH</span>
           </div>
         )}
       </div>

@@ -45,7 +45,7 @@ export default function LocataireDetailPage() {
     ["Email", locataire.email || "—"],
     ["Téléphone", locataire.telephone || "—"],
     ["Profession", locataire.profession || "—"],
-    ["Revenus mensuels", locataire.revenus_mensuels ? `${locataire.revenus_mensuels.toLocaleString("fr-FR")} €` : "—"],
+    ["Revenus mensuels", locataire.revenus_mensuels ? `${locataire.revenus_mensuels.toLocaleString("fr-FR")} DH` : "—"],
     ["Date de naissance", locataire.date_naissance ? new Date(locataire.date_naissance).toLocaleDateString("fr-FR") : "—"],
     ["Âge", age ? `${age} ans` : "—"],
     ["Lieu de naissance", locataire.lieu_naissance || "—"],

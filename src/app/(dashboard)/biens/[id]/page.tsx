@@ -42,9 +42,9 @@ export default function BienDetailPage() {
     ["Type", bien.type], ["Surface", `${bien.surface} m²`],
     ["Pièces", bien.nb_pieces], ["Étage", bien.etage],
     ["Ville", bien.ville], ["Code postal", bien.code_postal],
-    ["Loyer de base", `${bien.loyer_base?.toLocaleString("fr-FR")} €`],
-    ["Charges", `${bien.charges} €`],
-    ["Dépôt de garantie", `${bien.depot_garantie?.toLocaleString("fr-FR")} €`],
+    ["Loyer de base", `${bien.loyer_base?.toLocaleString("fr-FR")} DH`],
+    ["Charges", `${bien.charges} DH`],
+    ["Dépôt de garantie", `${bien.depot_garantie?.toLocaleString("fr-FR")} DH`],
   ];
 
   return (

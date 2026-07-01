@@ -93,15 +93,15 @@ export default function BienForm({ bien, onSuccess, onError }: Props) {
           <input className={inputCls} type="number" value={form.nb_pieces || ""} onChange={e => set("nb_pieces", parseInt(e.target.value) || 0)} placeholder="3" />
         </div>
         <div>
-          <label className={labelCls}>Loyer de base (€)</label>
+          <label className={labelCls}>Loyer de base (DH)</label>
           <input className={inputCls} type="number" value={form.loyer_base || ""} onChange={e => set("loyer_base", parseFloat(e.target.value) || 0)} placeholder="850" />
         </div>
         <div>
-          <label className={labelCls}>Charges (€)</label>
+          <label className={labelCls}>Charges (DH)</label>
           <input className={inputCls} type="number" value={form.charges || ""} onChange={e => set("charges", parseFloat(e.target.value) || 0)} placeholder="80" />
         </div>
         <div>
-          <label className={labelCls}>Dépôt de garantie (€)</label>
+          <label className={labelCls}>Dépôt de garantie (DH)</label>
           <input className={inputCls} type="number" value={form.depot_garantie || ""} onChange={e => set("depot_garantie", parseFloat(e.target.value) || 0)} placeholder="1700" />
         </div>
         <div>

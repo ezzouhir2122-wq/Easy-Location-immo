@@ -40,7 +40,7 @@ export default function BienCard({ bien, onPreview }: Props) {
       {bien.loyer_base > 0 && (
         <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between">
           <span className="text-xs text-slate-400">Loyer de base</span>
-          <span className="font-bold text-slate-800 text-sm">{bien.loyer_base.toLocaleString("fr-FR")} €</span>
+          <span className="font-bold text-slate-800 text-sm">{bien.loyer_base.toLocaleString("fr-FR")} DH</span>
         </div>
       )}
     </div>

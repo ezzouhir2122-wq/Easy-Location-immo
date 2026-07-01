@@ -111,7 +111,7 @@ export default function LoyerForm({ loyer, onSuccess, onError }: Props) {
           </select>
         </div>
         <div>
-          <label className={labelCls}>Montant (€) *</label>
+          <label className={labelCls}>Montant (DH) *</label>
           <input
             className={inputCls}
             type="number"

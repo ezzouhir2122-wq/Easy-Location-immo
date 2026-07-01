@@ -32,8 +32,8 @@ export default function BienPreview({ bien, onClose, onEdit, onDelete }: Props) 
             { label: "Surface", value: `${bien.surface} m²` },
             { label: "Pièces", value: bien.nb_pieces },
             { label: "Étage", value: bien.etage },
-            { label: "Loyer", value: `${bien.loyer_base?.toLocaleString("fr-FR")} €` },
-            { label: "Charges", value: `${bien.charges} €` },
+            { label: "Loyer", value: `${bien.loyer_base?.toLocaleString("fr-FR")} DH` },
+            { label: "Charges", value: `${bien.charges} DH` },
           ].map(({ label, value }) => (
             <div key={label} className="bg-slate-50 rounded-xl p-3">
               <p className="text-xs text-slate-400 mb-0.5">{label}</p>
