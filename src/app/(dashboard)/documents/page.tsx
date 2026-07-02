@@ -1,43 +1,54 @@
 "use client";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import {
-  Document,
-  getDocuments,
-  deleteDocument,
-  CATEGORIES,
-  CategorieDoc,
-} from "@/lib/supabase/documents";
-import { getBiens, Bien } from "@/lib/supabase/biens";
-import { getLocataires, Locataire } from "@/lib/supabase/locataires";
-import DocumentForm from "@/components/documents/DocumentForm";
-import DocumentPreview from "@/components/documents/DocumentPreview";
-import DocumentRow from "@/components/documents/DocumentRow";
+  DocumentGenere, DocType,
+  getDocumentsGeneres,
+} from "@/lib/supabase/documents-generes";
+import DocumentGenerateur from "@/components/documents/DocumentGenerateur";
+import DocumentApercu from "@/components/documents/DocumentApercu";
 import SlideOver from "@/components/ui/SlideOver";
 import Toast from "@/components/ui/Toast";
 
-export default function DocumentsPage() {
-  const [docs, setDocs] = useState<Document[]>([]);
-  const [biens, setBiens] = useState<Bien[]>([]);
-  const [locataires, setLocataires] = useState<Locataire[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [formOpen, setFormOpen] = useState(false);
-  const [preview, setPreview] = useState<Document | null>(null);
-  const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
+const MODELES: { type: DocType; icon: string; label: string; desc: string; color: string }[] = [
+  { type: "quittance", icon: "🧾", label: "Quittance de loyer", desc: "Attestation de paiement mensuel", color: "#DBEAFE" },
+  { type: "bail", icon: "📋", label: "Contrat de bail", desc: "Vide ou meublé, 1 ou 3 ans", color: "#D1FAE5" },
+  { type: "etat_des_lieux", icon: "🏠", label: "État des lieux", desc: "Entrée ou sortie avec checklist", color: "#FEF3C7" },
+];
 
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filterCat, setFilterCat] = useState<CategorieDoc | "">("");
-  const [filterBien, setFilterBien] = useState("");
-  const [filterLocataire, setFilterLocataire] = useState("");
+const TYPE_LABEL: Record<DocType, string> = {
+  quittance: "Quittance",
+  bail: "Contrat de bail",
+  etat_des_lieux: "État des lieux",
+};
+
+export default function DocumentsPage() {
+  const [docs, setDocs] = useState<DocumentGenere[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
+
+  // SlideOver générateur
+  const [activeType, setActiveType] = useState<DocType | null>(null);
+
+  // Aperçu
+  const [apercu, setApercu] = useState<{
+    type: DocType;
+    data: Record<string, unknown>;
+    titre: string;
+    isNew: boolean;
+    documentId?: string;
+    bienId?: string | null;
+    locataireId?: string | null;
+  } | null>(null);
+
+  const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
 
   async function load() {
     setLoading(true);
+    setLoadError(null);
     try {
-      const [d, b, l] = await Promise.all([getDocuments(), getBiens(), getLocataires()]);
-      setDocs(d);
-      setBiens(b);
-      setLocataires(l);
-    } catch {
-      setToast({ message: "Erreur de chargement", type: "error" });
+      setDocs(await getDocumentsGeneres());
+    } catch (err: unknown) {
+      setLoadError(err instanceof Error ? err.message : String(err));
     } finally {
       setLoading(false);
     }
@@ -45,180 +56,176 @@ export default function DocumentsPage() {
 
   useEffect(() => { load(); }, []);
 
-  const counts = useMemo(() => {
-    const map: Record<string, number> = {};
-    docs.forEach(d => { map[d.categorie] = (map[d.categorie] ?? 0) + 1; });
-    return map;
-  }, [docs]);
-
-  const filtered = useMemo(() => docs.filter(d => {
-    if (filterCat && d.categorie !== filterCat) return false;
-    if (filterBien && d.bien_id !== filterBien) return false;
-    if (filterLocataire && d.locataire_id !== filterLocataire) return false;
-    if (searchQuery && !d.nom.toLowerCase().includes(searchQuery.toLowerCase())) return false;
-    return true;
-  }), [docs, filterCat, filterBien, filterLocataire, searchQuery]);
-
-  function bienNom(id: string | null) {
-    return biens.find(b => b.id === id)?.nom;
+  function openGenerateur(type: DocType) {
+    setActiveType(type);
   }
 
-  function locataireNom(id: string | null) {
-    const l = locataires.find(l => l.id === id);
-    return l ? `${l.prenom} ${l.nom}` : undefined;
+  function handlePreview(
+    titre: string,
+    data: Record<string, unknown>,
+    bienId: string | null,
+    locataireId: string | null
+  ) {
+    if (!activeType) return;
+    setApercu({ type: activeType, data, titre, isNew: true, bienId, locataireId });
+    setActiveType(null);
   }
 
-  function handleSuccess(doc: Document) {
-    setFormOpen(false);
-    setDocs(prev => [doc, ...prev]);
-    setToast({ message: "Document ajouté", type: "success" });
+  function handleArchive() {
+    load();
+    setApercu(null);
+    setToast({ message: "Document archivé avec succès", type: "success" });
   }
 
-  async function handleDelete(doc: Document) {
-    try {
-      await deleteDocument(doc.id, doc.fichier_url);
-      setDocs(prev => prev.filter(d => d.id !== doc.id));
-      setPreview(null);
-      setToast({ message: "Document supprimé", type: "success" });
-    } catch {
-      setToast({ message: "Erreur lors de la suppression", type: "error" });
-    }
+  function handleDelete() {
+    load();
+    setApercu(null);
+    setToast({ message: "Document supprimé", type: "success" });
+  }
+
+  function openArchive(doc: DocumentGenere) {
+    setApercu({
+      type: doc.type,
+      data: doc.data,
+      titre: doc.titre,
+      isNew: false,
+      documentId: doc.id,
+      bienId: doc.bien_id,
+      locataireId: doc.locataire_id,
+    });
   }
 
   return (
-    <div className="p-8">
-      <div className="flex items-center justify-between mb-8">
-        <div>
+    <>
+      <div className="p-8">
+        <div className="mb-8">
           <h1 className="text-2xl font-bold text-slate-900" style={{ fontFamily: "Syne, sans-serif" }}>
             Documents
           </h1>
-          <p className="text-slate-500 text-sm mt-1">Contrats, pièces d&apos;identité, justificatifs</p>
+          <p className="text-slate-500 text-sm mt-1">Générez, imprimez et archivez vos documents locatifs</p>
         </div>
-        <button
-          onClick={() => setFormOpen(true)}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-semibold shadow-sm hover:shadow-md transition-shadow"
-          style={{ background: "linear-gradient(135deg, #2563EB, #1D4ED8)" }}
-        >
-          + Ajouter un document
-        </button>
-      </div>
 
-      {/* Cartes catégories */}
-      <div className="grid grid-cols-3 gap-4 mb-8">
-        {CATEGORIES.map(cat => {
-          const count = counts[cat.value] ?? 0;
-          const active = filterCat === cat.value;
-          return (
-            <div
-              key={cat.value}
-              onClick={() => setFilterCat(active ? "" : cat.value)}
-              className={`bg-white rounded-2xl p-5 shadow-sm border cursor-pointer hover:shadow-md transition-all ${
-                active ? "border-blue-400 ring-2 ring-blue-200" : "border-slate-100"
-              }`}
+        {/* 3 cartes modèles */}
+        <div className="grid grid-cols-3 gap-4 mb-10">
+          {MODELES.map(m => (
+            <button
+              key={m.type}
+              onClick={() => openGenerateur(m.type)}
+              className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 text-left hover:shadow-md hover:border-blue-200 transition-all group"
             >
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-2xl">{cat.icon}</span>
-                <span
-                  className="text-xs font-semibold px-2 py-1 rounded-lg"
-                  style={{ background: cat.color, color: cat.text }}
-                >
-                  {count} doc{count > 1 ? "s" : ""}
-                </span>
+              <div
+                className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl mb-4"
+                style={{ background: m.color }}
+              >
+                {m.icon}
               </div>
-              <p className="text-sm font-semibold text-slate-700">{cat.label}</p>
-            </div>
-          );
-        })}
-      </div>
+              <p className="font-bold text-slate-800 text-sm mb-1" style={{ fontFamily: "Syne, sans-serif" }}>
+                {m.label}
+              </p>
+              <p className="text-slate-400 text-xs">{m.desc}</p>
+              <div className="mt-4 text-xs font-semibold text-blue-600 group-hover:underline">
+                Créer →
+              </div>
+            </button>
+          ))}
+        </div>
 
-      {/* Barre de filtres */}
-      <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 mb-4 flex flex-wrap gap-3">
-        <input
-          className="flex-1 min-w-[160px] px-3 py-2 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Rechercher un document..."
-          value={searchQuery}
-          onChange={e => setSearchQuery(e.target.value)}
-        />
-        <select
-          className="px-3 py-2 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          value={filterBien}
-          onChange={e => setFilterBien(e.target.value)}
-        >
-          <option value="">Tous les biens</option>
-          {biens.map(b => <option key={b.id} value={b.id}>{b.nom}</option>)}
-        </select>
-        <select
-          className="px-3 py-2 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          value={filterLocataire}
-          onChange={e => setFilterLocataire(e.target.value)}
-        >
-          <option value="">Tous les locataires</option>
-          {locataires.map(l => <option key={l.id} value={l.id}>{l.prenom} {l.nom}</option>)}
-        </select>
-      </div>
-
-      {/* Tableau documents */}
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-        {loading ? (
-          <div className="p-8 text-center text-slate-400 text-sm">Chargement...</div>
-        ) : filtered.length === 0 ? (
-          <div className="p-12 text-center">
-            <p className="text-4xl mb-3">📁</p>
-            <p className="text-slate-500 font-medium">Aucun document trouvé</p>
-            <p className="text-slate-400 text-sm mt-1">
-              Ajoutez votre premier document via le bouton en haut
-            </p>
+        {/* Erreur de chargement */}
+        {loadError && (
+          <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-2xl text-sm text-red-700">
+            <p className="font-semibold mb-1">Erreur de chargement</p>
+            <p className="font-mono text-xs opacity-80">{loadError}</p>
           </div>
-        ) : (
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-slate-100">
-                {["Nom", "Catégorie", "Bien", "Locataire", "Taille", "Date", ""].map(h => (
-                  <th
-                    key={h}
-                    className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wide"
-                  >
-                    {h}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map(doc => (
-                <DocumentRow
-                  key={doc.id}
-                  doc={doc}
-                  bienNom={bienNom(doc.bien_id)}
-                  locataireNom={locataireNom(doc.locataire_id)}
-                  onPreview={() => setPreview(doc)}
-                  onDelete={() => handleDelete(doc)}
-                />
-              ))}
-            </tbody>
-          </table>
         )}
+
+        {/* Archives */}
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+          <div className="px-6 py-4 border-b border-slate-100">
+            <h2 className="text-sm font-bold text-slate-700" style={{ fontFamily: "Syne, sans-serif" }}>
+              Documents archivés ({docs.length})
+            </h2>
+          </div>
+          {loading ? (
+            <div className="p-8 text-center text-slate-400 text-sm">Chargement...</div>
+          ) : docs.length === 0 ? (
+            <div className="p-12 text-center">
+              <p className="text-4xl mb-3">📂</p>
+              <p className="text-slate-500 font-medium">Aucun document archivé</p>
+              <p className="text-slate-400 text-sm mt-1">Créez votre premier document via les cartes ci-dessus</p>
+            </div>
+          ) : (
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-slate-100">
+                  {["Type", "Titre", "Date", ""].map(h => (
+                    <th key={h} className="px-5 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wide">{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {docs.map(doc => (
+                  <tr
+                    key={doc.id}
+                    className="border-b border-slate-50 hover:bg-slate-50 transition-colors cursor-pointer"
+                    onClick={() => openArchive(doc)}
+                  >
+                    <td className="px-5 py-3">
+                      <span className="text-xs font-semibold px-2 py-1 rounded-lg bg-slate-100 text-slate-600">
+                        {TYPE_LABEL[doc.type]}
+                      </span>
+                    </td>
+                    <td className="px-5 py-3 text-sm font-medium text-slate-800">{doc.titre}</td>
+                    <td className="px-5 py-3 text-xs text-slate-400">
+                      {new Date(doc.created_at).toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" })}
+                    </td>
+                    <td className="px-5 py-3 text-right">
+                      <span className="text-xs text-blue-600 font-medium hover:underline">Voir →</span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
       </div>
 
-      {/* SlideOver Upload */}
-      <SlideOver open={formOpen} onClose={() => setFormOpen(false)} title="Ajouter un document">
-        <DocumentForm
-          onSuccess={handleSuccess}
-          onError={msg => setToast({ message: msg, type: "error" })}
-        />
+      {/* SlideOver formulaire */}
+      <SlideOver
+        open={activeType !== null}
+        onClose={() => setActiveType(null)}
+        title={activeType ? MODELES.find(m => m.type === activeType)?.label ?? "Document" : ""}
+      >
+        {activeType && (
+          <DocumentGenerateur
+            type={activeType}
+            onPreview={handlePreview}
+            onClose={() => setActiveType(null)}
+          />
+        )}
       </SlideOver>
 
-      {/* SlideOver Aperçu */}
-      <DocumentPreview
-        doc={preview}
-        bienNom={preview ? bienNom(preview.bien_id) : undefined}
-        locataireNom={preview ? locataireNom(preview.locataire_id) : undefined}
-        onClose={() => setPreview(null)}
-        onDelete={handleDelete}
-      />
-
-      {toast && (
-        <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />
+      {/* Aperçu plein écran */}
+      {apercu && (
+        <DocumentApercu
+          type={apercu.type}
+          data={apercu.data}
+          titre={apercu.titre}
+          isNew={apercu.isNew}
+          documentId={apercu.documentId}
+          bienId={apercu.bienId}
+          locataireId={apercu.locataireId}
+          onArchive={handleArchive}
+          onDelete={handleDelete}
+          onModify={() => {
+            const type = apercu.type;
+            setApercu(null);
+            setActiveType(type);
+          }}
+          onClose={() => setApercu(null)}
+        />
       )}
-    </div>
+
+      {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
+    </>
   );
 }
