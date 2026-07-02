@@ -40,7 +40,7 @@ export default function EtatDesLieuxTemplate({ data }: { data: EtatDesLieuxData 
     >
       {/* En-tête */}
       <div style={{ textAlign: "center", borderBottom: "2px solid #1a1a1a", paddingBottom: "8mm", marginBottom: "10mm" }}>
-        <div style={{ fontSize: "10pt", fontFamily: "sans-serif", color: "#2563EB", fontWeight: "bold", letterSpacing: "2px", marginBottom: "3mm" }}>EASY LOCATION IMMO</div>
+        <img src="/logo.png" alt="Easy Location Immo" style={{ height: "44px", width: "auto", marginBottom: "3mm" }} />
         <div style={{ fontSize: "17pt", fontWeight: "bold" }}>
           ÉTAT DES LIEUX D&apos;{data.type_edl === "entree" ? "ENTRÉE" : "SORTIE"}
         </div>

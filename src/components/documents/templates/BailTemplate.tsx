@@ -74,7 +74,7 @@ export default function BailTemplate({ data }: { data: BailData }) {
     >
       {/* En-tête */}
       <div style={{ textAlign: "center", borderBottom: "2px solid #1a1a1a", paddingBottom: "8mm", marginBottom: "10mm" }}>
-        <div style={{ fontSize: "10pt", fontFamily: "sans-serif", color: "#2563EB", fontWeight: "bold", letterSpacing: "2px", marginBottom: "3mm" }}>EASY LOCATION IMMO</div>
+        <img src="/logo.png" alt="Easy Location Immo" style={{ height: "44px", width: "auto", marginBottom: "3mm" }} />
         <div style={{ fontSize: "18pt", fontWeight: "bold" }}>
           CONTRAT DE BAIL {data.type_bail === "meuble" ? "MEUBLÉ" : "D'HABITATION"}
         </div>

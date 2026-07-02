@@ -34,9 +34,7 @@ export default function QuittanceTemplate({ data }: { data: QuittanceData }) {
       <div style={{ borderBottom: "2px solid #1a1a1a", paddingBottom: "8mm", marginBottom: "10mm" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
           <div>
-            <div style={{ fontSize: "10pt", fontFamily: "sans-serif", color: "#2563EB", fontWeight: "bold", letterSpacing: "2px" }}>
-              EASY LOCATION IMMO
-            </div>
+            <img src="/logo.png" alt="Easy Location Immo" style={{ height: "40px", width: "auto" }} />
           </div>
           <div style={{ textAlign: "right" }}>
             <div style={{ fontSize: "18pt", fontWeight: "bold", letterSpacing: "1px" }}>QUITTANCE DE LOYER</div>

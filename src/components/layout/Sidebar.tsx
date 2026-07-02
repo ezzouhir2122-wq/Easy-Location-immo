@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 const navGroups = [
@@ -51,23 +52,8 @@ export default function Sidebar() {
       />
 
       {/* Logo */}
-      <div className="px-6 py-5 border-b" style={{ borderColor: "#1E3352" }}>
-        <div className="flex items-center gap-3">
-          <div
-            className="w-9 h-9 rounded-xl flex items-center justify-center text-white font-bold text-sm"
-            style={{ background: "linear-gradient(135deg, #2563EB, #1D4ED8)" }}
-          >
-            EL
-          </div>
-          <div>
-            <p className="text-white font-bold text-sm leading-tight" style={{ fontFamily: "Syne, sans-serif" }}>
-              Easy Location
-            </p>
-            <p className="text-xs" style={{ color: "#2563EB" }}>
-              IMMO
-            </p>
-          </div>
-        </div>
+      <div className="px-6 py-4 border-b" style={{ borderColor: "#1E3352" }}>
+        <Image src="/logo.png" alt="Easy Location Immo" width={160} height={48} style={{ height: "48px", width: "auto" }} priority />
       </div>
 
       {/* Navigation */}
