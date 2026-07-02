@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Locataire, getLocataire, deleteLocataire } from "@/lib/supabase/locataires";
 import SlideOver from "@/components/ui/SlideOver";
 import LocataireForm from "@/components/locataires/LocataireForm";
+import DocumentForm from "@/components/documents/DocumentForm";
 import Toast from "@/components/ui/Toast";
 import { Document, getDocuments, getSignedUrl, CATEGORIES, formatFileSize } from "@/lib/supabase/documents";
 
@@ -15,6 +16,7 @@ export default function LocataireDetailPage() {
   const [docs, setDocs] = useState<Document[]>([]);
   const [loading, setLoading] = useState(true);
   const [formOpen, setFormOpen] = useState(false);
+  const [docFormOpen, setDocFormOpen] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
 
   useEffect(() => {
@@ -108,9 +110,18 @@ export default function LocataireDetailPage() {
 
       {/* Section Documents */}
       <div className="mt-6 bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-        <h2 className="text-sm font-bold text-slate-700 mb-4" style={{ fontFamily: "Syne, sans-serif" }}>
-          Documents ({docs.length})
-        </h2>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-sm font-bold text-slate-700" style={{ fontFamily: "Syne, sans-serif" }}>
+            Documents ({docs.length})
+          </h2>
+          <button
+            onClick={() => setDocFormOpen(true)}
+            className="text-xs font-semibold px-3 py-1.5 rounded-lg text-white"
+            style={{ background: "linear-gradient(135deg, #2563EB, #1D4ED8)" }}
+          >
+            + Ajouter
+          </button>
+        </div>
         {docs.length === 0 ? (
           <p className="text-slate-400 text-sm">Aucun document lié à ce locataire.</p>
         ) : (
@@ -150,6 +161,14 @@ export default function LocataireDetailPage() {
         <LocataireForm
           locataire={locataire}
           onSuccess={updated => { setLocataire(updated); setFormOpen(false); setToast({ message: "Locataire mis à jour", type: "success" }); }}
+          onError={msg => setToast({ message: msg, type: "error" })}
+        />
+      </SlideOver>
+
+      <SlideOver open={docFormOpen} onClose={() => setDocFormOpen(false)} title="Ajouter un document">
+        <DocumentForm
+          defaultLocataireId={locataire.id}
+          onSuccess={doc => { setDocs(prev => [doc, ...prev]); setDocFormOpen(false); setToast({ message: "Document ajouté", type: "success" }); }}
           onError={msg => setToast({ message: msg, type: "error" })}
         />
       </SlideOver>

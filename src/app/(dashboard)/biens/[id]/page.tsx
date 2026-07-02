@@ -6,6 +6,7 @@ import { Bien, getBien, deleteBien } from "@/lib/supabase/biens";
 import { BienStatusBadge, DpeBadge } from "@/components/ui/StatusBadge";
 import SlideOver from "@/components/ui/SlideOver";
 import BienForm from "@/components/biens/BienForm";
+import DocumentForm from "@/components/documents/DocumentForm";
 import Toast from "@/components/ui/Toast";
 import { Document, getDocuments, getSignedUrl, CATEGORIES, formatFileSize } from "@/lib/supabase/documents";
 
@@ -16,6 +17,7 @@ export default function BienDetailPage() {
   const [docs, setDocs] = useState<Document[]>([]);
   const [loading, setLoading] = useState(true);
   const [formOpen, setFormOpen] = useState(false);
+  const [docFormOpen, setDocFormOpen] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
 
   useEffect(() => {
@@ -108,9 +110,18 @@ export default function BienDetailPage() {
 
       {/* Section Documents */}
       <div className="mt-6 bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-        <h2 className="text-sm font-bold text-slate-700 mb-4" style={{ fontFamily: "Syne, sans-serif" }}>
-          Documents ({docs.length})
-        </h2>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-sm font-bold text-slate-700" style={{ fontFamily: "Syne, sans-serif" }}>
+            Documents ({docs.length})
+          </h2>
+          <button
+            onClick={() => setDocFormOpen(true)}
+            className="text-xs font-semibold px-3 py-1.5 rounded-lg text-white"
+            style={{ background: "linear-gradient(135deg, #2563EB, #1D4ED8)" }}
+          >
+            + Ajouter
+          </button>
+        </div>
         {docs.length === 0 ? (
           <p className="text-slate-400 text-sm">Aucun document lié à ce bien.</p>
         ) : (
@@ -150,6 +161,14 @@ export default function BienDetailPage() {
         <BienForm
           bien={bien}
           onSuccess={updated => { setBien(updated); setFormOpen(false); setToast({ message: "Bien mis à jour", type: "success" }); }}
+          onError={msg => setToast({ message: msg, type: "error" })}
+        />
+      </SlideOver>
+
+      <SlideOver open={docFormOpen} onClose={() => setDocFormOpen(false)} title="Ajouter un document">
+        <DocumentForm
+          defaultBienId={bien.id}
+          onSuccess={doc => { setDocs(prev => [doc, ...prev]); setDocFormOpen(false); setToast({ message: "Document ajouté", type: "success" }); }}
           onError={msg => setToast({ message: msg, type: "error" })}
         />
       </SlideOver>

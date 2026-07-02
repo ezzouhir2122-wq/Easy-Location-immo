@@ -7,14 +7,16 @@ import { getLocataires, Locataire } from "@/lib/supabase/locataires";
 type Props = {
   onSuccess: (doc: Document) => void;
   onError: (msg: string) => void;
+  defaultBienId?: string;
+  defaultLocataireId?: string;
 };
 
-export default function DocumentForm({ onSuccess, onError }: Props) {
+export default function DocumentForm({ onSuccess, onError, defaultBienId, defaultLocataireId }: Props) {
   const [file, setFile] = useState<File | null>(null);
   const [nom, setNom] = useState("");
   const [categorie, setCategorie] = useState<DocumentMeta["categorie"] | "">("");
-  const [bienId, setBienId] = useState("");
-  const [locataireId, setLocataireId] = useState("");
+  const [bienId, setBienId] = useState(defaultBienId ?? "");
+  const [locataireId, setLocataireId] = useState(defaultLocataireId ?? "");
   const [loading, setLoading] = useState(false);
   const [dragging, setDragging] = useState(false);
   const [biens, setBiens] = useState<Bien[]>([]);
