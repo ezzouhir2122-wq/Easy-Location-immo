@@ -11,6 +11,7 @@ const navGroups = [
       { href: "/dashboard", icon: "⊞", label: "Tableau de bord" },
       { href: "/biens", icon: "🏠", label: "Biens" },
       { href: "/locataires", icon: "👥", label: "Locataires" },
+      { href: "/contrats", icon: "📋", label: "Contrats" },
     ],
   },
   {
