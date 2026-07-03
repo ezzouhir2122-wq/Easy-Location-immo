@@ -60,6 +60,10 @@ export default function DashboardPage() {
   const totalEncaisse = loyersMoisCourant.filter(l => l.statut === "paye").reduce((s, l) => s + l.montant, 0);
   const totalRetard = loyers.filter(l => l.statut === "retard").reduce((s, l) => s + l.montant, 0);
   const nbRetard = loyers.filter(l => l.statut === "retard").length;
+  const revenusTotal = loyers.filter(l => l.statut === "paye").reduce((s, l) => s + l.montant, 0);
+  const chargesTotal = charges.filter(c => c.statut === "paye").reduce((s, c) => s + c.montant, 0);
+  const tauxOccupation = nbBiens > 0 ? Math.round((nbOccupes / nbBiens) * 100) : 0;
+  const rentabilite = revenusTotal > 0 ? Math.round(((revenusTotal - chargesTotal) / revenusTotal) * 100) : 0;
   const chargesMois = charges
     .filter(c => { const d = new Date(c.date); return d.getMonth() === moisCourant && d.getFullYear() === anneeCourante; })
     .reduce((s, c) => s + c.montant, 0);
@@ -256,6 +260,48 @@ export default function DashboardPage() {
                   </div>
                 </>
               )}
+            </div>
+          </div>
+
+          {/* Analytics row — taux occupation + rentabilité */}
+          <div className="grid grid-cols-2 gap-5 mb-8">
+            <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+              <h2 className="text-sm font-bold text-slate-700 mb-4" style={{ fontFamily: "Syne, sans-serif" }}>
+                Taux d&apos;occupation
+              </h2>
+              <div className="flex items-end gap-3 mb-2">
+                <span className="text-4xl font-bold text-emerald-500" style={{ fontFamily: "Syne, sans-serif" }}>
+                  {tauxOccupation}%
+                </span>
+                <span className="text-slate-400 text-sm mb-1">{nbOccupes}/{nbBiens} biens occupés</span>
+              </div>
+              <div className="w-full bg-slate-100 rounded-full h-3 mt-3">
+                <div
+                  className="h-3 rounded-full transition-all duration-700"
+                  style={{ width: `${tauxOccupation}%`, background: "linear-gradient(90deg, #10B981, #059669)" }}
+                />
+              </div>
+            </div>
+
+            <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+              <h2 className="text-sm font-bold text-slate-700 mb-4" style={{ fontFamily: "Syne, sans-serif" }}>
+                Rentabilité nette
+              </h2>
+              <div className="flex items-end gap-3 mb-2">
+                <span className="text-4xl font-bold text-blue-500" style={{ fontFamily: "Syne, sans-serif" }}>
+                  {rentabilite}%
+                </span>
+                <span className="text-slate-400 text-sm mb-1">après charges</span>
+              </div>
+              <div className="w-full bg-slate-100 rounded-full h-3 mt-3">
+                <div
+                  className="h-3 rounded-full transition-all duration-700"
+                  style={{ width: `${Math.min(rentabilite, 100)}%`, background: "linear-gradient(90deg, #2563EB, #1D4ED8)" }}
+                />
+              </div>
+              <p className="text-xs text-slate-400 mt-2">
+                {revenusTotal.toLocaleString("fr-FR")} DH revenus — {chargesTotal.toLocaleString("fr-FR")} DH charges
+              </p>
             </div>
           </div>
 

@@ -26,7 +26,6 @@ const navGroups = [
     label: "Gestion",
     items: [
       { href: "/documents", icon: "📁", label: "Documents" },
-      { href: "/rapports", icon: "📈", label: "Rapports" },
       { href: "/parametres", icon: "⚙️", label: "Paramètres" },
     ],
   },
