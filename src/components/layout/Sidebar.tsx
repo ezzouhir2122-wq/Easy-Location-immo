@@ -15,18 +15,17 @@ const navGroups = [
     ],
   },
   {
-    label: "Finances",
+    label: "Finances & Fiscalité",
     items: [
       { href: "/loyers", icon: "💶", label: "Loyers" },
       { href: "/charges", icon: "📊", label: "Charges" },
-      { href: "/quittances", icon: "📄", label: "Quittances" },
+      { href: "/fiscalite", icon: "🏛", label: "Fiscalité" },
     ],
   },
   {
     label: "Gestion",
     items: [
       { href: "/documents", icon: "📁", label: "Documents" },
-      { href: "/fiscalite", icon: "🏛", label: "Fiscalité" },
       { href: "/rapports", icon: "📈", label: "Rapports" },
       { href: "/parametres", icon: "⚙️", label: "Paramètres" },
     ],
