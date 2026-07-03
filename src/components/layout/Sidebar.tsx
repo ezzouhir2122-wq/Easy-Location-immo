@@ -3,6 +3,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { createClient } from "@/lib/supabase/client";
 
 const navGroups = [
   {
@@ -33,6 +35,33 @@ const navGroups = [
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [userFullName, setUserFullName] = useState<string | null>(null);
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getUser().then(({ data }) => {
+      if (data.user) {
+        setUserEmail(data.user.email ?? null);
+        const meta = data.user.user_metadata;
+        const full = meta?.full_name ?? meta?.name ?? null;
+        setUserFullName(full);
+      }
+    });
+  }, []);
+
+  function getInitials(name: string | null, email: string | null): string {
+    if (name) {
+      const parts = name.trim().split(" ");
+      return parts.length >= 2
+        ? (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+        : parts[0].slice(0, 2).toUpperCase();
+    }
+    if (email) return email.slice(0, 2).toUpperCase();
+    return "?";
+  }
+
+  const displayName = userFullName ?? userEmail ?? "Propriétaire";
 
   return (
     <aside
@@ -100,10 +129,10 @@ export default function Sidebar() {
             className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold"
             style={{ background: "linear-gradient(135deg, #2563EB, #7C3AED)" }}
           >
-            AB
+            {getInitials(userFullName, userEmail)}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-white text-xs font-medium truncate">Ahmed Bensalem</p>
+            <p className="text-white text-xs font-medium truncate">{displayName}</p>
             <p className="text-xs truncate" style={{ color: "#4A6080" }}>
               Propriétaire
             </p>
