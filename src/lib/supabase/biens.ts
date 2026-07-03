@@ -43,10 +43,11 @@ export async function getBien(id: string): Promise<Bien | null> {
 
 export async function createBien(payload: Omit<Bien, "id" | "owner_id" | "created_at">): Promise<Bien> {
   const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  if (authError || !user) throw new Error("Session expirée — reconnectez-vous.");
   const { data, error } = await supabase
     .from("biens")
-    .insert({ ...payload, owner_id: user!.id })
+    .insert({ ...payload, owner_id: user.id })
     .select()
     .single();
   if (error) throw error;

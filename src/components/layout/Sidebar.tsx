@@ -50,6 +50,12 @@ export default function Sidebar() {
     });
   }, []);
 
+  async function handleSignOut() {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    window.location.href = "/login";
+  }
+
   function getInitials(name: string | null, email: string | null): string {
     if (name) {
       const parts = name.trim().split(" ");
@@ -137,6 +143,16 @@ export default function Sidebar() {
               Propriétaire
             </p>
           </div>
+          <button
+            onClick={handleSignOut}
+            title="Déconnexion"
+            className="text-xs transition-colors"
+            style={{ color: "#4A6080" }}
+            onMouseEnter={e => (e.currentTarget.style.color = "#EF4444")}
+            onMouseLeave={e => (e.currentTarget.style.color = "#4A6080")}
+          >
+            ⏻
+          </button>
         </div>
       </div>
     </aside>
