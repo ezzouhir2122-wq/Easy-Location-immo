@@ -1,4 +1,133 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { getBiens } from "@/lib/supabase/biens";
+import { getLoyers, Loyer } from "@/lib/supabase/loyers";
+import { getCharges, Charge } from "@/lib/supabase/charges";
+
+const MOIS_LABELS = ["Jan", "Fév", "Mar", "Avr", "Mai", "Jun", "Jul", "Aoû", "Sep", "Oct", "Nov", "Déc"];
+
+const CHARGE_COLORS: Record<string, string> = {
+  eau: "#2563EB",
+  electricite: "#10B981",
+  entretien: "#F59E0B",
+  assurance: "#EF4444",
+  taxe: "#8B5CF6",
+  internet: "#06B6D4",
+  autre: "#94A3B8",
+};
+
+function getLast6Months(): { year: number; month: number; label: string }[] {
+  const now = new Date();
+  return Array.from({ length: 6 }, (_, i) => {
+    const d = new Date(now.getFullYear(), now.getMonth() - 5 + i, 1);
+    return { year: d.getFullYear(), month: d.getMonth(), label: MOIS_LABELS[d.getMonth()] };
+  });
+}
+
 export default function DashboardPage() {
+  const [loading, setLoading] = useState(true);
+  const [loyers, setLoyers] = useState<Loyer[]>([]);
+  const [charges, setCharges] = useState<Charge[]>([]);
+  const [nbBiens, setNbBiens] = useState(0);
+  const [nbOccupes, setNbOccupes] = useState(0);
+
+  useEffect(() => {
+    async function load() {
+      try {
+        const [biensData, loyersData, chargesData] = await Promise.all([
+          getBiens(), getLoyers(), getCharges(),
+        ]);
+        setNbBiens(biensData.length);
+        setNbOccupes(biensData.filter(b => b.statut === "occupe").length);
+        setLoyers(loyersData);
+        setCharges(chargesData);
+      } finally {
+        setLoading(false);
+      }
+    }
+    load();
+  }, []);
+
+  const now = new Date();
+  const moisCourant = now.getMonth();
+  const anneeCourante = now.getFullYear();
+
+  const loyersMoisCourant = loyers.filter(l => {
+    const d = new Date(l.date_echeance);
+    return d.getMonth() === moisCourant && d.getFullYear() === anneeCourante;
+  });
+  const totalEncaisse = loyersMoisCourant.filter(l => l.statut === "paye").reduce((s, l) => s + l.montant, 0);
+  const totalRetard = loyers.filter(l => l.statut === "retard").reduce((s, l) => s + l.montant, 0);
+  const nbRetard = loyers.filter(l => l.statut === "retard").length;
+  const revenusTotal = loyers.filter(l => l.statut === "paye").reduce((s, l) => s + l.montant, 0);
+  const chargesTotal = charges.filter(c => c.statut === "paye").reduce((s, c) => s + c.montant, 0);
+  const tauxOccupation = nbBiens > 0 ? Math.round((nbOccupes / nbBiens) * 100) : 0;
+  const rentabilite = revenusTotal > 0 ? Math.round(((revenusTotal - chargesTotal) / revenusTotal) * 100) : 0;
+  const chargesMois = charges
+    .filter(c => { const d = new Date(c.date); return d.getMonth() === moisCourant && d.getFullYear() === anneeCourante; })
+    .reduce((s, c) => s + c.montant, 0);
+
+  // Bar chart — 6 derniers mois
+  const last6 = getLast6Months();
+  const encaissParMois = last6.map(({ year, month }) =>
+    loyers
+      .filter(l => {
+        const d = new Date(l.date_echeance);
+        return l.statut === "paye" && d.getFullYear() === year && d.getMonth() === month;
+      })
+      .reduce((s, l) => s + l.montant, 0)
+  );
+  const maxBar = Math.max(...encaissParMois, 1);
+
+  // Donut chart — répartition charges (payées)
+  const chargesParType = charges.filter(c => c.statut === "paye").reduce<Record<string, number>>((acc, c) => {
+    acc[c.type] = (acc[c.type] ?? 0) + c.montant;
+    return acc;
+  }, {});
+  const totalChargesPaye = Object.values(chargesParType).reduce((s, v) => s + v, 0);
+  const donutSegments = (() => {
+    if (totalChargesPaye === 0) return [];
+    const CIRCLE = 326.73;
+    let offset = 0;
+    return Object.entries(chargesParType).map(([type, montant]) => {
+      const pct = montant / totalChargesPaye;
+      const arc = CIRCLE * pct;
+      const seg = { type, montant, arc, offset };
+      offset += arc;
+      return seg;
+    });
+  })();
+
+  // Derniers loyers (5 max)
+  const derniersLoyers = [...loyers].slice(0, 5);
+
+  // Alertes
+  const alertes: { icon: string; msg: string; date: string; color: string }[] = [];
+  loyers
+    .filter(l => l.statut === "retard")
+    .slice(0, 2)
+    .forEach(l => alertes.push({
+      icon: "⚠️",
+      msg: `Loyer impayé — ${l.locataire_nom ?? "Locataire"} (${l.bien_nom ?? ""})`,
+      date: `Échéance : ${new Date(l.date_echeance).toLocaleDateString("fr-FR")}`,
+      color: "#EF4444",
+    }));
+  loyers
+    .filter(l => l.statut === "en_attente")
+    .slice(0, 2)
+    .forEach(l => alertes.push({
+      icon: "⏳",
+      msg: `Loyer en attente — ${l.locataire_nom ?? "Locataire"}`,
+      date: `Dû le ${new Date(l.date_echeance).toLocaleDateString("fr-FR")}`,
+      color: "#F59E0B",
+    }));
+  if (alertes.length === 0 && !loading) {
+    alertes.push({ icon: "✅", msg: "Aucune alerte — tout est à jour", date: "", color: "#10B981" });
+  }
+
+  const moisLabel = now.toLocaleDateString("fr-FR", { month: "long", year: "numeric" });
+
   return (
     <div className="p-8">
       {/* Header */}
@@ -6,236 +135,267 @@ export default function DashboardPage() {
         <h1 className="text-2xl font-bold text-slate-900" style={{ fontFamily: "Syne, sans-serif" }}>
           Tableau de bord
         </h1>
-        <p className="text-slate-500 text-sm mt-1">Vue d&apos;ensemble de votre portefeuille — Juin 2026</p>
+        <p className="text-slate-500 text-sm mt-1 capitalize">
+          Vue d&apos;ensemble de votre portefeuille — {moisLabel}
+        </p>
       </div>
 
-      {/* KPI Cards */}
-      <div className="grid grid-cols-4 gap-5 mb-8">
-        <KpiCard
-          label="Loyers encaissés"
-          value="12 540 DH"
-          trend="+3.2%"
-          trendUp
-          borderColor="#10B981"
-          icon="💶"
-        />
-        <KpiCard
-          label="En retard"
-          value="1 250 DH"
-          trend="1 locataire"
-          borderColor="#EF4444"
-          icon="⚠️"
-        />
-        <KpiCard
-          label="Biens gérés"
-          value="8"
-          trend="6 occupés"
-          borderColor="#2563EB"
-          icon="🏠"
-        />
-        <KpiCard
-          label="Charges du mois"
-          value="890 DH"
-          trend="-5.1%"
-          trendUp={false}
-          borderColor="#F59E0B"
-          icon="📊"
-        />
-      </div>
-
-      {/* Charts row */}
-      <div className="grid grid-cols-3 gap-5 mb-8">
-        {/* Bar chart */}
-        <div className="col-span-2 bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="font-semibold text-slate-800" style={{ fontFamily: "Syne, sans-serif" }}>
-              Encaissements
-            </h2>
-            <span className="text-xs text-slate-400 bg-slate-50 px-3 py-1 rounded-full">6 derniers mois</span>
-          </div>
-          <svg viewBox="0 0 360 155" className="w-full" style={{ height: 155 }}>
-            <defs>
-              <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#2563EB" stopOpacity="0.7" />
-                <stop offset="100%" stopColor="#2563EB" stopOpacity="0.3" />
-              </linearGradient>
-              <linearGradient id="ba" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#10B981" stopOpacity="0.9" />
-                <stop offset="100%" stopColor="#10B981" stopOpacity="0.5" />
-              </linearGradient>
-            </defs>
-            {[
-              { x: 20, h: 80, label: "Jan", v: "10.2k" },
-              { x: 75, h: 95, label: "Fév", v: "11.5k" },
-              { x: 130, h: 70, label: "Mar", v: "9.8k" },
-              { x: 185, h: 105, label: "Avr", v: "12.1k" },
-              { x: 240, h: 88, label: "Mai", v: "11.2k" },
-              { x: 295, h: 120, label: "Jun", v: "12.5k", highlight: true },
-            ].map((b) => (
-              <g key={b.label}>
-                <rect
-                  x={b.x}
-                  y={155 - b.h - 20}
-                  width={38}
-                  height={b.h}
-                  rx={4}
-                  fill={b.highlight ? "url(#ba)" : "url(#bg)"}
-                />
-                <text x={b.x + 19} y={148} textAnchor="middle" fontSize={10} fill="#94A3B8">
-                  {b.label}
-                </text>
-                <text x={b.x + 19} y={155 - b.h - 25} textAnchor="middle" fontSize={9} fill="#64748B">
-                  {b.v}
-                </text>
-              </g>
-            ))}
-          </svg>
+      {loading ? (
+        <div className="grid grid-cols-4 gap-5 mb-8">
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="rounded-2xl h-28 animate-pulse" style={{ background: "#F1F5F9" }} />
+          ))}
         </div>
+      ) : (
+        <>
+          {/* KPI Cards */}
+          <div className="grid grid-cols-4 gap-5 mb-8">
+            <KpiCard
+              label="Loyers encaissés"
+              value={`${totalEncaisse.toLocaleString("fr-FR")} DH`}
+              trend={`ce mois`}
+              borderColor="#10B981"
+              icon="💶"
+            />
+            <KpiCard
+              label="En retard"
+              value={`${totalRetard.toLocaleString("fr-FR")} DH`}
+              trend={nbRetard > 0 ? `${nbRetard} locataire${nbRetard > 1 ? "s" : ""}` : "Aucun retard"}
+              trendUp={nbRetard === 0 ? true : false}
+              borderColor="#EF4444"
+              icon="⚠️"
+            />
+            <KpiCard
+              label="Biens gérés"
+              value={String(nbBiens)}
+              trend={`${nbOccupes} occupé${nbOccupes > 1 ? "s" : ""}`}
+              borderColor="#2563EB"
+              icon="🏠"
+            />
+            <KpiCard
+              label="Charges du mois"
+              value={`${chargesMois.toLocaleString("fr-FR")} DH`}
+              trend="ce mois"
+              borderColor="#F59E0B"
+              icon="📊"
+            />
+          </div>
 
-        {/* Donut chart */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-          <h2 className="font-semibold text-slate-800 mb-4" style={{ fontFamily: "Syne, sans-serif" }}>
-            Répartition charges
-          </h2>
-          <svg viewBox="0 0 144 144" className="w-full" style={{ height: 120 }}>
-            <circle cx="72" cy="72" r="52" fill="none" stroke="#F1F5F9" strokeWidth="18" />
-            <circle cx="72" cy="72" r="52" fill="none" stroke="#2563EB" strokeWidth="18"
-              strokeDasharray="130.7 326.73" transform="rotate(-90 72 72)" />
-            <circle cx="72" cy="72" r="52" fill="none" stroke="#10B981" strokeWidth="18"
-              strokeDasharray="81.68 326.73" strokeDashoffset="-130.7" transform="rotate(-90 72 72)" />
-            <circle cx="72" cy="72" r="52" fill="none" stroke="#F59E0B" strokeWidth="18"
-              strokeDasharray="49.01 326.73" strokeDashoffset="-212.38" transform="rotate(-90 72 72)" />
-            <circle cx="72" cy="72" r="52" fill="none" stroke="#EF4444" strokeWidth="18"
-              strokeDasharray="32.67 326.73" strokeDashoffset="-261.39" transform="rotate(-90 72 72)" />
-            <circle cx="72" cy="72" r="52" fill="none" stroke="#8B5CF6" strokeWidth="18"
-              strokeDasharray="32.67 326.73" strokeDashoffset="-294.06" transform="rotate(-90 72 72)" />
-            <text x="72" y="76" textAnchor="middle" fontSize={13} fontWeight={700} fill="#1E293B">890 DH</text>
-          </svg>
-          <div className="space-y-1.5 mt-3">
-            {[
-              { label: "Eau / EDF", color: "#2563EB", pct: "40%" },
-              { label: "Entretien", color: "#10B981", pct: "25%" },
-              { label: "Taxe ordures", color: "#F59E0B", pct: "15%" },
-              { label: "Assurance", color: "#EF4444", pct: "10%" },
-              { label: "Autres", color: "#8B5CF6", pct: "10%" },
-            ].map((c) => (
-              <div key={c.label} className="flex items-center gap-2 text-xs text-slate-600">
-                <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ background: c.color }} />
-                <span className="flex-1">{c.label}</span>
-                <span className="font-medium">{c.pct}</span>
+          {/* Charts row */}
+          <div className="grid grid-cols-3 gap-5 mb-8">
+            {/* Bar chart — encaissements 6 mois */}
+            <div className="col-span-2 bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="font-semibold text-slate-800" style={{ fontFamily: "Syne, sans-serif" }}>
+                  Encaissements
+                </h2>
+                <span className="text-xs text-slate-400 bg-slate-50 px-3 py-1 rounded-full">6 derniers mois</span>
               </div>
-            ))}
-          </div>
-        </div>
-      </div>
+              <svg viewBox="0 0 360 155" className="w-full" style={{ height: 155 }}>
+                <defs>
+                  <linearGradient id="barBlue" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#2563EB" stopOpacity="0.7" />
+                    <stop offset="100%" stopColor="#2563EB" stopOpacity="0.3" />
+                  </linearGradient>
+                  <linearGradient id="barGreen" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#10B981" stopOpacity="0.9" />
+                    <stop offset="100%" stopColor="#10B981" stopOpacity="0.5" />
+                  </linearGradient>
+                </defs>
+                {last6.map(({ label }, i) => {
+                  const x = 20 + i * 55;
+                  const raw = encaissParMois[i];
+                  const h = Math.round((raw / maxBar) * 100);
+                  const isLast = i === 5;
+                  const kLabel = raw >= 1000 ? `${(raw / 1000).toFixed(1)}k` : String(raw);
+                  return (
+                    <g key={label}>
+                      <rect x={x} y={155 - h - 20} width={38} height={h} rx={4}
+                        fill={isLast ? "url(#barGreen)" : "url(#barBlue)"} />
+                      <text x={x + 19} y={148} textAnchor="middle" fontSize={10} fill="#94A3B8">{label}</text>
+                      {raw > 0 && (
+                        <text x={x + 19} y={155 - h - 25} textAnchor="middle" fontSize={9} fill="#64748B">{kLabel}</text>
+                      )}
+                    </g>
+                  );
+                })}
+              </svg>
+            </div>
 
-      {/* Tables row */}
-      <div className="grid grid-cols-2 gap-5">
-        {/* Recent payments */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-          <h2 className="font-semibold text-slate-800 mb-4" style={{ fontFamily: "Syne, sans-serif" }}>
-            Derniers loyers
-          </h2>
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-slate-100">
-                <th className="text-left text-slate-400 font-medium pb-2">Locataire</th>
-                <th className="text-left text-slate-400 font-medium pb-2">Montant</th>
-                <th className="text-left text-slate-400 font-medium pb-2">Statut</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-50">
-              {[
-                { name: "M. Dupont", amount: "850 DH", status: "Payé", color: "#10B981" },
-                { name: "Mme. Martin", amount: "720 DH", status: "Payé", color: "#10B981" },
-                { name: "M. Bernard", amount: "1 200 DH", status: "En retard", color: "#EF4444" },
-                { name: "Mme. Durand", amount: "650 DH", status: "Payé", color: "#10B981" },
-              ].map((r) => (
-                <tr key={r.name}>
-                  <td className="py-3 text-slate-700 font-medium">{r.name}</td>
-                  <td className="py-3 text-slate-600">{r.amount}</td>
-                  <td className="py-3">
-                    <span
-                      className="px-2.5 py-1 rounded-full text-xs font-semibold"
-                      style={{
-                        background: r.color + "18",
-                        color: r.color,
-                      }}
-                    >
-                      {r.status}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Alerts */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-          <h2 className="font-semibold text-slate-800 mb-4" style={{ fontFamily: "Syne, sans-serif" }}>
-            Alertes & Échéances
-          </h2>
-          <div className="space-y-3">
-            {[
-              { icon: "⚠️", msg: "Loyer impayé — M. Bernard", date: "Depuis 5 jours", color: "#EF4444" },
-              { icon: "📋", msg: "Contrat à renouveler — Apt. 3B", date: "Dans 30 jours", color: "#F59E0B" },
-              { icon: "🔧", msg: "Intervention plomberie planifiée", date: "15 Jul 2026", color: "#2563EB" },
-              { icon: "📄", msg: "Quittance Juin à envoyer", date: "3 en attente", color: "#8B5CF6" },
-            ].map((a) => (
-              <div
-                key={a.msg}
-                className="flex items-start gap-3 p-3 rounded-xl"
-                style={{ background: a.color + "0D" }}
-              >
-                <span className="text-lg">{a.icon}</span>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-slate-700 truncate">{a.msg}</p>
-                  <p className="text-xs mt-0.5" style={{ color: a.color }}>
-                    {a.date}
-                  </p>
+            {/* Donut chart — répartition charges */}
+            <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+              <h2 className="font-semibold text-slate-800 mb-4" style={{ fontFamily: "Syne, sans-serif" }}>
+                Répartition charges
+              </h2>
+              {totalChargesPaye === 0 ? (
+                <div className="flex flex-col items-center justify-center h-32 text-slate-400 text-sm">
+                  Aucune charge payée
                 </div>
-              </div>
-            ))}
+              ) : (
+                <>
+                  <svg viewBox="0 0 144 144" className="w-full" style={{ height: 120 }}>
+                    <circle cx="72" cy="72" r="52" fill="none" stroke="#F1F5F9" strokeWidth="18" />
+                    {donutSegments.map(seg => (
+                      <circle key={seg.type} cx="72" cy="72" r="52" fill="none"
+                        stroke={CHARGE_COLORS[seg.type] ?? "#94A3B8"} strokeWidth="18"
+                        strokeDasharray={`${seg.arc} 326.73`}
+                        strokeDashoffset={-seg.offset}
+                        transform="rotate(-90 72 72)"
+                      />
+                    ))}
+                    <text x="72" y="76" textAnchor="middle" fontSize={12} fontWeight={700} fill="#1E293B">
+                      {totalChargesPaye.toLocaleString("fr-FR")}
+                    </text>
+                    <text x="72" y="88" textAnchor="middle" fontSize={8} fill="#94A3B8">DH</text>
+                  </svg>
+                  <div className="space-y-1.5 mt-3">
+                    {donutSegments.slice(0, 5).map(seg => (
+                      <div key={seg.type} className="flex items-center gap-2 text-xs text-slate-600">
+                        <span className="w-2.5 h-2.5 rounded-full flex-shrink-0"
+                          style={{ background: CHARGE_COLORS[seg.type] ?? "#94A3B8" }} />
+                        <span className="flex-1 capitalize">{seg.type}</span>
+                        <span className="font-medium">{Math.round((seg.montant / totalChargesPaye) * 100)}%</span>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
           </div>
-        </div>
-      </div>
+
+          {/* Analytics row — taux occupation + rentabilité */}
+          <div className="grid grid-cols-2 gap-5 mb-8">
+            <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+              <h2 className="text-sm font-bold text-slate-700 mb-4" style={{ fontFamily: "Syne, sans-serif" }}>
+                Taux d&apos;occupation
+              </h2>
+              <div className="flex items-end gap-3 mb-2">
+                <span className="text-4xl font-bold text-emerald-500" style={{ fontFamily: "Syne, sans-serif" }}>
+                  {tauxOccupation}%
+                </span>
+                <span className="text-slate-400 text-sm mb-1">{nbOccupes}/{nbBiens} biens occupés</span>
+              </div>
+              <div className="w-full bg-slate-100 rounded-full h-3 mt-3">
+                <div
+                  className="h-3 rounded-full transition-all duration-700"
+                  style={{ width: `${tauxOccupation}%`, background: "linear-gradient(90deg, #10B981, #059669)" }}
+                />
+              </div>
+            </div>
+
+            <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+              <h2 className="text-sm font-bold text-slate-700 mb-4" style={{ fontFamily: "Syne, sans-serif" }}>
+                Rentabilité nette
+              </h2>
+              <div className="flex items-end gap-3 mb-2">
+                <span className="text-4xl font-bold text-blue-500" style={{ fontFamily: "Syne, sans-serif" }}>
+                  {rentabilite}%
+                </span>
+                <span className="text-slate-400 text-sm mb-1">après charges</span>
+              </div>
+              <div className="w-full bg-slate-100 rounded-full h-3 mt-3">
+                <div
+                  className="h-3 rounded-full transition-all duration-700"
+                  style={{ width: `${Math.min(rentabilite, 100)}%`, background: "linear-gradient(90deg, #2563EB, #1D4ED8)" }}
+                />
+              </div>
+              <p className="text-xs text-slate-400 mt-2">
+                {revenusTotal.toLocaleString("fr-FR")} DH revenus — {chargesTotal.toLocaleString("fr-FR")} DH charges
+              </p>
+            </div>
+          </div>
+
+          {/* Tables row */}
+          <div className="grid grid-cols-2 gap-5">
+            {/* Derniers loyers */}
+            <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+              <h2 className="font-semibold text-slate-800 mb-4" style={{ fontFamily: "Syne, sans-serif" }}>
+                Derniers loyers
+              </h2>
+              {derniersLoyers.length === 0 ? (
+                <p className="text-sm text-slate-400 text-center py-8">Aucun loyer enregistré</p>
+              ) : (
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-slate-100">
+                      <th className="text-left text-slate-400 font-medium pb-2">Locataire</th>
+                      <th className="text-left text-slate-400 font-medium pb-2">Montant</th>
+                      <th className="text-left text-slate-400 font-medium pb-2">Statut</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-50">
+                    {derniersLoyers.map(l => {
+                      const { color, label } = STATUT_CONFIG[l.statut] ?? { color: "#94A3B8", label: l.statut };
+                      return (
+                        <tr key={l.id}>
+                          <td className="py-3 text-slate-700 font-medium truncate max-w-[120px]">
+                            {l.locataire_nom ?? l.bien_nom ?? "—"}
+                          </td>
+                          <td className="py-3 text-slate-600">{l.montant.toLocaleString("fr-FR")} DH</td>
+                          <td className="py-3">
+                            <span className="px-2.5 py-1 rounded-full text-xs font-semibold"
+                              style={{ background: color + "18", color }}>
+                              {label}
+                            </span>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              )}
+            </div>
+
+            {/* Alertes */}
+            <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+              <h2 className="font-semibold text-slate-800 mb-4" style={{ fontFamily: "Syne, sans-serif" }}>
+                Alertes & Échéances
+              </h2>
+              <div className="space-y-3">
+                {alertes.map((a, i) => (
+                  <div key={i} className="flex items-start gap-3 p-3 rounded-xl"
+                    style={{ background: a.color + "0D" }}>
+                    <span className="text-lg">{a.icon}</span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-slate-700 truncate">{a.msg}</p>
+                      {a.date && (
+                        <p className="text-xs mt-0.5" style={{ color: a.color }}>{a.date}</p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }
 
+const STATUT_CONFIG: Record<string, { color: string; label: string }> = {
+  paye:       { color: "#10B981", label: "Payé" },
+  en_attente: { color: "#2563EB", label: "En attente" },
+  retard:     { color: "#EF4444", label: "En retard" },
+  partiel:    { color: "#F59E0B", label: "Partiel" },
+};
+
 function KpiCard({
-  label,
-  value,
-  trend,
-  trendUp,
-  borderColor,
-  icon,
+  label, value, trend, trendUp, borderColor, icon,
 }: {
-  label: string;
-  value: string;
-  trend: string;
-  trendUp?: boolean;
-  borderColor: string;
-  icon: string;
+  label: string; value: string; trend: string; trendUp?: boolean; borderColor: string; icon: string;
 }) {
   return (
-    <div
-      className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 relative overflow-hidden"
-      style={{ borderBottom: `3px solid ${borderColor}` }}
-    >
+    <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 relative overflow-hidden"
+      style={{ borderBottom: `3px solid ${borderColor}` }}>
       <div className="flex items-start justify-between mb-3">
         <p className="text-xs font-medium text-slate-500 uppercase tracking-wide">{label}</p>
         <span className="text-xl">{icon}</span>
       </div>
-      <p className="text-2xl font-bold text-slate-800" style={{ fontFamily: "Syne, sans-serif" }}>
-        {value}
-      </p>
+      <p className="text-2xl font-bold text-slate-800" style={{ fontFamily: "Syne, sans-serif" }}>{value}</p>
       {trend && (
-        <p
-          className="text-xs mt-1.5 font-medium"
-          style={{ color: trendUp === undefined ? "#64748B" : trendUp ? "#10B981" : "#EF4444" }}
-        >
+        <p className="text-xs mt-1.5 font-medium"
+          style={{ color: trendUp === undefined ? "#64748B" : trendUp ? "#10B981" : "#EF4444" }}>
           {trendUp === true ? "↑ " : trendUp === false ? "↓ " : ""}{trend}
         </p>
       )}

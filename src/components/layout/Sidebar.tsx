@@ -1,7 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { createClient } from "@/lib/supabase/client";
 
 const navGroups = [
   {
@@ -10,22 +13,26 @@ const navGroups = [
       { href: "/dashboard", icon: "⊞", label: "Tableau de bord" },
       { href: "/biens", icon: "🏠", label: "Biens" },
       { href: "/locataires", icon: "👥", label: "Locataires" },
+      { href: "/contrats", icon: "📋", label: "Contrats" },
     ],
   },
   {
-    label: "Finances",
+    label: "Finances & Fiscalité",
     items: [
-      { href: "/loyers", icon: "💶", label: "Loyers" },
-      { href: "/charges", icon: "📊", label: "Charges" },
-      { href: "/quittances", icon: "📄", label: "Quittances" },
+      { href: "/loyers",                  icon: "💶", label: "Loyers" },
+      { href: "/charges",                 icon: "📊", label: "Charges" },
+      { href: "/fiscalite",               icon: "🏛", label: "Dashboard Fiscal" },
+      { href: "/fiscalite/calculateur",   icon: "🧮", label: "Calculateur IR" },
+      { href: "/fiscalite/simulation",    icon: "⚡", label: "Simulation" },
+      { href: "/fiscalite/audit",         icon: "🔍", label: "Audit" },
+      { href: "/fiscalite/historique",    icon: "📜", label: "Historique" },
+      { href: "/fiscalite/configuration", icon: "⚙️", label: "Configuration" },
     ],
   },
   {
     label: "Gestion",
     items: [
       { href: "/documents", icon: "📁", label: "Documents" },
-      { href: "/fiscalite", icon: "🏛", label: "Fiscalité" },
-      { href: "/rapports", icon: "📈", label: "Rapports" },
       { href: "/parametres", icon: "⚙️", label: "Paramètres" },
     ],
   },
@@ -33,6 +40,39 @@ const navGroups = [
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [userFullName, setUserFullName] = useState<string | null>(null);
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getUser().then(({ data }) => {
+      if (data.user) {
+        setUserEmail(data.user.email ?? null);
+        const meta = data.user.user_metadata;
+        const full = meta?.full_name ?? meta?.name ?? null;
+        setUserFullName(full);
+      }
+    });
+  }, []);
+
+  async function handleSignOut() {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    window.location.href = "/login";
+  }
+
+  function getInitials(name: string | null, email: string | null): string {
+    if (name) {
+      const parts = name.trim().split(" ");
+      return parts.length >= 2
+        ? (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+        : parts[0].slice(0, 2).toUpperCase();
+    }
+    if (email) return email.slice(0, 2).toUpperCase();
+    return "?";
+  }
+
+  const displayName = userFullName ?? userEmail ?? "Propriétaire";
 
   return (
     <aside
@@ -51,23 +91,8 @@ export default function Sidebar() {
       />
 
       {/* Logo */}
-      <div className="px-6 py-5 border-b" style={{ borderColor: "#1E3352" }}>
-        <div className="flex items-center gap-3">
-          <div
-            className="w-9 h-9 rounded-xl flex items-center justify-center text-white font-bold text-sm"
-            style={{ background: "linear-gradient(135deg, #2563EB, #1D4ED8)" }}
-          >
-            EL
-          </div>
-          <div>
-            <p className="text-white font-bold text-sm leading-tight" style={{ fontFamily: "Syne, sans-serif" }}>
-              Easy Location
-            </p>
-            <p className="text-xs" style={{ color: "#2563EB" }}>
-              IMMO
-            </p>
-          </div>
-        </div>
+      <div className="px-6 py-4 border-b" style={{ borderColor: "#1E3352" }}>
+        <Image src="/logo.png" alt="Easy Location Immo" width={160} height={48} style={{ height: "48px", width: "auto" }} priority />
       </div>
 
       {/* Navigation */}
@@ -81,7 +106,10 @@ export default function Sidebar() {
               {group.label}
             </p>
             {group.items.map((item) => {
-              const active = pathname === item.href || (item.href !== "/dashboard" && (pathname ?? "").startsWith(item.href));
+              const isExact = item.href === "/dashboard" || item.href === "/fiscalite";
+              const active = isExact
+                ? pathname === item.href
+                : (pathname ?? "").startsWith(item.href);
               return (
                 <Link
                   key={item.href}
@@ -115,14 +143,24 @@ export default function Sidebar() {
             className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold"
             style={{ background: "linear-gradient(135deg, #2563EB, #7C3AED)" }}
           >
-            AB
+            {getInitials(userFullName, userEmail)}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-white text-xs font-medium truncate">Ahmed Bensalem</p>
+            <p className="text-white text-xs font-medium truncate">{displayName}</p>
             <p className="text-xs truncate" style={{ color: "#4A6080" }}>
               Propriétaire
             </p>
           </div>
+          <button
+            onClick={handleSignOut}
+            title="Déconnexion"
+            className="text-xs transition-colors"
+            style={{ color: "#4A6080" }}
+            onMouseEnter={e => (e.currentTarget.style.color = "#EF4444")}
+            onMouseLeave={e => (e.currentTarget.style.color = "#4A6080")}
+          >
+            ⏻
+          </button>
         </div>
       </div>
     </aside>
