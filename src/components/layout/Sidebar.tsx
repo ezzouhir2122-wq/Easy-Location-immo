@@ -19,9 +19,14 @@ const navGroups = [
   {
     label: "Finances & Fiscalité",
     items: [
-      { href: "/loyers", icon: "💶", label: "Loyers" },
-      { href: "/charges", icon: "📊", label: "Charges" },
-      { href: "/fiscalite", icon: "🏛", label: "Fiscalité" },
+      { href: "/loyers",                  icon: "💶", label: "Loyers" },
+      { href: "/charges",                 icon: "📊", label: "Charges" },
+      { href: "/fiscalite",               icon: "🏛", label: "Dashboard Fiscal" },
+      { href: "/fiscalite/calculateur",   icon: "🧮", label: "Calculateur IR" },
+      { href: "/fiscalite/simulation",    icon: "⚡", label: "Simulation" },
+      { href: "/fiscalite/audit",         icon: "🔍", label: "Audit" },
+      { href: "/fiscalite/historique",    icon: "📜", label: "Historique" },
+      { href: "/fiscalite/configuration", icon: "⚙️", label: "Configuration" },
     ],
   },
   {
@@ -101,7 +106,10 @@ export default function Sidebar() {
               {group.label}
             </p>
             {group.items.map((item) => {
-              const active = pathname === item.href || (item.href !== "/dashboard" && (pathname ?? "").startsWith(item.href));
+              const isExact = item.href === "/dashboard" || item.href === "/fiscalite";
+              const active = isExact
+                ? pathname === item.href
+                : (pathname ?? "").startsWith(item.href);
               return (
                 <Link
                   key={item.href}
