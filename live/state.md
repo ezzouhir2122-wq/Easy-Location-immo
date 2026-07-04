@@ -1,7 +1,7 @@
 # État de Session — Easy Location Immo
 
-**Dernière mise à jour :** 2026-07-01
-**Statut :** Phase 2 — Modules Biens & Locataires livrés ✅
+**Dernière mise à jour :** 2026-07-04
+**Statut :** Phase A Fiscalité — LIVRÉE ✅
 
 ## Contexte Rapide
 Application de gestion locative. Stack : Next.js 14 + Supabase + Tailwind CSS.
@@ -10,34 +10,59 @@ Supabase project : duyueirlwrlekdhubuul.supabase.co
 ## Ce Qui Est Fait
 - [x] Structure complète du projet générée
 - [x] CLAUDE.md, SECURITY.md, COMPLIANCE.md
-- [x] intel/ rempli (projet, stack, client, focus)
-- [x] Interface prototype HTML (interface-preview.html)
 - [x] Next.js 14 initialisé (App Router + TypeScript + Tailwind)
 - [x] Sidebar navy + Dashboard (KPIs + SVG charts + tables)
-- [x] 10 sections routées (dashboard, biens, locataires, loyers, charges, quittances, documents, fiscalite, rapports, parametres)
-- [x] .env.local configuré avec clés Supabase
 - [x] Supabase client (browser + server + middleware auth)
 - [x] Pages Auth : /login, /register, /auth/callback
-- [x] Module Biens : CRUD complet (liste cards, slide-over form, modal preview, fiche /biens/[id])
-- [x] Module Locataires : CRUD complet (liste cards, slide-over form, modal preview, fiche /locataires/[id])
-- [x] Tables Supabase biens + locataires avec RLS (4 policies chacune)
-- [x] Composants UI partagés : SlideOver, Modal, StatusBadge, Toast
-- [x] Déployé sur Vercel (commit 2113f58)
+- [x] Module Biens : CRUD complet
+- [x] Module Locataires : CRUD complet
+- [x] Module Loyers : CRUD complet avec alertes retard
+- [x] Module Charges : CRUD complet
+- [x] Module Contrats : CRUD complet
+- [x] Module Documents : génération quittance/bail/état des lieux
+- [x] Sidebar réorganisée : Principal / Finances & Fiscalité / Gestion
+- [x] Dashboard enrichi : KPIs + graphiques + taux d'occupation + rentabilité nette
+- [x] Sidebar profil connecté à Supabase Auth
+- [x] Toutes les tables Supabase avec RLS
+- [x] Déployé sur Vercel production ✅
+
+### Phase A Fiscalité (2026-07-04) ✅
+- [x] Migration SQL : 5 tables (tax_laws, tax_brackets, tax_rules, tax_exemptions, tax_calculations) + colonnes biens
+- [x] Seed CGI : LF 2024/2025/2026, 21 tranches IR, 6 règles, 4 exonérations
+- [x] Types TypeScript complets (types.ts)
+- [x] Supabase layer : 5 modules (tax-laws, tax-brackets, tax-rules, tax-exemptions, tax-calculations)
+- [x] Moteur fiscal : RuleEvaluator + BracketResolver + ExemptionResolver + IRFoncierCalculator + TaxEngine
+- [x] Hooks React : useTaxCalculation + useTaxSimulation (debounce 300ms)
+- [x] 8 composants UI : TaxStepCard, TaxResultSummary, AuditTimeline, ExemptionBadge, LawReference, RiskFlag, TaxBracketTable, SimulatorSlider
+- [x] 6 pages : /fiscalite, /fiscalite/calculateur, /fiscalite/simulation, /fiscalite/audit/[id], /fiscalite/historique, /fiscalite/configuration
+- [x] 23 tests Vitest passants (4 fichiers)
+- [x] Build production ✅ (22 pages, 0 erreur)
+- [x] Mergé dans master
+
+## Sidebar Finale
+```
+Principal          → Dashboard, Biens, Locataires, Contrats
+Finances & Fisc.   → Loyers, Charges, Dashboard Fiscal, Calculateur IR, Simulation, Audit, Historique, Configuration
+Gestion            → Documents, Paramètres
+```
 
 ## Ce Qui Est En Cours
-- Rien — en attente de la prochaine demande
+- Rien — Phase A livrée
 
 ## Blocages
 - Aucun
 
-## Prochaine Action (à confirmer)
-1. Module Loyers : saisie des paiements, historique, alertes retard
-2. Dashboard : brancher les vraies données (taux d'occupation, revenus réels)
-3. Contrats : génération de baux PDF
+## Prochaines Actions Possibles
+1. **Phase B Fiscalité** : TVA + Taxe d'Habitation + TSC
+2. **Phase C Fiscalité** : Exports PDF/Excel + Assistant IA Fiscal
+3. **Phase D** : Suite de tests complète + documentation
+4. Module Paramètres : profil propriétaire éditable (nom, téléphone, SIRET...)
+5. Notifications email : alertes loyers en retard (via Resend)
+6. Signature électronique baux (Yousign)
 
 ## Déploiement
-- GitHub : https://github.com/ezzouhir2122-wq/Easy-Location-immo
-- Vercel : https://easy-location-immo.vercel.app ✅ (login/register fonctionnels)
+- Vercel : https://easy-location-immo.vercel.app ✅
+- Branche active : master (après merge feat/fiscalite)
 
 ---
 *Mettre à jour ce fichier à chaque fin de session.*
