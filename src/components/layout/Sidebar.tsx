@@ -25,8 +25,11 @@ const navGroups = [
       { href: "/fiscalite/calculateur",   icon: "🧮", label: "Calculateur IR" },
       { href: "/fiscalite/simulation",    icon: "⚡", label: "Simulation" },
       { href: "/fiscalite/audit",         icon: "🔍", label: "Audit" },
-      { href: "/fiscalite/historique",    icon: "📜", label: "Historique" },
-      { href: "/fiscalite/configuration", icon: "⚙️", label: "Configuration" },
+      { href: "/fiscalite/historique",       icon: "📜", label: "Historique" },
+      { href: "/fiscalite/configuration",    icon: "⚙️", label: "Configuration" },
+      { href: "/fiscalite/tva",              icon: "🧾", label: "TVA" },
+      { href: "/fiscalite/taxe-habitation",  icon: "🏠", label: "Taxe d'Habitation" },
+      { href: "/fiscalite/tsc",              icon: "🏛", label: "TSC" },
     ],
   },
   {

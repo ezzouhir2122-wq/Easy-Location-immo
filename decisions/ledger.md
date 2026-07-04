@@ -4,6 +4,17 @@
 
 ---
 
+## 2026-07-04 — Phase B Fiscalité : TVA + TH + TSC
+
+**Décision :** Implémenter TVA, Taxe d'Habitation et TSC comme calculateurs client-side standalone
+**Contexte :** Phase A livrait IR Foncier (14 étapes, 23 tests, Supabase). Phase B ajoute 3 nouvelles taxes.
+**Raison :** TVA/TH/TSC ont des barèmes stables (CGI 2026) → calculateurs purs sans appel DB, plus rapides, 0 dépendance réseau
+**Alternatives considérées :** Stocker les barèmes TH/TSC/TVA en DB (rejeté : sur-engineering pour des taux fixes annuels)
+**Résultat :** 3 calculateurs (TVACalculator, TaxeHabitationCalculator, TSCCalculator) + 26 nouveaux tests Vitest (49 total) + 3 pages UI + SQL seed Phase B
+**Par :** Claude Sonnet 4.6
+
+---
+
 ## 2026-06-28 — Initialisation du Projet
 
 **Décision :** Stack Next.js 14 + Supabase + Tailwind + shadcn/ui

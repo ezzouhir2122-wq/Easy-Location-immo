@@ -26,6 +26,15 @@ Supabase project : duyueirlwrlekdhubuul.supabase.co
 - [x] Toutes les tables Supabase avec RLS
 - [x] Déployé sur Vercel production ✅
 
+### Phase B Fiscalité (2026-07-04) ✅
+- [x] 3 calculateurs : TVACalculator + TaxeHabitationCalculator + TSCCalculator
+- [x] 26 nouveaux tests Vitest (49 total, 7 fichiers)
+- [x] SQL seed Phase B : `supabase/seed/fiscal_phase_b_seed.sql`
+- [x] 3 pages UI : /fiscalite/tva, /fiscalite/taxe-habitation, /fiscalite/tsc
+- [x] Sidebar mise à jour (3 nouveaux liens)
+- [x] Types étendus : TVAInput/Result, TaxeHabitationInput/Result, TSCInput/Result, ZoneType
+- [x] Build 0 erreur TypeScript
+
 ### Phase A Fiscalité (2026-07-04) ✅
 - [x] Migration SQL : 5 tables (tax_laws, tax_brackets, tax_rules, tax_exemptions, tax_calculations) + colonnes biens
 - [x] Seed CGI : LF 2024/2025/2026, 21 tranches IR, 6 règles, 4 exonérations
@@ -42,19 +51,19 @@ Supabase project : duyueirlwrlekdhubuul.supabase.co
 ## Sidebar Finale
 ```
 Principal          → Dashboard, Biens, Locataires, Contrats
-Finances & Fisc.   → Loyers, Charges, Dashboard Fiscal, Calculateur IR, Simulation, Audit, Historique, Configuration
+Finances & Fisc.   → Loyers, Charges, Dashboard Fiscal, Calculateur IR, Simulation, Audit, Historique, Configuration, TVA, Taxe d'Habitation, TSC
 Gestion            → Documents, Paramètres
 ```
 
 ## Ce Qui Est En Cours
-- Rien — Phase A livrée
+- Rien — Phase B livrée
 
 ## Blocages
 - Aucun
 
 ## Prochaines Actions Possibles
-1. **Phase B Fiscalité** : TVA + Taxe d'Habitation + TSC
-2. **Phase C Fiscalité** : Exports PDF/Excel + Assistant IA Fiscal
+1. **Phase C Fiscalité** : Exports PDF/Excel + Assistant IA Fiscal
+2. **SQL Phase B** : Exécuter `supabase/seed/fiscal_phase_b_seed.sql` dans Supabase Dashboard (optionnel — barèmes TH/TSC/TVA en DB)
 3. **Phase D** : Suite de tests complète + documentation
 4. Module Paramètres : profil propriétaire éditable (nom, téléphone, SIRET...)
 5. Notifications email : alertes loyers en retard (via Resend)
