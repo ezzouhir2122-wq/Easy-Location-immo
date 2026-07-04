@@ -235,3 +235,71 @@ export interface FiscalContext {
   rules: TaxRuleRow[]
   exemptions: TaxExemptionRow[]
 }
+
+// ─── Phase B : TVA + Taxe d'Habitation + TSC ────────────────────────────────
+
+export type ZoneType = 'urbain' | 'suburbain' | 'rural'
+export type AssujettissementTVA = 'obligatoire' | 'option' | 'non_assujetti'
+
+// TVA sur loyers commerciaux (CGI Art. 89-I-6°)
+export interface TVAInput {
+  fiscal_year: number
+  loyer_mensuel_ht: number
+  nb_mois: number
+  taux_tva: 0.20 | 0.10
+  charges_ht: number
+  assujettissement: AssujettissementTVA
+  type_location: 'commerciale' | 'professionnelle'
+  is_simulation: boolean
+}
+
+export interface TVAResult {
+  fiscal_year: number
+  ca_ht_annuel: number
+  tva_collectee: number
+  tva_deductible: number
+  tva_nette: number
+  steps: TaxStep[]
+  risques_fiscaux: RiskFlag[]
+  computed_at: string
+}
+
+// Taxe d'Habitation (CGI Art. 30 à 42)
+export interface TaxeHabitationInput {
+  fiscal_year: number
+  vla_annuelle: number
+  residence_principale: boolean
+  nb_personnes_charge: number  // 0-6
+  is_simulation: boolean
+}
+
+export interface TaxeHabitationResult {
+  fiscal_year: number
+  vla: number
+  th_brut: number
+  abattement_rp: number
+  abattement_familial: number
+  th_net: number
+  steps: TaxStep[]
+  risques_fiscaux: RiskFlag[]
+  computed_at: string
+}
+
+// TSC — Taxe de Services Communaux (CGI Art. 32)
+export interface TSCInput {
+  fiscal_year: number
+  vla_annuelle: number
+  zone: ZoneType
+  is_simulation: boolean
+}
+
+export interface TSCResult {
+  fiscal_year: number
+  vla: number
+  taux_zone: number
+  tsc_brut: number
+  tsc_net: number
+  steps: TaxStep[]
+  risques_fiscaux: RiskFlag[]
+  computed_at: string
+}
