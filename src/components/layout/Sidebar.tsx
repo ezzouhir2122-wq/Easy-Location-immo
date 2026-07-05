@@ -23,6 +23,7 @@ const navGroups = [
       { href: "/charges",                 icon: "📊", label: "Charges" },
       { href: "/fiscalite",               icon: "🏛", label: "Dashboard Fiscal" },
       { href: "/fiscalite/calculateur",   icon: "🧮", label: "Calculateur IR" },
+      { href: "/fiscalite/declaration",   icon: "📋", label: "Déclaration" },
       { href: "/fiscalite/simulation",    icon: "⚡", label: "Simulation" },
       { href: "/fiscalite/audit",         icon: "🔍", label: "Audit" },
       { href: "/fiscalite/historique",       icon: "📜", label: "Historique" },

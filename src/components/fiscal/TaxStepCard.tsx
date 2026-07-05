@@ -13,7 +13,11 @@ export function TaxStepCard({ step, expanded = false }: Props) {
           <div className="flex items-center justify-between">
             <p className="text-sm font-semibold text-slate-800">{step.label}</p>
             <p className="text-sm font-bold text-blue-700 ml-2">
-              {step.result.toLocaleString('fr-FR')} DH
+              {step.unit === '%'
+                ? `${step.result.toLocaleString('fr-FR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} %`
+                : step.unit === ''
+                  ? step.result.toLocaleString('fr-FR')
+                  : `${step.result.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} DH`}
             </p>
           </div>
           {expanded && (

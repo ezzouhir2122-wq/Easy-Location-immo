@@ -56,7 +56,8 @@ export class IRFoncierCalculator {
       label: 'Application du barème IR foncier',
       formula: `Tranche ${tranche.tranche_min.toLocaleString('fr-FR')} — ${tranche.tranche_max?.toLocaleString('fr-FR') ?? '∞'} DH → Taux ${(tranche.rate * 100).toFixed(1)}%`,
       inputs: { rni, tranche_min: tranche.tranche_min, tranche_max: tranche.tranche_max ?? 0, taux: tranche.rate },
-      result: tranche.rate,
+      result: tranche.rate * 100,
+      unit: '%',
       article_cgi: tranche.article_cgi ?? 'Art. 73-II-B CGI',
     })
 

@@ -8,16 +8,40 @@ import type { TaxLawRow, TaxBracketRow, TaxRuleRow } from "@/lib/fiscal/engine/t
 
 type Tab = "lois" | "bareme" | "regles";
 
+// Données statiques 2026 — utilisées si la DB Supabase n'est pas encore seedée
+const STATIC_LAW: TaxLawRow = {
+  id: "static-2026", finance_year: 2026, law_number: "n°70-25",
+  title: "Loi de Finances pour l'année budgétaire 2026",
+  publication_date: "2025-12-31", effective_date: "2026-01-01",
+  expiration_date: null, official_ref: "Bulletin Officiel n°7350 du 31 décembre 2025",
+  source_url: null, status: "active", notes: "Données intégrées (seed SQL non exécuté)", created_at: "",
+};
+
+const STATIC_BRACKETS: TaxBracketRow[] = [
+  { id:"sb1", law_id:"static-2026", tax_type:"ir_foncier", property_type:null, usage_type:null, tranche_min:0,      tranche_max:40000,  rate:0.00, deduction_fixe:0,     abattement_rate:0, effective_date:"2026-01-01", expiration_date:null, article_cgi:"Art. 73-II-B CGI", loi_finances:"LF 2026", created_at:"" },
+  { id:"sb2", law_id:"static-2026", tax_type:"ir_foncier", property_type:null, usage_type:null, tranche_min:40001,  tranche_max:60000,  rate:0.10, deduction_fixe:4000,  abattement_rate:0, effective_date:"2026-01-01", expiration_date:null, article_cgi:"Art. 73-II-B CGI", loi_finances:"LF 2026", created_at:"" },
+  { id:"sb3", law_id:"static-2026", tax_type:"ir_foncier", property_type:null, usage_type:null, tranche_min:60001,  tranche_max:80000,  rate:0.20, deduction_fixe:10000, abattement_rate:0, effective_date:"2026-01-01", expiration_date:null, article_cgi:"Art. 73-II-B CGI", loi_finances:"LF 2026", created_at:"" },
+  { id:"sb4", law_id:"static-2026", tax_type:"ir_foncier", property_type:null, usage_type:null, tranche_min:80001,  tranche_max:100000, rate:0.30, deduction_fixe:18000, abattement_rate:0, effective_date:"2026-01-01", expiration_date:null, article_cgi:"Art. 73-II-B CGI", loi_finances:"LF 2026", created_at:"" },
+  { id:"sb5", law_id:"static-2026", tax_type:"ir_foncier", property_type:null, usage_type:null, tranche_min:100001, tranche_max:180000, rate:0.34, deduction_fixe:22000, abattement_rate:0, effective_date:"2026-01-01", expiration_date:null, article_cgi:"Art. 73-II-B CGI", loi_finances:"LF 2026", created_at:"" },
+  { id:"sb6", law_id:"static-2026", tax_type:"ir_foncier", property_type:null, usage_type:null, tranche_min:180001, tranche_max:null,   rate:0.37, deduction_fixe:27400, abattement_rate:0, effective_date:"2026-01-01", expiration_date:null, article_cgi:"Art. 73-II-B CGI", loi_finances:"LF 2026", created_at:"" },
+  { id:"sb7", law_id:"static-2026", tax_type:"ir_foncier_forfaitaire", property_type:null, usage_type:null, tranche_min:0, tranche_max:120000, rate:0.15, deduction_fixe:0, abattement_rate:0, effective_date:"2026-01-01", expiration_date:null, article_cgi:"Art. 73-II-B CGI", loi_finances:"LF 2026", created_at:"" },
+];
+
 export default function ConfigurationPage() {
-  const [tab, setTab] = useState<Tab>("lois");
-  const [laws, setLaws] = useState<TaxLawRow[]>([]);
-  const [brackets, setBrackets] = useState<TaxBracketRow[]>([]);
+  const [tab, setTab] = useState<Tab>("bareme");
+  const [laws, setLaws] = useState<TaxLawRow[]>([STATIC_LAW]);
+  const [brackets, setBrackets] = useState<TaxBracketRow[]>(STATIC_BRACKETS);
   const [rules, setRules] = useState<TaxRuleRow[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     Promise.all([getAllTaxLaws(), getAllBrackets(), getAllRules()])
-      .then(([l, b, r]) => { setLaws(l); setBrackets(b); setRules(r); })
+      .then(([l, b, r]) => {
+        if (l.length > 0) setLaws(l);
+        if (b.length > 0) setBrackets(b);
+        if (r.length > 0) setRules(r);
+      })
+      .catch(() => { /* silencieux — données statiques déjà affichées */ })
       .finally(() => setLoading(false));
   }, []);
 

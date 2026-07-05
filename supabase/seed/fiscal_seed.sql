@@ -37,16 +37,16 @@ BEGIN
   SELECT id INTO v_law_id_2025 FROM public.tax_laws WHERE finance_year = 2025;
   SELECT id INTO v_law_id_2024 FROM public.tax_laws WHERE finance_year = 2024;
 
-  -- Barème 2026
+  -- Barème 2026 — actualisé LF 2026 (DGI Maroc)
   INSERT INTO public.tax_brackets
     (law_id, tax_type, tranche_min, tranche_max, rate, deduction_fixe, effective_date, article_cgi, loi_finances)
   VALUES
-    (v_law_id_2026, 'ir_foncier',          0,      30000, 0.0000,     0, '2026-01-01', 'Art. 73-II-B CGI', 'LF 2026'),
-    (v_law_id_2026, 'ir_foncier',      30001,      50000, 0.1000,  3000, '2026-01-01', 'Art. 73-II-B CGI', 'LF 2026'),
-    (v_law_id_2026, 'ir_foncier',      50001,      60000, 0.2000,  8000, '2026-01-01', 'Art. 73-II-B CGI', 'LF 2026'),
-    (v_law_id_2026, 'ir_foncier',      60001,      80000, 0.3000, 14000, '2026-01-01', 'Art. 73-II-B CGI', 'LF 2026'),
-    (v_law_id_2026, 'ir_foncier',      80001,     180000, 0.3400, 17200, '2026-01-01', 'Art. 73-II-B CGI', 'LF 2026'),
-    (v_law_id_2026, 'ir_foncier',     180001,       NULL, 0.3800, 24400, '2026-01-01', 'Art. 73-II-B CGI', 'LF 2026'),
+    (v_law_id_2026, 'ir_foncier',          0,      40000, 0.0000,     0, '2026-01-01', 'Art. 73-II-B CGI', 'LF 2026'),
+    (v_law_id_2026, 'ir_foncier',      40001,      60000, 0.1000,  4000, '2026-01-01', 'Art. 73-II-B CGI', 'LF 2026'),
+    (v_law_id_2026, 'ir_foncier',      60001,      80000, 0.2000, 10000, '2026-01-01', 'Art. 73-II-B CGI', 'LF 2026'),
+    (v_law_id_2026, 'ir_foncier',      80001,     100000, 0.3000, 18000, '2026-01-01', 'Art. 73-II-B CGI', 'LF 2026'),
+    (v_law_id_2026, 'ir_foncier',     100001,     180000, 0.3400, 22000, '2026-01-01', 'Art. 73-II-B CGI', 'LF 2026'),
+    (v_law_id_2026, 'ir_foncier',     180001,       NULL, 0.3700, 27400, '2026-01-01', 'Art. 73-II-B CGI', 'LF 2026'),
     (v_law_id_2026, 'ir_foncier_forfaitaire', 0, 120000, 0.1500, 0, '2026-01-01', 'Art. 73-II-B CGI', 'LF 2026');
 
   -- Barème 2025 (même barème)

@@ -60,3 +60,15 @@ export async function deleteLoyer(id: string): Promise<void> {
   const { error } = await supabase.from("loyers").delete().eq("id", id);
   if (error) throw error;
 }
+
+export async function getLoyersByYear(year: number): Promise<Loyer[]> {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from("loyers")
+    .select("*")
+    .gte("date_echeance", `${year}-01-01`)
+    .lte("date_echeance", `${year}-12-31`)
+    .order("date_echeance", { ascending: true });
+  if (error) return [];
+  return data ?? [];
+}

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useTaxCalculation } from "@/hooks/useTaxCalculation";
 import { TaxStepCard } from "@/components/fiscal/TaxStepCard";
 import { TaxResultSummary } from "@/components/fiscal/TaxResultSummary";
@@ -42,14 +42,23 @@ export default function CalculateurPage() {
   });
   const [expandAll, setExpandAll] = useState(false);
   const { result, loading, error, calculate, reset } = useTaxCalculation();
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Calcul automatique à chaque changement de formulaire (debounce 400ms)
+  useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      calculate(buildInput(form), false);
+    }, 400);
+    return () => { if (debounceRef.current) clearTimeout(debounceRef.current); };
+  }, [form]); // eslint-disable-line react-hooks/exhaustive-deps
 
   function setField<K extends keyof typeof form>(key: K, val: (typeof form)[K]) {
     setForm(f => ({ ...f, [key]: val }));
-    reset();
   }
 
-  async function handleCalculer(save: boolean) {
-    await calculate(buildInput(form), save);
+  async function handleSave() {
+    await calculate(buildInput(form), true);
   }
 
   return (
@@ -128,15 +137,12 @@ export default function CalculateurPage() {
             </div>
 
             <div className="flex gap-2 mt-5">
+              <div className="flex-1 flex items-center gap-2 px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-100">
+                <span className={`w-2 h-2 rounded-full ${loading ? "bg-amber-400 animate-pulse" : result ? "bg-green-500" : "bg-slate-300"}`} />
+                <span className="text-xs text-slate-500">{loading ? "Calcul en cours…" : result ? "Résultat mis à jour" : "Renseignez les paramètres"}</span>
+              </div>
               <button
-                onClick={() => handleCalculer(false)}
-                disabled={loading}
-                className="flex-1 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 disabled:opacity-50 transition-colors"
-              >
-                {loading ? "Calcul..." : "Calculer"}
-              </button>
-              <button
-                onClick={() => handleCalculer(true)}
+                onClick={handleSave}
                 disabled={loading || !result}
                 className="px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 text-sm hover:border-blue-300 disabled:opacity-30 transition-colors"
                 title="Sauvegarder dans l'historique"

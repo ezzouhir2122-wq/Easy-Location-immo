@@ -167,6 +167,7 @@ export interface TaxStep {
   formula: string            // expression lisible ex: "120 000 × 0.40"
   inputs: Record<string, number>
   result: number
+  unit?: 'DH' | '%' | ''    // unité d'affichage — DH par défaut
   article_cgi?: string
   note_dgi?: string
   rule_key?: string
