@@ -22,7 +22,6 @@ const fiscalNav = [
   { href: "/fiscalite",                  icon: "🏛",  label: "Dashboard Fiscal", exact: true },
   { href: "/fiscalite/calculateur",      icon: "🧮",  label: "Calculateur IR" },
   { href: "/fiscalite/declaration",      icon: "📋",  label: "Déclaration" },
-  { href: "/fiscalite/simulation",       icon: "⚡",  label: "Simulation" },
   { href: "/fiscalite/tva",              icon: "🧾",  label: "TVA" },
   { href: "/fiscalite/taxe-habitation",  icon: "🏠",  label: "Taxe d'Habitation" },
   { href: "/fiscalite/tsc",              icon: "🏛",  label: "TSC" },
