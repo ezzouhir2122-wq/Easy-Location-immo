@@ -37,10 +37,10 @@ type VueMensuelleProps = {
   loyers: Loyer[]
   annee: number
   toggling: Set<string>
-  onToggle: (bien: Bien, month: number, existing: Loyer | undefined) => Promise<void>
+  onSelect: (bien: Bien, month: number, existing: Loyer | undefined) => void
 }
 
-function VueMensuelle({ biens, loyers, annee, toggling, onToggle }: VueMensuelleProps) {
+function VueMensuelle({ biens, loyers, annee, toggling, onSelect }: VueMensuelleProps) {
   const biensFiltres = biens.filter((b) => b.loyer_base > 0)
 
   if (biensFiltres.length === 0) {
@@ -112,7 +112,7 @@ function VueMensuelle({ biens, loyers, annee, toggling, onToggle }: VueMensuelle
                 return (
                   <button
                     key={m}
-                    onClick={() => onToggle(bien, m, loyer)}
+                    onClick={() => onSelect(bien, m, loyer)}
                     disabled={isToggling}
                     title={
                       paye
@@ -185,6 +185,9 @@ export default function LoyersPage() {
   const [loyersMensuels, setLoyersMensuels] = useState<Loyer[]>([])
   const [loadingMensuel, setLoadingMensuel] = useState(false)
   const [toggling, setToggling] = useState<Set<string>>(new Set())
+  const [pendingToggle, setPendingToggle] = useState<{
+    bien: Bien; month: number; existing: Loyer | undefined
+  } | null>(null)
 
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null)
 
@@ -348,7 +351,7 @@ export default function LoyersPage() {
             loyers={loyersMensuels}
             annee={annee}
             toggling={toggling}
-            onToggle={handleToggleMonth}
+            onSelect={(bien, month, existing) => setPendingToggle({ bien, month, existing })}
           />
         </>
       )}
@@ -486,6 +489,94 @@ export default function LoyersPage() {
           onError={msg => setToast({ message: msg, type: "error" })}
         />
       </SlideOver>
+
+      {/* Modal confirmation paiement mensuel */}
+      {pendingToggle && (() => {
+        const { bien, month, existing } = pendingToggle
+        const isPaye = existing?.statut === "paye"
+        const action = isPaye ? "annuler" : "confirmer"
+        const montant = existing?.montant ?? bien.loyer_base
+
+        return (
+          <div className="fixed inset-0 z-50 flex items-center justify-center">
+            <div
+              className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+              onClick={() => setPendingToggle(null)}
+            />
+            <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-sm mx-4 p-6">
+              {/* Icône */}
+              <div className={`w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 ${
+                isPaye ? "bg-amber-50" : "bg-emerald-50"
+              }`}>
+                <span className="text-2xl">{isPaye ? "↩" : "✓"}</span>
+              </div>
+
+              {/* Titre */}
+              <h3 className="text-base font-bold text-slate-800 text-center mb-1">
+                {isPaye ? "Annuler ce paiement ?" : "Valider le paiement"}
+              </h3>
+              <p className="text-xs text-slate-400 text-center mb-5">
+                {isPaye
+                  ? "Le mois sera remis en statut « En attente »"
+                  : "Le loyer sera enregistré comme encaissé"}
+              </p>
+
+              {/* Détails */}
+              <div className="bg-slate-50 rounded-xl p-4 space-y-2 mb-5">
+                <div className="flex justify-between text-sm">
+                  <span className="text-slate-400">Bien</span>
+                  <span className="font-semibold text-slate-800">{bien.nom}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-slate-400">Mois</span>
+                  <span className="font-semibold text-slate-800">{MOIS[month]} {pendingToggle ? annee : ""}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-slate-400">Montant</span>
+                  <span className="font-bold text-blue-700">{montant.toLocaleString("fr-FR")} DH</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-slate-400">Échéance</span>
+                  <span className="text-slate-600">
+                    {new Date(lastDayISO(annee, month)).toLocaleDateString("fr-FR")}
+                  </span>
+                </div>
+                {!isPaye && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-slate-400">Date encaissement</span>
+                    <span className="text-slate-600">
+                      {new Date().toLocaleDateString("fr-FR")}
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              {/* Boutons */}
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setPendingToggle(null)}
+                  className="flex-1 py-2.5 rounded-xl border border-slate-200 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors"
+                >
+                  Annuler
+                </button>
+                <button
+                  onClick={async () => {
+                    setPendingToggle(null)
+                    await handleToggleMonth(bien, month, existing)
+                  }}
+                  className={`flex-1 py-2.5 rounded-xl text-sm font-semibold text-white transition-colors ${
+                    isPaye
+                      ? "bg-amber-500 hover:bg-amber-600"
+                      : "bg-emerald-600 hover:bg-emerald-700"
+                  }`}
+                >
+                  {isPaye ? "Oui, annuler" : `Valider — ${action === "confirmer" ? montant.toLocaleString("fr-FR") + " DH" : ""}`}
+                </button>
+              </div>
+            </div>
+          </div>
+        )
+      })()}
 
       {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
     </div>
