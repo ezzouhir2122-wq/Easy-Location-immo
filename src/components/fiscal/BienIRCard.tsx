@@ -90,7 +90,7 @@ export function BienIRCard({ item, onDetail }: Props) {
         disabled={!result}
         className="w-full py-2 rounded-xl border border-slate-200 text-sm text-slate-600 font-medium hover:border-blue-300 hover:text-blue-600 disabled:opacity-30 transition-colors"
       >
-        Voir le détail (14 étapes)
+        Voir le détail ({result?.steps.length ?? "—"} étapes)
       </button>
     </div>
   )

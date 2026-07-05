@@ -1,31 +1,29 @@
 # Focus Actuel — Easy Location Immo
 
-**Semaine du :** 2026-06-28
+**Semaine du :** 2026-07-05
 
-## Top 3 Priorités Phase 1
-1. **Setup technique** : Next.js + Supabase + Tailwind configurés et démarrés
-2. **Schéma DB** : tables `biens`, `locataires`, `contrats`, `paiements` avec RLS
-3. **Auth + Module Biens** : connexion propriétaire + CRUD biens opérationnel
+## Statut Global
+MVP Phase 1 + Fiscalité Phase A & B livrés et déployés en production.
+Branche active : `feat/phase-b-fiscalite` (à merger dans master via PR #3).
 
-## Blocages Identifiés
-- Aucun pour l'instant
+## Top 3 Priorités Immédiates
+1. **PR #3** — Merger `feat/phase-b-fiscalite` dans `master` (GitHub)
+2. **Export PDF** — Page Déclaration : ajouter export PDF en plus du window.print
+3. **Module Paramètres** — Profil propriétaire éditable (nom, SIRET, adresse)
+
+## Blocages
+- Aucun
 
 ## Décisions en Attente
-- Choix du domaine final (easy-location-immo.fr ?)
-- Stratégie multi-tenant (1 DB partagée avec RLS vs schémas séparés)
-- Phase 1 : paiements Stripe oui/non ?
+- Phase C : export PDF → librairie ou window.print() amélioré ?
+- Assistant IA Fiscal : OpenAI API ou Claude API ?
+- Domaine final (easy-location-immo.fr ?)
 
 ## Prochaine Milestone
-MVP fonctionnel : propriétaire peut se connecter, ajouter des biens et des locataires, voir son dashboard.
+**Phase C Fiscalité** : exports PDF/Excel + assistant fiscal intelligent
 
-## Ordre de Développement Suggéré
-1. `npx create-next-app@latest` + config Tailwind + shadcn/ui
-2. Setup Supabase (projet, tables, RLS)
-3. Auth (login/register propriétaire)
-4. Layout principal + navigation
-5. Module Biens (liste + fiche + ajout/édition)
-6. Module Locataires (liste + fiche)
-7. Module Contrats (bail simple)
-8. Module Paiements (suivi loyers + quittance PDF)
-9. Dashboard KPIs
-10. Déploiement Vercel
+## Contexte Technique Actuel
+- 49 tests Vitest passants (7 fichiers)
+- 26 routes Vercel, build 0 erreur TypeScript
+- Barème IR 2026 : fallback statique actif dans TaxEngine (DB non requise)
+- Supabase seed optionnel : `supabase/seed/fiscal_reset_complet.sql`

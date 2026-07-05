@@ -1,72 +1,72 @@
 # Backlog de Tâches — Easy Location Immo
 
-## Phase 1 — MVP (Priorité Haute)
+> Dernière mise à jour : 2026-07-05
 
-### Setup
-- [ ] `npx create-next-app@latest easy-location-immo --typescript --tailwind --app`
-- [ ] Installer shadcn/ui : `npx shadcn@latest init`
-- [ ] Créer projet Supabase + configurer `.env`
-- [ ] Créer le schéma de base de données (voir ci-dessous)
-- [ ] Activer RLS sur toutes les tables
+---
 
-### Schéma DB à Créer
-```sql
--- Tables à créer dans Supabase
-profiles (id, email, nom, prenom, telephone, created_at)
-biens (id, owner_id, nom, adresse, type, surface, nb_pieces, loyer_base, charges, statut, dpe, photos, created_at)
-locataires (id, owner_id, nom, prenom, email, telephone, date_naissance, created_at)
-contrats (id, bien_id, locataire_id, date_debut, date_fin, loyer, charges, depot_garantie, statut, created_at)
-paiements (id, contrat_id, mois, montant, date_paiement, statut, created_at)
-documents (id, owner_id, bien_id, locataire_id, type, nom, url, created_at)
-```
+## Fait — MVP Phase 1 ✅
 
-### Auth
-- [ ] Page login/register propriétaire
-- [ ] Middleware protection des routes
-- [ ] Callback Supabase Auth
+- [x] Next.js 14 App Router + TypeScript + Tailwind + shadcn/ui
+- [x] Supabase : projet, tables, RLS, migrations
+- [x] Auth : login/register propriétaire + middleware protection routes + callback
+- [x] Layout principal sidebar + dashboard KPIs
+- [x] Module Biens : liste + fiche + CRUD
+- [x] Module Locataires : liste + fiche + CRUD
+- [x] Module Contrats : création bail + visualisation
+- [x] Module Loyers : suivi + enregistrement + alertes retard
+- [x] Module Charges : CRUD complet
+- [x] Module Documents : quittance + bail + état des lieux (HTML print)
+- [x] Dashboard enrichi : taux d'occupation + rentabilité nette + graphiques
+- [x] Déploiement Vercel production
 
-### Layout
-- [ ] Layout principal avec sidebar navigation
-- [ ] Header avec profil utilisateur
-- [ ] Navigation : Dashboard / Biens / Locataires / Contrats / Paiements
+## Fait — Fiscalité Phase A ✅
 
-### Module Biens
-- [ ] Page liste des biens avec statut
-- [ ] Page fiche bien (détails + locataire actuel)
-- [ ] Formulaire ajout/édition bien
-- [ ] Upload photos (Supabase Storage)
+- [x] Moteur IR Foncier Maroc (14 étapes, 2 régimes, barème LF 2026)
+- [x] 5 tables Supabase + seed CGI
+- [x] 6 pages fiscalité (dashboard, calculateur, simulation, audit, historique, configuration)
+- [x] 8 composants fiscaux UI
+- [x] 23 tests Vitest
 
-### Module Locataires
-- [ ] Page liste des locataires
-- [ ] Page fiche locataire (profil + contrats + paiements)
-- [ ] Formulaire ajout/édition locataire
-- [ ] Upload documents (pièce d'identité, fiches de paie)
+## Fait — Fiscalité Phase B ✅
 
-### Module Contrats
-- [ ] Formulaire création bail (bien + locataire + dates + montants)
-- [ ] Visualisation contrat
-- [ ] Génération PDF du bail
+- [x] TVA, Taxe d'Habitation, TSC — calculateurs + pages
+- [x] 26 tests Vitest supplémentaires (49 total)
+- [x] Page Déclaration IR (/fiscalite/declaration) — par bien, loyers encaissés réels
+- [x] Combobox année fiscale (saisie libre + liste déroulante)
+- [x] BienIRCard + modal 14 étapes + impression perception
 
-### Module Paiements
-- [ ] Tableau de bord des loyers du mois
-- [ ] Enregistrement d'un paiement
-- [ ] Génération quittance PDF
-- [ ] Alertes loyers en retard
+---
 
-### Dashboard
-- [ ] Taux d'occupation du parc
-- [ ] Revenus du mois / annuels
-- [ ] Liste des loyers en retard
-- [ ] Prochaines échéances de bail
+## En Cours
 
-## Phase 2 — Améliorations
+- [ ] PR #3 : merger `feat/phase-b-fiscalite` dans `master`
+- [ ] SQL optionnel : `fiscal_reset_complet.sql` dans Supabase Dashboard
+
+---
+
+## Phase C — Priorité Haute
+
+- [ ] Export PDF déclaration IR (bouton "Télécharger PDF" en plus de window.print)
+- [ ] Export Excel récap loyers + IR par bien
+- [ ] Assistant IA Fiscal : suggestions déductions, alertes seuils, optimisation régime
+- [ ] Module Paramètres : profil propriétaire éditable (nom, SIRET, adresse, téléphone)
+
+## Phase D — Priorité Moyenne
+
+- [ ] Notifications email : alertes loyers en retard (Resend)
+- [ ] Tests E2E (Playwright) sur les flux critiques
+- [ ] Documentation API interne
+
+## Phase 2 — Future
+
 - [ ] Signature électronique des baux (Yousign)
 - [ ] Paiement en ligne des loyers (Stripe)
-- [ ] Notifications email automatiques (Resend)
-- [ ] Application mobile (React Native ou PWA)
+- [ ] Application mobile (PWA)
 - [ ] Accès locataire (espace personnel)
 - [ ] Encadrement des loyers par zone
-- [ ] Import/export Excel
+- [ ] Import/export Excel locataires/biens
+
+---
 
 ## Bugs Connus
-- Aucun pour l'instant
+- Aucun

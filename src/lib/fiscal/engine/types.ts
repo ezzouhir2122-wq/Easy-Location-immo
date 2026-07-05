@@ -145,17 +145,19 @@ export interface TaxInput {
   }
   contrat: {
     loyer_mensuel: number
-    charges_mensuelles: number
+    charges_mensuelles: number   // charges de syndic mensuelles (× 12 = annuel déductible)
     avances: number
     date_debut: string        // ISO date
     date_fin?: string         // ISO date
     type_bail: BailType
     paiements: Paiement[]
+    locataire_personne_morale?: boolean  // retenue source 10% si true
   }
   deductions?: DeductionInput
   options?: {
     regime: Regime
     is_simulation: boolean
+    nb_personnes_charge?: number  // conjoint + enfants → réduction 500 DH/personne
   }
 }
 
@@ -213,12 +215,15 @@ export interface TaxResult {
   revenu_brut: number
   revenus_encaisses: number
   revenus_non_encaisses: number
+  tsc_deduit: number            // TSC 10.5% déduit du revenu brut
+  charges_syndic: number        // charges de syndic annuelles déduites
   total_deductions: number
   abattement: number
   revenu_net_imposable: number
   tranche_appliquee: TaxBracketRow
   impot_brut: number
-  retenue_source: number
+  reduction_famille: number     // 500 DH × nb_personnes_à_charge
+  retenue_source: number        // 10% retenue par locataire PM (Art. 160 CGI)
   impot_net: number
   exemptions_appliquees: AppliedExemption[]
   rules_applied: AppliedRule[]

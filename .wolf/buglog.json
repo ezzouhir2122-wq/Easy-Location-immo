@@ -1,0 +1,23 @@
+[
+  {
+    "date": "2026-07-04",
+    "error_message": "Vercel ne déploie pas après git push sur la branche feature",
+    "root_cause": "L'intégration GitHub n'était pas configurée pour déclencher les builds automatiquement. Les déploiements précédents avaient été faits via CLI avec gitDirty:1.",
+    "fix": "Utiliser `vercel deploy --prod` via CLI au lieu de compter sur le push GitHub",
+    "tags": ["vercel", "deploy", "ci"]
+  },
+  {
+    "date": "2026-07-04",
+    "error_message": "git add src/app/(dashboard)/... échoue dans PowerShell",
+    "root_cause": "PowerShell interprète les parenthèses () comme une sous-expression",
+    "fix": "Utiliser l'outil Bash au lieu de PowerShell pour les git add avec chemins contenant (dashboard)",
+    "tags": ["git", "powershell", "bash", "paths"]
+  },
+  {
+    "date": "2026-07-05",
+    "error_message": "Cannot find name 'yearInput' / 'setYearInput'",
+    "root_cause": "State yearInput ajouté dans le template avant d'être déclaré dans le composant",
+    "fix": "Ajouter `const [yearInput, setYearInput] = useState('2026')` dans le corps du composant",
+    "tags": ["typescript", "react", "state"]
+  }
+]

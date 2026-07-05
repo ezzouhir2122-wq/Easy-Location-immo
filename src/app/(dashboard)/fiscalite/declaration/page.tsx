@@ -31,7 +31,9 @@ function mapBailType(type: Bien["type"]): BailType {
   return type === "local_commercial" ? "commercial" : "habitation"
 }
 
-function buildTaxInput(bien: Bien, allLoyers: Loyer[], year: number, regime: Regime): TaxInput {
+function buildTaxInput(
+  bien: Bien, allLoyers: Loyer[], year: number, regime: Regime, nbPersonnes: number
+): TaxInput {
   const paiements: Paiement[] = allLoyers
     .filter((l) => l.bien_id === bien.id && l.type === "loyer")
     .map((l) => ({
@@ -44,12 +46,14 @@ function buildTaxInput(bien: Bien, allLoyers: Loyer[], year: number, regime: Reg
         : ("impaye" as const),
     }))
 
+  const isCommercial = bien.type === "local_commercial"
+
   return {
     fiscal_year: year,
     bien: {
       id: bien.id,
       type: mapPropertyType(bien.type),
-      usage: bien.type === "local_commercial" ? "commercial" : "habitation",
+      usage: isCommercial ? "commercial" : "habitation",
       adresse: bien.adresse,
       ville: bien.ville,
       valeur_acquisition: 0,
@@ -64,8 +68,9 @@ function buildTaxInput(bien: Bien, allLoyers: Loyer[], year: number, regime: Reg
       date_debut: `${year}-01-01`,
       type_bail: mapBailType(bien.type),
       paiements,
+      locataire_personne_morale: isCommercial, // locataire PM → retenue 10%
     },
-    options: { regime, is_simulation: false },
+    options: { regime, is_simulation: false, nb_personnes_charge: nbPersonnes },
   }
 }
 
@@ -73,6 +78,7 @@ export default function DeclarationPage() {
   const [year, setYear] = useState(2026)
   const [yearInput, setYearInput] = useState("2026")
   const [regime, setRegime] = useState<Regime>("forfaitaire")
+  const [nbPersonnes, setNbPersonnes] = useState(0)
   const [items, setItems] = useState<BienResult[]>([])
   const [loadingAll, setLoadingAll] = useState(true)
   const [selected, setSelected] = useState<BienResult | null>(null)
@@ -89,7 +95,7 @@ export default function DeclarationPage() {
         const results = await Promise.all(
           biens.map(async (bien): Promise<BienResult> => {
             try {
-              const input = buildTaxInput(bien, loyers, year, regime)
+              const input = buildTaxInput(bien, loyers, year, regime, nbPersonnes)
               const result = await engine.compute(input)
               return { bien, result, loading: false, error: null }
             } catch (e: unknown) {
@@ -106,7 +112,7 @@ export default function DeclarationPage() {
     }
     run()
     return () => { cancelled = true }
-  }, [year, regime])
+  }, [year, regime, nbPersonnes])
 
   const totalEncaisses = items.reduce((s, it) => s + (it.result?.revenus_encaisses ?? 0), 0)
   const totalIR = items.reduce((s, it) => s + (it.result?.impot_net ?? 0), 0)
@@ -176,6 +182,30 @@ export default function DeclarationPage() {
                 {lbl}
               </button>
             ))}
+          </div>
+        </div>
+
+        {/* Personnes à charge (conjoint + enfants) */}
+        <div>
+          <label className="block text-xs text-slate-500 mb-1.5">
+            Personnes à charge
+            <span className="ml-1 text-slate-400">(conjoint + enfants)</span>
+          </label>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setNbPersonnes(Math.max(0, nbPersonnes - 1))}
+              className="w-8 h-8 rounded-lg border border-slate-200 bg-white text-slate-600 text-lg font-bold hover:bg-slate-50 transition-colors flex items-center justify-center"
+            >−</button>
+            <span className="w-10 text-center text-sm font-bold text-slate-800">{nbPersonnes}</span>
+            <button
+              onClick={() => setNbPersonnes(Math.min(6, nbPersonnes + 1))}
+              className="w-8 h-8 rounded-lg border border-slate-200 bg-white text-slate-600 text-lg font-bold hover:bg-slate-50 transition-colors flex items-center justify-center"
+            >+</button>
+            {nbPersonnes > 0 && (
+              <span className="text-xs text-indigo-600 font-medium">
+                − {(nbPersonnes * 500).toLocaleString("fr-FR")} DH
+              </span>
+            )}
           </div>
         </div>
       </div>
@@ -252,8 +282,13 @@ export default function DeclarationPage() {
                   <div className="grid grid-cols-2 gap-3">
                     {[
                       { label: "Revenus encaissés", value: selected.result.revenus_encaisses, cls: "text-emerald-600" },
-                      { label: "Abattement", value: selected.result.abattement, cls: "text-indigo-600" },
+                      { label: "TSC déduit (10.5%)", value: selected.result.tsc_deduit, cls: "text-slate-500" },
+                      { label: "Charges syndic", value: selected.result.charges_syndic, cls: "text-slate-500" },
+                      { label: "Abattement (40%)", value: selected.result.abattement, cls: "text-indigo-600" },
                       { label: "Revenu Net Imposable", value: selected.result.revenu_net_imposable, cls: "text-blue-600" },
+                      { label: "Impôt brut", value: selected.result.impot_brut, cls: "text-orange-600" },
+                      ...(selected.result.reduction_famille > 0 ? [{ label: `Réd. famille (${nbPersonnes} pers.)`, value: selected.result.reduction_famille, cls: "text-indigo-500" }] : []),
+                      ...(selected.result.retenue_source > 0 ? [{ label: "Retenue source (10%)", value: selected.result.retenue_source, cls: "text-slate-500" }] : []),
                       { label: "IR net à payer", value: selected.result.impot_net, cls: selected.result.impot_net > 0 ? "text-red-600" : "text-emerald-600" },
                     ].map(({ label, value, cls }) => (
                       <div key={label} className="bg-slate-50 rounded-xl p-3">
@@ -265,7 +300,7 @@ export default function DeclarationPage() {
                     ))}
                   </div>
 
-                  {/* 14 étapes */}
+                  {/* Étapes détaillées */}
                   <div>
                     <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
                       Détail des {selected.result.steps.length} étapes

@@ -4,6 +4,17 @@
 
 ---
 
+## 2026-07-05 — Page Déclaration IR + Combobox Année Fiscale
+
+**Décision :** Page `/fiscalite/declaration` basée sur loyers réellement encaissés (statut paye/partiel) + combobox année fiscale libre
+**Contexte :** Besoin d'un état fiscal par bien pour dépôt à la perception, calculé sur les encaissements réels (pas loyer théorique)
+**Raison :** 1 seule requête Supabase (`getLoyersByYear`) pour tous les loyers de l'année, filtrage client-side par bien_id — efficace pour un parc standard
+**Architecture :** BienIRCard (grille) + modal 14 étapes + bandeau 4 KPIs + impression perception (window.print)
+**Combobox année :** input[list] + datalist HTML natif (2017-2026) — zéro dépendance, saisie libre 2000-2099
+**Par :** Claude Sonnet 4.6
+
+---
+
 ## 2026-07-04 — Phase B Fiscalité : TVA + TH + TSC
 
 **Décision :** Implémenter TVA, Taxe d'Habitation et TSC comme calculateurs client-side standalone
