@@ -127,24 +127,40 @@ export default function DeclarationPage() {
 
       {/* Filtres */}
       <div className="flex flex-wrap items-end gap-6 mb-6">
+        {/* Année fiscale : saisie libre + raccourcis */}
         <div>
           <label className="block text-xs text-slate-500 mb-1.5">Année fiscale</label>
-          <div className="flex gap-1 p-1 bg-slate-100 rounded-xl">
-            {YEARS.map((y) => (
-              <button
-                key={y}
-                onClick={() => setYear(y)}
-                className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all ${
-                  year === y
-                    ? "bg-white text-slate-800 shadow-sm"
-                    : "text-slate-500 hover:text-slate-700"
-                }`}
-              >
-                {y}
-              </button>
-            ))}
+          <div className="flex items-center gap-2">
+            <input
+              type="number"
+              value={year}
+              min={2000}
+              max={2099}
+              onChange={(e) => {
+                const v = parseInt(e.target.value, 10)
+                if (!isNaN(v) && v >= 2000 && v <= 2099) setYear(v)
+              }}
+              className="w-24 px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-sm font-semibold text-slate-800 text-center focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+            />
+            <div className="flex gap-1 p-1 bg-slate-100 rounded-xl">
+              {YEARS.map((y) => (
+                <button
+                  key={y}
+                  onClick={() => setYear(y)}
+                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
+                    year === y
+                      ? "bg-white text-slate-800 shadow-sm"
+                      : "text-slate-500 hover:text-slate-700"
+                  }`}
+                >
+                  {y}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
+
+        {/* Régime */}
         <div>
           <label className="block text-xs text-slate-500 mb-1.5">Régime</label>
           <div className="flex gap-1 p-1 bg-slate-100 rounded-xl">
