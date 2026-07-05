@@ -72,7 +72,17 @@ export function BienIRCard({ item, onDetail }: Props) {
             </p>
           </div>
           <div className="bg-slate-50 rounded-xl p-3">
-            <p className="text-xs text-slate-400">Taux effectif</p>
+            <div className="flex items-center gap-1">
+              <p className="text-xs text-slate-400">Taux effectif</p>
+              <span className="group relative flex-shrink-0">
+                <span className="w-3.5 h-3.5 rounded-full bg-slate-200 text-slate-500 text-[9px] font-bold flex items-center justify-center cursor-help leading-none">?</span>
+                <span className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-52 rounded-xl bg-slate-800 text-white text-[11px] leading-relaxed px-3 py-2.5 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-20">
+                  <strong className="block mb-1">IR net ÷ Revenus encaissés</strong>
+                  Part de chaque dirham encaissé qui part en impôt. Augmente au fil des mois à mesure que la base annuelle se constitue.
+                  <span className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-800" />
+                </span>
+              </span>
+            </div>
             <p className="text-sm font-semibold text-slate-600 mt-0.5">
               {result.revenus_encaisses > 0
                 ? ((result.impot_net / result.revenus_encaisses) * 100).toFixed(1) + " %"
