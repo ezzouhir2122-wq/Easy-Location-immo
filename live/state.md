@@ -1,7 +1,7 @@
 # État de Session — Easy Location Immo
 
 **Dernière mise à jour :** 2026-08-30
-**Statut :** Refonte UI/UX du tableau de bord — IMPLÉMENTÉE, contrôle visuel navigateur en attente
+**Statut :** Refonte UI/UX du tableau de bord — IMPLÉMENTÉE, déploiement Vercel relancé
 
 ## Contexte Rapide
 Application de gestion locative. Stack : Next.js 14 + Supabase + Tailwind CSS.
@@ -61,7 +61,7 @@ Gestion            → Documents, Paramètres
 ```
 
 ## Ce Qui Est En Cours
-- Rien — Phase B livrée
+- Déploiement Vercel de la refonte UI/UX relancé le 2026-08-30.
 
 ## Blocages
 - Contrôle visuel automatisé bloqué : navigateur cloud indisponible et téléchargement Chromium local inaccessible.
