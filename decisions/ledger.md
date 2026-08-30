@@ -1,5 +1,13 @@
 # Journal de Décisions — Easy Location Immo
 
+## 2026-08-30 — Pivot vers conciergerie et comptabilité immobilière
+
+**Décision :** Étendre Easy Location Immo avec les réservations/séjours, les tâches opérationnelles et un journal comptable double entrée.
+**Contexte :** Le besoin cible le marché marocain et combine gestion de conciergerie, comptabilité immobilière et revenus fonciers.
+**Raison :** Ces trois briques partagent le bien comme axe analytique et évitent de calculer les revenus à partir de données dupliquées.
+**Garde-fous :** RLS par `owner_id`, provenance des écritures, validation débit/crédit, montants en MAD, moteur fiscal présenté comme aide préparatoire.
+**Par :** Codex
+
 > Append-only. Ne jamais modifier les entrées existantes.
 
 ---

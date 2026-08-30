@@ -69,4 +69,18 @@
 ---
 
 ## Bugs Connus
-- Aucun
+- 3 tests `IRFoncierCalculator` échouent sur la branche actuelle : nombre d'étapes et valeurs fiscales attendues à réaligner.
+
+## Pivot Produit — Conciergerie & Comptabilité Maroc
+
+- [x] Modèle Supabase réservations de conciergerie
+- [x] Modèle Supabase tâches opérationnelles
+- [x] Journal comptable double entrée avec RLS
+- [x] Interface réservations et calendrier initiale
+- [x] Interface tâches et suivi prestataires initiale
+- [ ] Validation serveur des écritures équilibrées
+- [x] Fonction Supabase de validation comptable équilibrée
+- [ ] États par bien : revenus, charges, commissions et marge
+- [x] États par bien : revenus, charges, commissions et marge
+- [x] Export CSV annuel pour expert-comptable
+- [ ] Export comptable pour expert-comptable

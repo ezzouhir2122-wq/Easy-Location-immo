@@ -1,7 +1,7 @@
 # État de Session — Easy Location Immo
 
 **Dernière mise à jour :** 2026-07-05
-**Statut :** Phase B Fiscalité — LIVRÉE ✅ | Branche active : `feat/phase-b-fiscalite`
+**Statut :** Pivot produit — socle conciergerie/comptabilité ajouté | Branche active : `feat/phase-b-fiscalite`
 
 ## Contexte Rapide
 Application de gestion locative. Stack : Next.js 14 + Supabase + Tailwind CSS.
@@ -55,6 +55,18 @@ Vercel : https://easy-location-immo.vercel.app
 - [x] Sidebar mise à jour : Déclaration (📋) entre Calculateur IR et Simulation
 - [x] Déployé Vercel production ✅ (commit 8913fcf)
 
+### Pivot Conciergerie + Comptabilité (2026-08-30) — socle ajouté
+- [x] Réservations de conciergerie avec dates, canaux, commissions et RLS
+- [x] Tâches opérationnelles avec coûts, priorités, statuts et RLS
+- [x] Plan de comptes, écritures et lignes débit/crédit avec RLS
+- [x] Cahier des charges et roadmap produit Maroc dans `docs-projet/`
+- [x] Page `/reservations` : création et suivi des séjours
+- [x] Page `/taches` : création et suivi des opérations
+- [x] Navigation sidebar mise à jour
+- [x] Fonction SQL de validation débit/crédit et verrouillage des écritures validées
+- [x] Page `/etats` : résultat annuel par bien et export CSV
+- [x] Page `/calendrier` : vue mensuelle et filtres de réservations
+
 ---
 
 ## Sidebar Finale
@@ -69,12 +81,14 @@ Gestion            → Documents, Paramètres
 ---
 
 ## Ce Qui Est En Cours
-- Rien — Phase B livrée et déployée
+- Interface réservations/calendrier et tâches opérationnelles
+- Validation serveur des écritures comptables équilibrées
 
 ## Blocages
-- Aucun
+- Régression existante à corriger dans `IRFoncierCalculator` : 3 tests en échec ; le build reste vert.
 
 ## Prochaines Actions Possibles
+0. Exécuter `supabase/migrations/20260830_compta_validation.sql` dans Supabase Dashboard
 1. **PR #3** : Merger `feat/phase-b-fiscalite` dans `master` sur GitHub
 2. **SQL optionnel** : Exécuter `supabase/seed/fiscal_reset_complet.sql` dans Supabase Dashboard pour peupler les barèmes 2026 en DB (non bloquant — fallback statique actif)
 3. **Phase C Fiscalité** : Exports PDF/Excel + Assistant IA Fiscal

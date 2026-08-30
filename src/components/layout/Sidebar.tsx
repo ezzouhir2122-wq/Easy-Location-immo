@@ -11,11 +11,16 @@ const mainNav = [
   { href: "/biens",       icon: "🏠", label: "Biens" },
   { href: "/locataires",  icon: "👥", label: "Locataires" },
   { href: "/contrats",    icon: "📋", label: "Contrats" },
+  { href: "/reservations", icon: "🗓️", label: "Réservations" },
+  { href: "/calendrier",    icon: "📅", label: "Calendrier" },
+  { href: "/taches",       icon: "🧰", label: "Tâches" },
 ];
 
 const financeNav = [
   { href: "/loyers",   icon: "💶", label: "Loyers" },
   { href: "/charges",  icon: "📊", label: "Charges" },
+  { href: "/comptabilite", icon: "📒", label: "Comptabilité" },
+  { href: "/etats", icon: "📈", label: "États par bien" },
 ];
 
 const fiscalNav = [

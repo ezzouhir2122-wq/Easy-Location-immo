@@ -5,6 +5,7 @@ export const dynamic = "force-dynamic";
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -22,7 +23,11 @@ export default function LoginPage() {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
 
     if (error) {
-      setError(error.message);
+      setError(error.message === "Invalid login credentials"
+        ? "Email ou mot de passe incorrect. Vous pouvez réinitialiser votre mot de passe ci-dessous."
+        : error.message === "Email not confirmed"
+          ? "Votre email n’est pas encore confirmé. Consultez votre boîte de réception."
+          : error.message);
       setLoading(false);
     } else {
       router.push("/dashboard");
@@ -65,6 +70,12 @@ export default function LoginPage() {
                 className="w-full px-4 py-3 rounded-xl border border-slate-200 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                 placeholder="vous@exemple.fr"
               />
+            </div>
+
+            <div className="text-right -mt-2">
+              <Link href="/reset-password" className="text-xs font-medium text-blue-600 hover:underline">
+                Mot de passe oublié ?
+              </Link>
             </div>
 
             <div>

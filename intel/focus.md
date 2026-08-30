@@ -1,15 +1,15 @@
 # Focus Actuel — Easy Location Immo
 
-**Semaine du :** 2026-07-05
+**Semaine du :** 2026-08-30
 
 ## Statut Global
-MVP Phase 1 + Fiscalité Phase A & B livrés et déployés en production.
+MVP Phase 1 + Fiscalité Phase A & B livrés. Pivot vers une plateforme marocaine de conciergerie et comptabilité immobilière.
 Branche active : `feat/phase-b-fiscalite` (à merger dans master via PR #3).
 
 ## Top 3 Priorités Immédiates
-1. **PR #3** — Merger `feat/phase-b-fiscalite` dans `master` (GitHub)
-2. **Export PDF** — Page Déclaration : ajouter export PDF en plus du window.print
-3. **Module Paramètres** — Profil propriétaire éditable (nom, SIRET, adresse)
+1. Exécuter et vérifier la migration conciergerie/comptabilité dans Supabase
+2. Construire la validation du journal comptable et les états par bien
+3. Ajouter le calendrier visuel et les filtres avancés de conciergerie
 
 ## Blocages
 - Aucun
@@ -20,7 +20,7 @@ Branche active : `feat/phase-b-fiscalite` (à merger dans master via PR #3).
 - Domaine final (easy-location-immo.fr ?)
 
 ## Prochaine Milestone
-**Phase C Fiscalité** : exports PDF/Excel + assistant fiscal intelligent
+**Phase Opérations** : réservations, calendrier, tâches et KPIs de conciergerie
 
 ## Contexte Technique Actuel
 - 49 tests Vitest passants (7 fichiers)
