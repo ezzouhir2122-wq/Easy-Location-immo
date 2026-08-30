@@ -1,404 +1,57 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { getBiens } from "@/lib/supabase/biens";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
+import { FiAlertCircle, FiArrowRight, FiCalendar, FiCheck, FiClock, FiFileText, FiHome, FiPlus, FiRadio, FiSend, FiUser, FiX } from "react-icons/fi";
+import { getBiens, Bien } from "@/lib/supabase/biens";
 import { getLoyers, Loyer } from "@/lib/supabase/loyers";
-import { getCharges, Charge } from "@/lib/supabase/charges";
 
-const MOIS_LABELS = ["Jan", "Fév", "Mar", "Avr", "Mai", "Jun", "Jul", "Aoû", "Sep", "Oct", "Nov", "Déc"];
+type Priority = "Critique" | "Élevée" | "Moyenne" | "Faible";
+type ActionItem = { id: string; kind: "late" | "contract" | "payment" | "vacancy" | "document" | "inspection"; title: string; subtitle: string; tenant: string; property: string; address: string; due: string; amount?: number; priority: Priority; cta: string; image: string; urgent?: boolean };
 
-const CHARGE_COLORS: Record<string, string> = {
-  eau: "#2563EB",
-  electricite: "#10B981",
-  entretien: "#F59E0B",
-  assurance: "#EF4444",
-  taxe: "#8B5CF6",
-  internet: "#06B6D4",
-  autre: "#94A3B8",
-};
-
-function getLast6Months(): { year: number; month: number; label: string }[] {
-  const now = new Date();
-  return Array.from({ length: 6 }, (_, i) => {
-    const d = new Date(now.getFullYear(), now.getMonth() - 5 + i, 1);
-    return { year: d.getFullYear(), month: d.getMonth(), label: MOIS_LABELS[d.getMonth()] };
-  });
-}
+const actions: ActionItem[] = [
+  { id: "late", kind: "late", title: "Relancer le locataire en retard", subtitle: "Paiement du loyer en retard de 25 jours", tenant: "Youssef El Amrani", property: "Riad Dar El Badia", address: "Médina, Marrakech", due: "5 août 2026", amount: 6500, priority: "Critique", cta: "Relancer", image: "/properties/riad-medina.jpg", urgent: true },
+  { id: "contract", kind: "contract", title: "Renouveler le contrat", subtitle: "Le contrat arrive à échéance dans 5 jours", tenant: "Fatima Zahra Bennani", property: "Résidence Les Orangers, Appt 8", address: "Hivernage, Marrakech", due: "4 sept. 2026", amount: 6000, priority: "Élevée", cta: "Renouveler", image: "/properties/appartement-gueliz.jpg", urgent: true },
+  { id: "payment", kind: "payment", title: "Valider un paiement reçu", subtitle: "Virement reçu en attente de validation", tenant: "Karim Mouline", property: "Villa Anfa, RDC", address: "Targa, Marrakech", due: "Aujourd’hui", amount: 12000, priority: "Élevée", cta: "Valider", image: "/properties/villa-targa.jpg" },
+  { id: "vacancy", kind: "vacancy", title: "Publier un bien vacant", subtitle: "Appartement prêt à la location", tenant: "Aucun locataire", property: "Appartement 23", address: "Guéliz, Marrakech", due: "Dans 2 jours", priority: "Moyenne", cta: "Publier", image: "/properties/appartement-gueliz.jpg" },
+  { id: "document", kind: "document", title: "Compléter un document", subtitle: "Pièce d’identité manquante", tenant: "Nadia El Haddad", property: "Villa Anfa, étage", address: "Targa, Marrakech", due: "Dans 3 jours", priority: "Moyenne", cta: "Demander", image: "/properties/villa-targa.jpg" },
+  { id: "inspection", kind: "inspection", title: "Vérifier l’état des lieux de sortie", subtitle: "Préparé par le locataire", tenant: "Mehdi Tahiri", property: "Résidence Les Orangers, Appt 5", address: "Hivernage, Marrakech", due: "Dans 7 jours", priority: "Faible", cta: "Consulter", image: "/properties/riad-medina.jpg" },
+];
+const icons = { late: FiAlertCircle, contract: FiClock, payment: FiCheck, vacancy: FiRadio, document: FiFileText, inspection: FiHome };
+const money = (n: number) => `${n.toLocaleString("fr-FR")} DH`;
 
 export default function DashboardPage() {
-  const [loading, setLoading] = useState(true);
-  const [loyers, setLoyers] = useState<Loyer[]>([]);
-  const [charges, setCharges] = useState<Charge[]>([]);
-  const [nbBiens, setNbBiens] = useState(0);
-  const [nbOccupes, setNbOccupes] = useState(0);
+  const [biens, setBiens] = useState<Bien[]>([]), [loyers, setLoyers] = useState<Loyer[]>([]);
+  const [selected, setSelected] = useState(actions[0]), [drawer, setDrawer] = useState(true), [toast, setToast] = useState<string | null>(null);
+  useEffect(() => { Promise.all([getBiens(), getLoyers()]).then(([b, l]) => { setBiens(b); setLoyers(l); }).catch(() => undefined); }, []);
+  useEffect(() => { if (!toast) return; const id = setTimeout(() => setToast(null), 2600); return () => clearTimeout(id); }, [toast]);
+  const totals = useMemo(() => { const paid = loyers.filter(l => l.statut === "paye").reduce((s, l) => s + l.montant, 0); const late = loyers.filter(l => l.statut === "retard").reduce((s, l) => s + l.montant, 0); const waiting = loyers.filter(l => l.statut === "en_attente").reduce((s, l) => s + l.montant, 0); return paid + late + waiting ? { paid, late, waiting, expected: paid + late + waiting } : { paid: 24500, late: 6500, waiting: 11500, expected: 42500 }; }, [loyers]);
+  const rate = Math.round(totals.paid / totals.expected * 1000) / 10;
+  const selectedBien = biens.find(b => b.nom === selected.property);
+  const choose = (item: ActionItem) => { setSelected(item); setDrawer(true); };
+  const act = (item: ActionItem) => { choose(item); setToast(`${item.cta} : action préparée pour ${item.tenant}.`); };
 
-  useEffect(() => {
-    async function load() {
-      try {
-        const [biensData, loyersData, chargesData] = await Promise.all([
-          getBiens(), getLoyers(), getCharges(),
-        ]);
-        setNbBiens(biensData.length);
-        setNbOccupes(biensData.filter(b => b.statut === "occupe").length);
-        setLoyers(loyersData);
-        setCharges(chargesData);
-      } finally {
-        setLoading(false);
-      }
-    }
-    load();
-  }, []);
-
-  const now = new Date();
-  const moisCourant = now.getMonth();
-  const anneeCourante = now.getFullYear();
-
-  const loyersMoisCourant = loyers.filter(l => {
-    const d = new Date(l.date_echeance);
-    return d.getMonth() === moisCourant && d.getFullYear() === anneeCourante;
-  });
-  const totalEncaisse = loyersMoisCourant.filter(l => l.statut === "paye").reduce((s, l) => s + l.montant, 0);
-  const totalRetard = loyers.filter(l => l.statut === "retard").reduce((s, l) => s + l.montant, 0);
-  const nbRetard = loyers.filter(l => l.statut === "retard").length;
-  const revenusTotal = loyers.filter(l => l.statut === "paye").reduce((s, l) => s + l.montant, 0);
-  const chargesTotal = charges.filter(c => c.statut === "paye").reduce((s, c) => s + c.montant, 0);
-  const tauxOccupation = nbBiens > 0 ? Math.round((nbOccupes / nbBiens) * 100) : 0;
-  const rentabilite = revenusTotal > 0 ? Math.round(((revenusTotal - chargesTotal) / revenusTotal) * 100) : 0;
-  const chargesMois = charges
-    .filter(c => { const d = new Date(c.date); return d.getMonth() === moisCourant && d.getFullYear() === anneeCourante; })
-    .reduce((s, c) => s + c.montant, 0);
-
-  // Bar chart — 6 derniers mois
-  const last6 = getLast6Months();
-  const encaissParMois = last6.map(({ year, month }) =>
-    loyers
-      .filter(l => {
-        const d = new Date(l.date_echeance);
-        return l.statut === "paye" && d.getFullYear() === year && d.getMonth() === month;
-      })
-      .reduce((s, l) => s + l.montant, 0)
-  );
-  const maxBar = Math.max(...encaissParMois, 1);
-
-  // Donut chart — répartition charges (payées)
-  const chargesParType = charges.filter(c => c.statut === "paye").reduce<Record<string, number>>((acc, c) => {
-    acc[c.type] = (acc[c.type] ?? 0) + c.montant;
-    return acc;
-  }, {});
-  const totalChargesPaye = Object.values(chargesParType).reduce((s, v) => s + v, 0);
-  const donutSegments = (() => {
-    if (totalChargesPaye === 0) return [];
-    const CIRCLE = 326.73;
-    let offset = 0;
-    return Object.entries(chargesParType).map(([type, montant]) => {
-      const pct = montant / totalChargesPaye;
-      const arc = CIRCLE * pct;
-      const seg = { type, montant, arc, offset };
-      offset += arc;
-      return seg;
-    });
-  })();
-
-  // Derniers loyers (5 max)
-  const derniersLoyers = [...loyers].slice(0, 5);
-
-  // Alertes
-  const alertes: { icon: string; msg: string; date: string; color: string }[] = [];
-  loyers
-    .filter(l => l.statut === "retard")
-    .slice(0, 2)
-    .forEach(l => alertes.push({
-      icon: "⚠️",
-      msg: `Loyer impayé — ${l.locataire_nom ?? "Locataire"} (${l.bien_nom ?? ""})`,
-      date: `Échéance : ${new Date(l.date_echeance).toLocaleDateString("fr-FR")}`,
-      color: "#EF4444",
-    }));
-  loyers
-    .filter(l => l.statut === "en_attente")
-    .slice(0, 2)
-    .forEach(l => alertes.push({
-      icon: "⏳",
-      msg: `Loyer en attente — ${l.locataire_nom ?? "Locataire"}`,
-      date: `Dû le ${new Date(l.date_echeance).toLocaleDateString("fr-FR")}`,
-      color: "#F59E0B",
-    }));
-  if (alertes.length === 0 && !loading) {
-    alertes.push({ icon: "✅", msg: "Aucune alerte — tout est à jour", date: "", color: "#10B981" });
-  }
-
-  const moisLabel = now.toLocaleDateString("fr-FR", { month: "long", year: "numeric" });
-
-  return (
-    <div className="p-8">
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-slate-900" style={{ fontFamily: "Syne, sans-serif" }}>
-          Tableau de bord
-        </h1>
-        <p className="text-slate-500 text-sm mt-1 capitalize">
-          Vue d&apos;ensemble de votre portefeuille — {moisLabel}
-        </p>
-      </div>
-
-      {loading ? (
-        <div className="grid grid-cols-4 gap-5 mb-8">
-          {[...Array(4)].map((_, i) => (
-            <div key={i} className="rounded-2xl h-28 animate-pulse" style={{ background: "#F1F5F9" }} />
-          ))}
-        </div>
-      ) : (
-        <>
-          {/* KPI Cards */}
-          <div className="grid grid-cols-4 gap-5 mb-8">
-            <KpiCard
-              label="Loyers encaissés"
-              value={`${totalEncaisse.toLocaleString("fr-FR")} DH`}
-              trend={`ce mois`}
-              borderColor="#10B981"
-              icon="💶"
-            />
-            <KpiCard
-              label="En retard"
-              value={`${totalRetard.toLocaleString("fr-FR")} DH`}
-              trend={nbRetard > 0 ? `${nbRetard} locataire${nbRetard > 1 ? "s" : ""}` : "Aucun retard"}
-              trendUp={nbRetard === 0 ? true : false}
-              borderColor="#EF4444"
-              icon="⚠️"
-            />
-            <KpiCard
-              label="Biens gérés"
-              value={String(nbBiens)}
-              trend={`${nbOccupes} occupé${nbOccupes > 1 ? "s" : ""}`}
-              borderColor="#2563EB"
-              icon="🏠"
-            />
-            <KpiCard
-              label="Charges du mois"
-              value={`${chargesMois.toLocaleString("fr-FR")} DH`}
-              trend="ce mois"
-              borderColor="#F59E0B"
-              icon="📊"
-            />
-          </div>
-
-          {/* Charts row */}
-          <div className="grid grid-cols-3 gap-5 mb-8">
-            {/* Bar chart — encaissements 6 mois */}
-            <div className="col-span-2 bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="font-semibold text-slate-800" style={{ fontFamily: "Syne, sans-serif" }}>
-                  Encaissements
-                </h2>
-                <span className="text-xs text-slate-400 bg-slate-50 px-3 py-1 rounded-full">6 derniers mois</span>
-              </div>
-              <svg viewBox="0 0 360 155" className="w-full" style={{ height: 155 }}>
-                <defs>
-                  <linearGradient id="barBlue" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#2563EB" stopOpacity="0.7" />
-                    <stop offset="100%" stopColor="#2563EB" stopOpacity="0.3" />
-                  </linearGradient>
-                  <linearGradient id="barGreen" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#10B981" stopOpacity="0.9" />
-                    <stop offset="100%" stopColor="#10B981" stopOpacity="0.5" />
-                  </linearGradient>
-                </defs>
-                {last6.map(({ label }, i) => {
-                  const x = 20 + i * 55;
-                  const raw = encaissParMois[i];
-                  const h = Math.round((raw / maxBar) * 100);
-                  const isLast = i === 5;
-                  const kLabel = raw >= 1000 ? `${(raw / 1000).toFixed(1)}k` : String(raw);
-                  return (
-                    <g key={label}>
-                      <rect x={x} y={155 - h - 20} width={38} height={h} rx={4}
-                        fill={isLast ? "url(#barGreen)" : "url(#barBlue)"} />
-                      <text x={x + 19} y={148} textAnchor="middle" fontSize={10} fill="#94A3B8">{label}</text>
-                      {raw > 0 && (
-                        <text x={x + 19} y={155 - h - 25} textAnchor="middle" fontSize={9} fill="#64748B">{kLabel}</text>
-                      )}
-                    </g>
-                  );
-                })}
-              </svg>
-            </div>
-
-            {/* Donut chart — répartition charges */}
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-              <h2 className="font-semibold text-slate-800 mb-4" style={{ fontFamily: "Syne, sans-serif" }}>
-                Répartition charges
-              </h2>
-              {totalChargesPaye === 0 ? (
-                <div className="flex flex-col items-center justify-center h-32 text-slate-400 text-sm">
-                  Aucune charge payée
-                </div>
-              ) : (
-                <>
-                  <svg viewBox="0 0 144 144" className="w-full" style={{ height: 120 }}>
-                    <circle cx="72" cy="72" r="52" fill="none" stroke="#F1F5F9" strokeWidth="18" />
-                    {donutSegments.map(seg => (
-                      <circle key={seg.type} cx="72" cy="72" r="52" fill="none"
-                        stroke={CHARGE_COLORS[seg.type] ?? "#94A3B8"} strokeWidth="18"
-                        strokeDasharray={`${seg.arc} 326.73`}
-                        strokeDashoffset={-seg.offset}
-                        transform="rotate(-90 72 72)"
-                      />
-                    ))}
-                    <text x="72" y="76" textAnchor="middle" fontSize={12} fontWeight={700} fill="#1E293B">
-                      {totalChargesPaye.toLocaleString("fr-FR")}
-                    </text>
-                    <text x="72" y="88" textAnchor="middle" fontSize={8} fill="#94A3B8">DH</text>
-                  </svg>
-                  <div className="space-y-1.5 mt-3">
-                    {donutSegments.slice(0, 5).map(seg => (
-                      <div key={seg.type} className="flex items-center gap-2 text-xs text-slate-600">
-                        <span className="w-2.5 h-2.5 rounded-full flex-shrink-0"
-                          style={{ background: CHARGE_COLORS[seg.type] ?? "#94A3B8" }} />
-                        <span className="flex-1 capitalize">{seg.type}</span>
-                        <span className="font-medium">{Math.round((seg.montant / totalChargesPaye) * 100)}%</span>
-                      </div>
-                    ))}
-                  </div>
-                </>
-              )}
-            </div>
-          </div>
-
-          {/* Analytics row — taux occupation + rentabilité */}
-          <div className="grid grid-cols-2 gap-5 mb-8">
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-              <h2 className="text-sm font-bold text-slate-700 mb-4" style={{ fontFamily: "Syne, sans-serif" }}>
-                Taux d&apos;occupation
-              </h2>
-              <div className="flex items-end gap-3 mb-2">
-                <span className="text-4xl font-bold text-emerald-500" style={{ fontFamily: "Syne, sans-serif" }}>
-                  {tauxOccupation}%
-                </span>
-                <span className="text-slate-400 text-sm mb-1">{nbOccupes}/{nbBiens} biens occupés</span>
-              </div>
-              <div className="w-full bg-slate-100 rounded-full h-3 mt-3">
-                <div
-                  className="h-3 rounded-full transition-all duration-700"
-                  style={{ width: `${tauxOccupation}%`, background: "linear-gradient(90deg, #10B981, #059669)" }}
-                />
-              </div>
-            </div>
-
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-              <h2 className="text-sm font-bold text-slate-700 mb-4" style={{ fontFamily: "Syne, sans-serif" }}>
-                Rentabilité nette
-              </h2>
-              <div className="flex items-end gap-3 mb-2">
-                <span className="text-4xl font-bold text-blue-500" style={{ fontFamily: "Syne, sans-serif" }}>
-                  {rentabilite}%
-                </span>
-                <span className="text-slate-400 text-sm mb-1">après charges</span>
-              </div>
-              <div className="w-full bg-slate-100 rounded-full h-3 mt-3">
-                <div
-                  className="h-3 rounded-full transition-all duration-700"
-                  style={{ width: `${Math.min(rentabilite, 100)}%`, background: "linear-gradient(90deg, #2563EB, #1D4ED8)" }}
-                />
-              </div>
-              <p className="text-xs text-slate-400 mt-2">
-                {revenusTotal.toLocaleString("fr-FR")} DH revenus — {chargesTotal.toLocaleString("fr-FR")} DH charges
-              </p>
-            </div>
-          </div>
-
-          {/* Tables row */}
-          <div className="grid grid-cols-2 gap-5">
-            {/* Derniers loyers */}
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-              <h2 className="font-semibold text-slate-800 mb-4" style={{ fontFamily: "Syne, sans-serif" }}>
-                Derniers loyers
-              </h2>
-              {derniersLoyers.length === 0 ? (
-                <p className="text-sm text-slate-400 text-center py-8">Aucun loyer enregistré</p>
-              ) : (
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="border-b border-slate-100">
-                      <th className="text-left text-slate-400 font-medium pb-2">Locataire</th>
-                      <th className="text-left text-slate-400 font-medium pb-2">Montant</th>
-                      <th className="text-left text-slate-400 font-medium pb-2">Statut</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-50">
-                    {derniersLoyers.map(l => {
-                      const { color, label } = STATUT_CONFIG[l.statut] ?? { color: "#94A3B8", label: l.statut };
-                      return (
-                        <tr key={l.id}>
-                          <td className="py-3 text-slate-700 font-medium truncate max-w-[120px]">
-                            {l.locataire_nom ?? l.bien_nom ?? "—"}
-                          </td>
-                          <td className="py-3 text-slate-600">{l.montant.toLocaleString("fr-FR")} DH</td>
-                          <td className="py-3">
-                            <span className="px-2.5 py-1 rounded-full text-xs font-semibold"
-                              style={{ background: color + "18", color }}>
-                              {label}
-                            </span>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              )}
-            </div>
-
-            {/* Alertes */}
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-              <h2 className="font-semibold text-slate-800 mb-4" style={{ fontFamily: "Syne, sans-serif" }}>
-                Alertes & Échéances
-              </h2>
-              <div className="space-y-3">
-                {alertes.map((a, i) => (
-                  <div key={i} className="flex items-start gap-3 p-3 rounded-xl"
-                    style={{ background: a.color + "0D" }}>
-                    <span className="text-lg">{a.icon}</span>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-slate-700 truncate">{a.msg}</p>
-                      {a.date && (
-                        <p className="text-xs mt-0.5" style={{ color: a.color }}>{a.date}</p>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </>
-      )}
+  return <div className="min-h-screen bg-[#fbfaf7] text-[#132238]">
+    <header className="flex flex-col gap-4 border-b border-[#e7e5df] px-5 py-5 sm:px-8 lg:flex-row lg:items-center lg:justify-between"><div><h1 className="font-syne text-3xl font-bold tracking-[-.04em] text-[#0f1d33] sm:text-4xl">À traiter aujourd’hui</h1><p className="mt-2 flex items-center gap-2 text-sm font-medium text-[#667085]"><FiCalendar /> Dimanche 30 août 2026</p></div><Link href="/biens" className="inline-flex w-fit items-center gap-2 rounded-lg bg-[#087b4c] px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-[#05643d]"><FiPlus /> Ajouter un bien</Link></header>
+    <div className={`grid min-h-[calc(100vh-105px)] ${drawer ? "xl:grid-cols-[minmax(0,1fr)_300px]" : "grid-cols-1"}`}>
+      <main className="min-w-0 px-4 py-5 sm:px-6 lg:px-8">
+        <section className="overflow-hidden rounded-xl border border-[#e5e4df] bg-white">
+          <SectionTitle color="#ef5546">Urgent (2)</SectionTitle><Labels />
+          {actions.map((item, i) => <div key={item.id}>{i === 2 && <SectionTitle color="#f59e0b">Important (3)</SectionTitle>}{i === 5 && <SectionTitle color="#07965d">À suivre (1)</SectionTitle>}<ActionRow item={item} selected={selected.id === item.id} choose={choose} act={act} /></div>)}
+        </section>
+        <div className="mt-4 grid gap-4 lg:grid-cols-2"><Collection totals={totals} rate={rate} /><Expirations choose={choose} /></div>
+      </main>
+      {drawer && <aside className="relative border-l border-[#e5e4df] bg-white p-5 xl:sticky xl:top-0 xl:h-[calc(100vh-105px)] xl:overflow-y-auto"><button onClick={() => setDrawer(false)} className="absolute right-4 top-4 z-10 rounded-full bg-white/90 p-2 shadow" aria-label="Fermer"><FiX /></button><p className="mb-3 text-[10px] font-bold uppercase tracking-[.1em] text-[#e84f40]">Bien sélectionné</p><Image src={selected.image} alt={selected.property} width={600} height={375} className="aspect-[16/10] w-full rounded-lg object-cover" priority /><h2 className="mt-5 font-syne text-xl font-bold">{selected.property}</h2><p className="mt-1 text-sm text-[#667085]">{selected.address}</p><dl className="mt-5 divide-y divide-[#ebe8e3] border-y border-[#ebe8e3]"><Detail icon={<FiUser />} label="Locataire actuel" value={selected.tenant} sub="+212 6 11 22 33 44" /><Detail icon={<FiHome />} label="Loyer / mois" value={money(selectedBien?.loyer_base ?? selected.amount ?? 6500)} /><Detail icon={<FiAlertCircle />} label="Statut du paiement" value={selected.urgent ? "En retard" : "À jour"} sub={selected.due} danger={selected.urgent} /><Detail icon={<FiCalendar />} label="Fin de contrat" value="15 févr. 2027" sub="Dans 5 mois" /></dl><Link href={selectedBien ? `/biens/${selectedBien.id}` : "/biens"} className="mt-5 flex items-center justify-center gap-3 rounded-lg bg-[#087b4c] px-4 py-3.5 text-sm font-semibold text-white">Voir le bien <FiArrowRight /></Link></aside>}
     </div>
-  );
+    {toast && <div role="status" className="fixed bottom-5 right-5 z-50 flex items-center gap-3 rounded-lg bg-[#10223a] px-4 py-3 text-sm font-medium text-white shadow-xl"><FiSend className="text-[#38d493]" />{toast}</div>}
+  </div>;
 }
 
-const STATUT_CONFIG: Record<string, { color: string; label: string }> = {
-  paye:       { color: "#10B981", label: "Payé" },
-  en_attente: { color: "#2563EB", label: "En attente" },
-  retard:     { color: "#EF4444", label: "En retard" },
-  partiel:    { color: "#F59E0B", label: "Partiel" },
-};
-
-function KpiCard({
-  label, value, trend, trendUp, borderColor, icon,
-}: {
-  label: string; value: string; trend: string; trendUp?: boolean; borderColor: string; icon: string;
-}) {
-  return (
-    <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 relative overflow-hidden"
-      style={{ borderBottom: `3px solid ${borderColor}` }}>
-      <div className="flex items-start justify-between mb-3">
-        <p className="text-xs font-medium text-slate-500 uppercase tracking-wide">{label}</p>
-        <span className="text-xl">{icon}</span>
-      </div>
-      <p className="text-2xl font-bold text-slate-800" style={{ fontFamily: "Syne, sans-serif" }}>{value}</p>
-      {trend && (
-        <p className="text-xs mt-1.5 font-medium"
-          style={{ color: trendUp === undefined ? "#64748B" : trendUp ? "#10B981" : "#EF4444" }}>
-          {trendUp === true ? "↑ " : trendUp === false ? "↓ " : ""}{trend}
-        </p>
-      )}
-    </div>
-  );
-}
+function SectionTitle({ color, children }: { color: string; children: React.ReactNode }) { return <div className="flex items-center gap-2 border-b border-[#e9e7e2] bg-[#fcfbf8] px-4 py-3 text-sm font-semibold"><span className="h-2.5 w-2.5 rounded-full" style={{ background: color }} />{children}</div>; }
+function Labels() { return <div className="hidden grid-cols-[2.2fr_1.2fr_.8fr_.65fr_.65fr] gap-4 border-b border-[#eeeae5] px-4 py-2 text-[10px] font-bold uppercase tracking-[.08em] text-[#8b92a0] md:grid"><span>Action</span><span>Contexte</span><span>Échéance</span><span>Priorité</span><span className="text-right">Action</span></div>; }
+function ActionRow({ item, selected, choose, act }: { item: ActionItem; selected: boolean; choose: (i: ActionItem) => void; act: (i: ActionItem) => void }) { const Icon = icons[item.kind]; return <button onClick={() => choose(item)} className={`grid w-full gap-3 border-b border-[#efede9] px-4 py-3 text-left md:grid-cols-[2.2fr_1.2fr_.8fr_.65fr_.65fr] md:items-center md:gap-4 ${selected ? "bg-[#fff9f6] shadow-[inset_3px_0_0_#ef6a5b]" : "hover:bg-[#fbfaf7]"}`}><span className="flex min-w-0 items-center gap-3"><Image src={item.image} alt="" width={92} height={62} className="h-[62px] w-[92px] shrink-0 rounded-md object-cover" /><span><span className="flex items-start gap-2 font-semibold"><Icon className={`mt-0.5 shrink-0 ${item.urgent ? "text-[#ef5546]" : "text-[#078957]"}`} />{item.title}</span><span className="mt-1 block text-xs leading-5 text-[#697386]">{item.subtitle}</span></span></span><span><strong className="block text-sm">{item.tenant}</strong><span className="mt-1 block text-xs text-[#697386]">{item.property}</span></span><span className={`text-sm font-semibold ${item.urgent ? "text-[#e84f40]" : "text-[#344054]"}`}>{item.due}{item.amount && <small className="mt-1 block text-[#697386]">{money(item.amount)}{item.kind === "contract" ? "/mois" : ""}</small>}</span><span><em className={`not-italic rounded px-2 py-1 text-xs font-semibold ${item.priority === "Critique" ? "bg-[#fff0ed] text-[#d83a2f]" : item.priority === "Élevée" ? "bg-[#fff3e7] text-[#ce6813]" : "bg-[#eaf7ef] text-[#147447]"}`}>{item.priority}</em></span><span className="flex justify-end"><span onClick={e => { e.stopPropagation(); act(item); }} className={`inline-flex min-w-[86px] justify-center rounded-md border px-3 py-2 text-xs font-semibold ${item.urgent ? "border-[#ef786b] text-[#df4336]" : "border-[#148a5b] text-[#087749]"}`}>{item.cta}</span></span></button>; }
+function Collection({ totals, rate }: { totals: { paid: number; late: number; waiting: number; expected: number }; rate: number }) { return <section className="rounded-xl border border-[#e5e4df] bg-white p-5"><div className="flex justify-between"><div><h2 className="font-semibold">Encaissements — août 2026</h2><p className="mt-4 text-2xl font-bold">{money(totals.paid)} <small className="text-sm font-medium text-[#667085]">encaissés</small></p><p className="text-xs text-[#7b8492]">sur {money(totals.expected)} attendus</p></div><strong className="text-2xl text-[#078957]">{rate}%</strong></div><div className="mt-4 h-2 rounded-full bg-[#edf0ee]"><div className="h-full rounded-full bg-[#0a8b58]" style={{ width: `${rate}%` }} /></div><div className="mt-5 grid grid-cols-3 divide-x text-xs"><Stat label="Encaissés" value={totals.paid} /><Stat label="En attente" value={totals.waiting} /><Stat label="En retard" value={totals.late} /></div><Link href="/loyers" className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[#087b4c]">Voir les paiements <FiArrowRight /></Link></section>; }
+function Stat({ label, value }: { label: string; value: number }) { return <div className="px-3 first:pl-0"><span className="text-[#667085]">{label}</span><strong className="mt-1 block text-sm">{money(value)}</strong></div>; }
+function Expirations({ choose }: { choose: (i: ActionItem) => void }) { return <section className="rounded-xl border border-[#e5e4df] bg-white p-5"><div className="flex justify-between"><h2 className="font-semibold">Contrats qui expirent bientôt</h2><Link href="/contrats" className="text-xs font-semibold text-[#087b4c]">Voir tous</Link></div><div className="mt-3 divide-y">{actions.filter(a => ["contract", "inspection"].includes(a.kind)).map(a => <button key={a.id} onClick={() => choose(a)} className="grid w-full grid-cols-[1fr_auto] gap-3 py-3 text-left"><span><strong className="block">{a.tenant}</strong><small className="text-[#697386]">{a.property}</small></span><span className="text-right"><strong>{a.due}</strong><small className="block text-[#ef5546]">Échéance proche</small></span></button>)}</div></section>; }
+function Detail({ icon, label, value, sub, danger }: { icon: React.ReactNode; label: string; value: string; sub?: string; danger?: boolean }) { return <div className="flex gap-3 py-4"><span className="text-lg">{icon}</span><div><dt className="text-[10px] font-bold uppercase tracking-[.07em] text-[#7b8492]">{label}</dt><dd className={`mt-1 text-sm font-semibold ${danger ? "text-[#e84f40]" : ""}`}>{value}</dd>{sub && <small className="text-[#697386]">{sub}</small>}</div></div>; }

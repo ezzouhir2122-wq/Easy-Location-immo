@@ -1,13 +1,18 @@
 # État de Session — Easy Location Immo
 
-**Dernière mise à jour :** 2026-07-04
-**Statut :** Phase A Fiscalité — LIVRÉE ✅
+**Dernière mise à jour :** 2026-08-30
+**Statut :** Refonte UI/UX du tableau de bord — IMPLÉMENTÉE, contrôle visuel navigateur en attente
 
 ## Contexte Rapide
 Application de gestion locative. Stack : Next.js 14 + Supabase + Tailwind CSS.
 Supabase project : duyueirlwrlekdhubuul.supabase.co
 
 ## Ce Qui Est Fait
+- [x] Refonte premium du dashboard en centre d'actions priorisées
+- [x] Navigation simplifiée et responsive avec icônes professionnelles
+- [x] Panneau contextuel du bien sélectionné et actions interactives
+- [x] Ajout de visuels immobiliers cohérents avec Marrakech
+- [x] Build Next.js réussi et 49 tests Vitest passants
 - [x] Structure complète du projet générée
 - [x] CLAUDE.md, SECURITY.md, COMPLIANCE.md
 - [x] Next.js 14 initialisé (App Router + TypeScript + Tailwind)
@@ -59,7 +64,7 @@ Gestion            → Documents, Paramètres
 - Rien — Phase B livrée
 
 ## Blocages
-- Aucun
+- Contrôle visuel automatisé bloqué : navigateur cloud indisponible et téléchargement Chromium local inaccessible.
 
 ## Prochaines Actions Possibles
 1. **Phase C Fiscalité** : Exports PDF/Excel + Assistant IA Fiscal

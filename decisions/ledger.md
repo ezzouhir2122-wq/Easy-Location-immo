@@ -81,3 +81,12 @@
 **Par :** Claude Code
 
 ---
+# 2026-08-30 — Refonte dashboard EasyLocation Immo
+
+- Direction retenue : centre d'actions opérationnel (70 %) + richesse immobilière du portefeuille (30 %).
+- Palette : navy, vert émeraude, blanc chaud et corail réservé aux urgences.
+- Navigation principale réduite à Dashboard, Biens, Locataires, Contrats et Paiements ; modules secondaires conservés.
+- Les montants utilisent les données Supabase quand disponibles et un état de démonstration crédible sinon.
+- Les images immobilières sont des actifs dédiés générés pour Marrakech.
+- Validation technique : build Next.js réussi, 49 tests passants.
+- Validation visuelle : en attente, faute de navigateur disponible dans l'environnement.
