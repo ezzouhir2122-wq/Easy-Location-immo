@@ -1,7 +1,7 @@
 # État de Session — Easy Location Immo
 
-**Dernière mise à jour :** 2026-07-05
-**Statut :** Pivot produit — socle conciergerie/comptabilité ajouté | Branche active : `feat/phase-b-fiscalite`
+**Dernière mise à jour :** 2026-08-31
+**Statut :** Merge master — conciergerie + fiscalité Phase B + refonte dashboard UI déployés
 
 ## Contexte Rapide
 Application de gestion locative. Stack : Next.js 14 + Supabase + Tailwind CSS.
@@ -14,6 +14,9 @@ Vercel : https://easy-location-immo.vercel.app
 
 ### Infrastructure & Core
 - [x] Structure complète du projet (Next.js 14 App Router + TypeScript + Tailwind)
+- [x] Refonte premium du dashboard en centre d'actions priorisées
+- [x] Navigation sidebar complète avec conciergerie, fiscalité et comptabilité
+- [x] Ajout de visuels immobiliers (Marrakech)
 - [x] CLAUDE.md, SECURITY.md, COMPLIANCE.md
 - [x] Supabase client (browser + server + middleware auth)
 - [x] Pages Auth : /login, /register, /auth/callback
@@ -81,11 +84,11 @@ Gestion            → Documents, Paramètres
 ---
 
 ## Ce Qui Est En Cours
-- Interface réservations/calendrier et tâches opérationnelles
-- Validation serveur des écritures comptables équilibrées
+- Pages stub `/calendrier` et `/comptabilite` à implémenter
+- 3 tests `IRFoncierCalculator` en échec (non bloquant, build vert)
 
 ## Blocages
-- Régression existante à corriger dans `IRFoncierCalculator` : 3 tests en échec ; le build reste vert.
+- Aucun bloquant critique.
 
 ## Prochaines Actions Possibles
 0. Exécuter `supabase/migrations/20260830_compta_validation.sql` dans Supabase Dashboard

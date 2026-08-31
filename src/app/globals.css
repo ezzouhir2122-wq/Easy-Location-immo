@@ -20,9 +20,13 @@
 
 body {
   font-family: 'DM Sans', sans-serif;
-  background: #F8FAFC;
+  background: #fbfaf7;
   color: #1E293B;
+  -webkit-font-smoothing: antialiased;
 }
+
+button, a { -webkit-tap-highlight-color: transparent; }
+::selection { background: #ccebdc; color: #0b2d20; }
 
 @layer utilities {
   .font-syne {

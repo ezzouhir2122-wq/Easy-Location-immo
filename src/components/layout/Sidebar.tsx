@@ -1,9 +1,9 @@
 "use client";
-
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { FiBarChart2, FiChevronDown, FiDollarSign, FiFileText, FiHome, FiLogOut, FiMenu, FiSettings, FiUsers, FiX } from "react-icons/fi";
 import { createClient } from "@/lib/supabase/client";
 
 const mainNav = [
