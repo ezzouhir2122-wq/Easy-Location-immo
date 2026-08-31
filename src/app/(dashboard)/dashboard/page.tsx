@@ -1,57 +1,265 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { FiAlertCircle, FiArrowRight, FiCalendar, FiCheck, FiClock, FiFileText, FiHome, FiPlus, FiRadio, FiSend, FiUser, FiX } from "react-icons/fi";
 import { getBiens, Bien } from "@/lib/supabase/biens";
 import { getLoyers, Loyer } from "@/lib/supabase/loyers";
+import { getCharges, Charge } from "@/lib/supabase/charges";
+import { getContrats, Contrat } from "@/lib/supabase/contrats";
 
-type Priority = "Critique" | "Élevée" | "Moyenne" | "Faible";
-type ActionItem = { id: string; kind: "late" | "contract" | "payment" | "vacancy" | "document" | "inspection"; title: string; subtitle: string; tenant: string; property: string; address: string; due: string; amount?: number; priority: Priority; cta: string; image: string; urgent?: boolean };
+const money = (n: number) => `${Math.round(n).toLocaleString("fr-FR")} DH`;
+const pct = (n: number) => `${Math.round(n)}%`;
 
-const actions: ActionItem[] = [
-  { id: "late", kind: "late", title: "Relancer le locataire en retard", subtitle: "Paiement du loyer en retard de 25 jours", tenant: "Youssef El Amrani", property: "Riad Dar El Badia", address: "Médina, Marrakech", due: "5 août 2026", amount: 6500, priority: "Critique", cta: "Relancer", image: "/properties/riad-medina.jpg", urgent: true },
-  { id: "contract", kind: "contract", title: "Renouveler le contrat", subtitle: "Le contrat arrive à échéance dans 5 jours", tenant: "Fatima Zahra Bennani", property: "Résidence Les Orangers, Appt 8", address: "Hivernage, Marrakech", due: "4 sept. 2026", amount: 6000, priority: "Élevée", cta: "Renouveler", image: "/properties/appartement-gueliz.jpg", urgent: true },
-  { id: "payment", kind: "payment", title: "Valider un paiement reçu", subtitle: "Virement reçu en attente de validation", tenant: "Karim Mouline", property: "Villa Anfa, RDC", address: "Targa, Marrakech", due: "Aujourd’hui", amount: 12000, priority: "Élevée", cta: "Valider", image: "/properties/villa-targa.jpg" },
-  { id: "vacancy", kind: "vacancy", title: "Publier un bien vacant", subtitle: "Appartement prêt à la location", tenant: "Aucun locataire", property: "Appartement 23", address: "Guéliz, Marrakech", due: "Dans 2 jours", priority: "Moyenne", cta: "Publier", image: "/properties/appartement-gueliz.jpg" },
-  { id: "document", kind: "document", title: "Compléter un document", subtitle: "Pièce d’identité manquante", tenant: "Nadia El Haddad", property: "Villa Anfa, étage", address: "Targa, Marrakech", due: "Dans 3 jours", priority: "Moyenne", cta: "Demander", image: "/properties/villa-targa.jpg" },
-  { id: "inspection", kind: "inspection", title: "Vérifier l’état des lieux de sortie", subtitle: "Préparé par le locataire", tenant: "Mehdi Tahiri", property: "Résidence Les Orangers, Appt 5", address: "Hivernage, Marrakech", due: "Dans 7 jours", priority: "Faible", cta: "Consulter", image: "/properties/riad-medina.jpg" },
-];
-const icons = { late: FiAlertCircle, contract: FiClock, payment: FiCheck, vacancy: FiRadio, document: FiFileText, inspection: FiHome };
-const money = (n: number) => `${n.toLocaleString("fr-FR")} DH`;
+const MOIS_COURTS = ["Jan", "Fév", "Mar", "Avr", "Mai", "Jun", "Jul", "Aoû", "Sep", "Oct", "Nov", "Déc"];
+
+function monthKey(d: Date) { return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`; }
+function addMonths(d: Date, n: number) { return new Date(d.getFullYear(), d.getMonth() + n, 1); }
+function diffDays(a: Date, b: Date) { return Math.round((b.getTime() - a.getTime()) / 86400000); }
 
 export default function DashboardPage() {
-  const [biens, setBiens] = useState<Bien[]>([]), [loyers, setLoyers] = useState<Loyer[]>([]);
-  const [selected, setSelected] = useState(actions[0]), [drawer, setDrawer] = useState(true), [toast, setToast] = useState<string | null>(null);
-  useEffect(() => { Promise.all([getBiens(), getLoyers()]).then(([b, l]) => { setBiens(b); setLoyers(l); }).catch(() => undefined); }, []);
-  useEffect(() => { if (!toast) return; const id = setTimeout(() => setToast(null), 2600); return () => clearTimeout(id); }, [toast]);
-  const totals = useMemo(() => { const paid = loyers.filter(l => l.statut === "paye").reduce((s, l) => s + l.montant, 0); const late = loyers.filter(l => l.statut === "retard").reduce((s, l) => s + l.montant, 0); const waiting = loyers.filter(l => l.statut === "en_attente").reduce((s, l) => s + l.montant, 0); return paid + late + waiting ? { paid, late, waiting, expected: paid + late + waiting } : { paid: 24500, late: 6500, waiting: 11500, expected: 42500 }; }, [loyers]);
-  const rate = Math.round(totals.paid / totals.expected * 1000) / 10;
-  const selectedBien = biens.find(b => b.nom === selected.property);
-  const choose = (item: ActionItem) => { setSelected(item); setDrawer(true); };
-  const act = (item: ActionItem) => { choose(item); setToast(`${item.cta} : action préparée pour ${item.tenant}.`); };
+  const [biens, setBiens] = useState<Bien[]>([]);
+  const [loyers, setLoyers] = useState<Loyer[]>([]);
+  const [charges, setCharges] = useState<Charge[]>([]);
+  const [contrats, setContrats] = useState<Contrat[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  return <div className="min-h-screen bg-[#fbfaf7] text-[#132238]">
-    <header className="flex flex-col gap-4 border-b border-[#e7e5df] px-5 py-5 sm:px-8 lg:flex-row lg:items-center lg:justify-between"><div><h1 className="font-syne text-3xl font-bold tracking-[-.04em] text-[#0f1d33] sm:text-4xl">À traiter aujourd’hui</h1><p className="mt-2 flex items-center gap-2 text-sm font-medium text-[#667085]"><FiCalendar /> Dimanche 30 août 2026</p></div><Link href="/biens" className="inline-flex w-fit items-center gap-2 rounded-lg bg-[#087b4c] px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-[#05643d]"><FiPlus /> Ajouter un bien</Link></header>
-    <div className={`grid min-h-[calc(100vh-105px)] ${drawer ? "xl:grid-cols-[minmax(0,1fr)_300px]" : "grid-cols-1"}`}>
-      <main className="min-w-0 px-4 py-5 sm:px-6 lg:px-8">
-        <section className="overflow-hidden rounded-xl border border-[#e5e4df] bg-white">
-          <SectionTitle color="#ef5546">Urgent (2)</SectionTitle><Labels />
-          {actions.map((item, i) => <div key={item.id}>{i === 2 && <SectionTitle color="#f59e0b">Important (3)</SectionTitle>}{i === 5 && <SectionTitle color="#07965d">À suivre (1)</SectionTitle>}<ActionRow item={item} selected={selected.id === item.id} choose={choose} act={act} /></div>)}
-        </section>
-        <div className="mt-4 grid gap-4 lg:grid-cols-2"><Collection totals={totals} rate={rate} /><Expirations choose={choose} /></div>
-      </main>
-      {drawer && <aside className="relative border-l border-[#e5e4df] bg-white p-5 xl:sticky xl:top-0 xl:h-[calc(100vh-105px)] xl:overflow-y-auto"><button onClick={() => setDrawer(false)} className="absolute right-4 top-4 z-10 rounded-full bg-white/90 p-2 shadow" aria-label="Fermer"><FiX /></button><p className="mb-3 text-[10px] font-bold uppercase tracking-[.1em] text-[#e84f40]">Bien sélectionné</p><Image src={selected.image} alt={selected.property} width={600} height={375} className="aspect-[16/10] w-full rounded-lg object-cover" priority /><h2 className="mt-5 font-syne text-xl font-bold">{selected.property}</h2><p className="mt-1 text-sm text-[#667085]">{selected.address}</p><dl className="mt-5 divide-y divide-[#ebe8e3] border-y border-[#ebe8e3]"><Detail icon={<FiUser />} label="Locataire actuel" value={selected.tenant} sub="+212 6 11 22 33 44" /><Detail icon={<FiHome />} label="Loyer / mois" value={money(selectedBien?.loyer_base ?? selected.amount ?? 6500)} /><Detail icon={<FiAlertCircle />} label="Statut du paiement" value={selected.urgent ? "En retard" : "À jour"} sub={selected.due} danger={selected.urgent} /><Detail icon={<FiCalendar />} label="Fin de contrat" value="15 févr. 2027" sub="Dans 5 mois" /></dl><Link href={selectedBien ? `/biens/${selectedBien.id}` : "/biens"} className="mt-5 flex items-center justify-center gap-3 rounded-lg bg-[#087b4c] px-4 py-3.5 text-sm font-semibold text-white">Voir le bien <FiArrowRight /></Link></aside>}
+  useEffect(() => {
+    Promise.all([getBiens(), getLoyers(), getCharges(), getContrats()])
+      .then(([b, l, c, co]) => { setBiens(b); setLoyers(l); setCharges(c); setContrats(co); })
+      .finally(() => setLoading(false));
+  }, []);
+
+  const now = new Date();
+  const thisMonth = monthKey(now);
+
+  /* ── KPIs ─────────────────────────────────────────────────────── */
+  const kpis = useMemo(() => {
+    const totalBiens = biens.length;
+    const occupes = biens.filter(b => b.statut === "occupe").length;
+    const tauxOccupation = totalBiens > 0 ? (occupes / totalBiens) * 100 : 0;
+
+    const loyersMois = loyers.filter(l => l.date_echeance?.startsWith(thisMonth));
+    const encaissesMois = loyersMois.filter(l => l.statut === "paye").reduce((s, l) => s + l.montant, 0);
+    const attendusMois = loyersMois.reduce((s, l) => s + l.montant, 0);
+    const tauxEncaissement = attendusMois > 0 ? (encaissesMois / attendusMois) * 100 : 0;
+
+    const enRetard = loyers.filter(l => l.statut === "retard");
+    const montantRetard = enRetard.reduce((s, l) => s + l.montant, 0);
+
+    const chargesMois = charges.filter(c => c.date?.startsWith(thisMonth)).reduce((s, c) => s + c.montant, 0);
+
+    return { totalBiens, occupes, tauxOccupation, encaissesMois, attendusMois, tauxEncaissement, nbRetard: enRetard.length, montantRetard, chargesMois };
+  }, [biens, loyers, charges, thisMonth]);
+
+  /* ── Graphique 6 mois ─────────────────────────────────────────── */
+  const chartData = useMemo(() => {
+    const months = Array.from({ length: 6 }, (_, i) => addMonths(now, i - 5));
+    return months.map(m => {
+      const key = monthKey(m);
+      const revenus = loyers.filter(l => l.statut === "paye" && l.date_paiement?.startsWith(key)).reduce((s, l) => s + l.montant, 0);
+      const dep = charges.filter(c => c.statut === "paye" && c.date?.startsWith(key)).reduce((s, c) => s + c.montant, 0);
+      return { label: MOIS_COURTS[m.getMonth()], revenus, charges: dep, resultat: revenus - dep };
+    });
+  }, [loyers, charges]);
+
+  const maxVal = Math.max(...chartData.map(d => Math.max(d.revenus, d.charges)), 1);
+
+  /* ── Alertes réelles ──────────────────────────────────────────── */
+  const alertes = useMemo(() => {
+    const list: { id: string; type: "retard" | "contrat" | "libre"; label: string; sub: string; urgence: "haute" | "moyenne" | "faible"; href: string }[] = [];
+
+    // Loyers en retard
+    loyers.filter(l => l.statut === "retard").slice(0, 3).forEach(l => {
+      list.push({ id: `r-${l.id}`, type: "retard", label: `Loyer en retard — ${l.bien_nom ?? "Bien"}`, sub: `${money(l.montant)} · Échéance ${new Date(l.date_echeance).toLocaleDateString("fr-FR")}`, urgence: "haute", href: "/loyers" });
+    });
+
+    // Contrats expirant dans 60 jours
+    contrats.filter(c => c.statut === "actif" && c.date_fin).forEach(c => {
+      const days = diffDays(now, new Date(c.date_fin!));
+      if (days >= 0 && days <= 60) {
+        list.push({ id: `c-${c.id}`, type: "contrat", label: `Contrat expire bientôt — ${c.bien_nom ?? "Bien"}`, sub: `${c.locataire_nom ?? ""} · Dans ${days} jour${days > 1 ? "s" : ""}`, urgence: days < 14 ? "haute" : "moyenne", href: "/contrats" });
+      }
+    });
+
+    // Biens libres
+    biens.filter(b => b.statut === "libre").slice(0, 2).forEach(b => {
+      list.push({ id: `b-${b.id}`, type: "libre", label: `Bien vacant — ${b.nom}`, sub: `${b.ville} · Loyer base ${money(b.loyer_base)}`, urgence: "faible", href: `/biens/${b.id}` });
+    });
+
+    return list.sort((a, b) => ({ haute: 0, moyenne: 1, faible: 2 }[a.urgence] - { haute: 0, moyenne: 1, faible: 2 }[b.urgence]));
+  }, [loyers, contrats, biens]);
+
+  const urgenceStyle = { haute: { bg: "#FEF2F2", text: "#DC2626", dot: "#EF4444" }, moyenne: { bg: "#FFFBEB", text: "#D97706", dot: "#F59E0B" }, faible: { bg: "#F0FDF4", text: "#16A34A", dot: "#22C55E" } };
+
+  if (loading) return (
+    <div className="p-8 space-y-4">
+      <div className="h-8 w-64 animate-pulse rounded-xl bg-slate-100" />
+      <div className="grid grid-cols-4 gap-4">{[...Array(4)].map((_, i) => <div key={i} className="h-28 animate-pulse rounded-2xl bg-slate-100" />)}</div>
+      <div className="h-64 animate-pulse rounded-2xl bg-slate-100" />
     </div>
-    {toast && <div role="status" className="fixed bottom-5 right-5 z-50 flex items-center gap-3 rounded-lg bg-[#10223a] px-4 py-3 text-sm font-medium text-white shadow-xl"><FiSend className="text-[#38d493]" />{toast}</div>}
-  </div>;
+  );
+
+  return (
+    <div className="p-8 max-w-6xl">
+
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-slate-900" style={{ fontFamily: "Syne, sans-serif" }}>Tableau de bord</h1>
+        <p className="text-slate-400 text-sm mt-1">{now.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long", year: "numeric" })}</p>
+      </div>
+
+      {/* KPI Cards */}
+      <div className="grid grid-cols-2 gap-4 mb-6 lg:grid-cols-4">
+        <KpiCard
+          label="Taux d'occupation"
+          value={pct(kpis.tauxOccupation)}
+          sub={`${kpis.occupes} / ${kpis.totalBiens} biens`}
+          color="#2563EB"
+          bar={kpis.tauxOccupation}
+          href="/biens"
+        />
+        <KpiCard
+          label="Revenus du mois"
+          value={money(kpis.encaissesMois)}
+          sub={`sur ${money(kpis.attendusMois)} attendus (${pct(kpis.tauxEncaissement)})`}
+          color="#10B981"
+          bar={kpis.tauxEncaissement}
+          href="/loyers"
+        />
+        <KpiCard
+          label="Loyers en retard"
+          value={money(kpis.montantRetard)}
+          sub={`${kpis.nbRetard} paiement${kpis.nbRetard > 1 ? "s" : ""} en retard`}
+          color={kpis.nbRetard > 0 ? "#EF4444" : "#10B981"}
+          href="/loyers"
+        />
+        <KpiCard
+          label="Charges du mois"
+          value={money(kpis.chargesMois)}
+          sub="charges payées ce mois"
+          color="#8B5CF6"
+          href="/charges"
+        />
+      </div>
+
+      {/* Graphique + Alertes */}
+      <div className="grid gap-6 lg:grid-cols-[1fr_340px]">
+
+        {/* Graphique revenus / charges 6 mois */}
+        <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className="font-bold text-slate-800" style={{ fontFamily: "Syne, sans-serif" }}>Revenus & Charges</h2>
+              <p className="text-xs text-slate-400 mt-0.5">6 derniers mois</p>
+            </div>
+            <div className="flex items-center gap-4 text-xs">
+              <span className="flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded-sm bg-blue-500" />Revenus</span>
+              <span className="flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded-sm bg-amber-400" />Charges</span>
+            </div>
+          </div>
+
+          {/* Barres SVG */}
+          <div className="flex items-end gap-2 h-44">
+            {chartData.map((d, i) => (
+              <div key={i} className="flex-1 flex flex-col items-center gap-1">
+                <div className="w-full flex items-end gap-0.5 h-36">
+                  <div
+                    className="flex-1 rounded-t-md bg-blue-500 transition-all"
+                    style={{ height: `${(d.revenus / maxVal) * 100}%`, minHeight: d.revenus > 0 ? 4 : 0 }}
+                    title={`Revenus : ${money(d.revenus)}`}
+                  />
+                  <div
+                    className="flex-1 rounded-t-md bg-amber-400 transition-all"
+                    style={{ height: `${(d.charges / maxVal) * 100}%`, minHeight: d.charges > 0 ? 4 : 0 }}
+                    title={`Charges : ${money(d.charges)}`}
+                  />
+                </div>
+                <span className="text-[10px] text-slate-400 font-medium">{d.label}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Résultats */}
+          <div className="mt-4 grid grid-cols-3 gap-3 border-t border-slate-100 pt-4">
+            {[
+              { label: "Revenus 6 mois", val: chartData.reduce((s, d) => s + d.revenus, 0), color: "#2563EB" },
+              { label: "Charges 6 mois", val: chartData.reduce((s, d) => s + d.charges, 0), color: "#F59E0B" },
+              { label: "Résultat net", val: chartData.reduce((s, d) => s + d.resultat, 0), color: "#10B981" },
+            ].map(({ label, val, color }) => (
+              <div key={label}>
+                <p className="text-[10px] text-slate-400">{label}</p>
+                <p className="text-sm font-bold mt-0.5" style={{ color }}>{money(val)}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Alertes */}
+        <div className="rounded-2xl border border-slate-100 bg-white shadow-sm overflow-hidden">
+          <div className="border-b border-slate-100 px-5 py-4 flex items-center justify-between">
+            <h2 className="font-bold text-slate-800 text-sm" style={{ fontFamily: "Syne, sans-serif" }}>Alertes & Actions</h2>
+            {alertes.length > 0 && (
+              <span className="rounded-full bg-red-100 px-2 py-0.5 text-xs font-semibold text-red-600">{alertes.length}</span>
+            )}
+          </div>
+          <div className="divide-y divide-slate-50">
+            {alertes.length === 0 ? (
+              <div className="flex flex-col items-center py-12 text-center px-5">
+                <span className="text-3xl mb-3">✅</span>
+                <p className="font-semibold text-slate-700 text-sm">Tout est en ordre</p>
+                <p className="text-xs text-slate-400 mt-1">Aucune alerte active pour le moment</p>
+              </div>
+            ) : alertes.map(a => {
+              const s = urgenceStyle[a.urgence];
+              return (
+                <Link key={a.id} href={a.href} className="flex items-start gap-3 px-5 py-3.5 hover:bg-slate-50 transition-colors">
+                  <span className="mt-1.5 h-2 w-2 flex-shrink-0 rounded-full" style={{ background: s.dot }} />
+                  <div className="min-w-0">
+                    <p className="text-xs font-semibold text-slate-800 truncate">{a.label}</p>
+                    <p className="text-xs text-slate-400 mt-0.5 truncate">{a.sub}</p>
+                  </div>
+                  <span className="ml-auto flex-shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold" style={{ background: s.bg, color: s.text }}>
+                    {a.urgence === "haute" ? "Urgent" : a.urgence === "moyenne" ? "À faire" : "Info"}
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* Accès rapides */}
+      <div className="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
+        {[
+          { href: "/biens", emoji: "🏠", label: "Biens", count: biens.length },
+          { href: "/loyers", emoji: "💰", label: "Loyers", count: loyers.filter(l => l.statut === "en_attente").length + " en attente" },
+          { href: "/charges", emoji: "📋", label: "Charges", count: charges.filter(c => c.statut === "en_attente").length + " en attente" },
+          { href: "/contrats", emoji: "📄", label: "Contrats", count: contrats.filter(c => c.statut === "actif").length + " actifs" },
+        ].map(({ href, emoji, label, count }) => (
+          <Link key={href} href={href} className="flex items-center gap-3 rounded-2xl border border-slate-100 bg-white p-4 shadow-sm hover:shadow-md transition-shadow">
+            <span className="text-2xl">{emoji}</span>
+            <div>
+              <p className="font-semibold text-slate-800 text-sm">{label}</p>
+              <p className="text-xs text-slate-400">{count}</p>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
 }
 
-function SectionTitle({ color, children }: { color: string; children: React.ReactNode }) { return <div className="flex items-center gap-2 border-b border-[#e9e7e2] bg-[#fcfbf8] px-4 py-3 text-sm font-semibold"><span className="h-2.5 w-2.5 rounded-full" style={{ background: color }} />{children}</div>; }
-function Labels() { return <div className="hidden grid-cols-[2.2fr_1.2fr_.8fr_.65fr_.65fr] gap-4 border-b border-[#eeeae5] px-4 py-2 text-[10px] font-bold uppercase tracking-[.08em] text-[#8b92a0] md:grid"><span>Action</span><span>Contexte</span><span>Échéance</span><span>Priorité</span><span className="text-right">Action</span></div>; }
-function ActionRow({ item, selected, choose, act }: { item: ActionItem; selected: boolean; choose: (i: ActionItem) => void; act: (i: ActionItem) => void }) { const Icon = icons[item.kind]; return <button onClick={() => choose(item)} className={`grid w-full gap-3 border-b border-[#efede9] px-4 py-3 text-left md:grid-cols-[2.2fr_1.2fr_.8fr_.65fr_.65fr] md:items-center md:gap-4 ${selected ? "bg-[#fff9f6] shadow-[inset_3px_0_0_#ef6a5b]" : "hover:bg-[#fbfaf7]"}`}><span className="flex min-w-0 items-center gap-3"><Image src={item.image} alt="" width={92} height={62} className="h-[62px] w-[92px] shrink-0 rounded-md object-cover" /><span><span className="flex items-start gap-2 font-semibold"><Icon className={`mt-0.5 shrink-0 ${item.urgent ? "text-[#ef5546]" : "text-[#078957]"}`} />{item.title}</span><span className="mt-1 block text-xs leading-5 text-[#697386]">{item.subtitle}</span></span></span><span><strong className="block text-sm">{item.tenant}</strong><span className="mt-1 block text-xs text-[#697386]">{item.property}</span></span><span className={`text-sm font-semibold ${item.urgent ? "text-[#e84f40]" : "text-[#344054]"}`}>{item.due}{item.amount && <small className="mt-1 block text-[#697386]">{money(item.amount)}{item.kind === "contract" ? "/mois" : ""}</small>}</span><span><em className={`not-italic rounded px-2 py-1 text-xs font-semibold ${item.priority === "Critique" ? "bg-[#fff0ed] text-[#d83a2f]" : item.priority === "Élevée" ? "bg-[#fff3e7] text-[#ce6813]" : "bg-[#eaf7ef] text-[#147447]"}`}>{item.priority}</em></span><span className="flex justify-end"><span onClick={e => { e.stopPropagation(); act(item); }} className={`inline-flex min-w-[86px] justify-center rounded-md border px-3 py-2 text-xs font-semibold ${item.urgent ? "border-[#ef786b] text-[#df4336]" : "border-[#148a5b] text-[#087749]"}`}>{item.cta}</span></span></button>; }
-function Collection({ totals, rate }: { totals: { paid: number; late: number; waiting: number; expected: number }; rate: number }) { return <section className="rounded-xl border border-[#e5e4df] bg-white p-5"><div className="flex justify-between"><div><h2 className="font-semibold">Encaissements — août 2026</h2><p className="mt-4 text-2xl font-bold">{money(totals.paid)} <small className="text-sm font-medium text-[#667085]">encaissés</small></p><p className="text-xs text-[#7b8492]">sur {money(totals.expected)} attendus</p></div><strong className="text-2xl text-[#078957]">{rate}%</strong></div><div className="mt-4 h-2 rounded-full bg-[#edf0ee]"><div className="h-full rounded-full bg-[#0a8b58]" style={{ width: `${rate}%` }} /></div><div className="mt-5 grid grid-cols-3 divide-x text-xs"><Stat label="Encaissés" value={totals.paid} /><Stat label="En attente" value={totals.waiting} /><Stat label="En retard" value={totals.late} /></div><Link href="/loyers" className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[#087b4c]">Voir les paiements <FiArrowRight /></Link></section>; }
-function Stat({ label, value }: { label: string; value: number }) { return <div className="px-3 first:pl-0"><span className="text-[#667085]">{label}</span><strong className="mt-1 block text-sm">{money(value)}</strong></div>; }
-function Expirations({ choose }: { choose: (i: ActionItem) => void }) { return <section className="rounded-xl border border-[#e5e4df] bg-white p-5"><div className="flex justify-between"><h2 className="font-semibold">Contrats qui expirent bientôt</h2><Link href="/contrats" className="text-xs font-semibold text-[#087b4c]">Voir tous</Link></div><div className="mt-3 divide-y">{actions.filter(a => ["contract", "inspection"].includes(a.kind)).map(a => <button key={a.id} onClick={() => choose(a)} className="grid w-full grid-cols-[1fr_auto] gap-3 py-3 text-left"><span><strong className="block">{a.tenant}</strong><small className="text-[#697386]">{a.property}</small></span><span className="text-right"><strong>{a.due}</strong><small className="block text-[#ef5546]">Échéance proche</small></span></button>)}</div></section>; }
-function Detail({ icon, label, value, sub, danger }: { icon: React.ReactNode; label: string; value: string; sub?: string; danger?: boolean }) { return <div className="flex gap-3 py-4"><span className="text-lg">{icon}</span><div><dt className="text-[10px] font-bold uppercase tracking-[.07em] text-[#7b8492]">{label}</dt><dd className={`mt-1 text-sm font-semibold ${danger ? "text-[#e84f40]" : ""}`}>{value}</dd>{sub && <small className="text-[#697386]">{sub}</small>}</div></div>; }
+function KpiCard({ label, value, sub, color, bar, href }: { label: string; value: string; sub: string; color: string; bar?: number; href: string }) {
+  return (
+    <Link href={href} className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm hover:shadow-md transition-shadow block">
+      <p className="text-xs text-slate-400 mb-2">{label}</p>
+      <p className="text-2xl font-bold" style={{ color, fontFamily: "Syne, sans-serif" }}>{value}</p>
+      <p className="text-xs text-slate-400 mt-1">{sub}</p>
+      {bar !== undefined && (
+        <div className="mt-3 h-1.5 rounded-full bg-slate-100">
+          <div className="h-full rounded-full transition-all" style={{ width: `${Math.min(bar, 100)}%`, background: color }} />
+        </div>
+      )}
+    </Link>
+  );
+}
