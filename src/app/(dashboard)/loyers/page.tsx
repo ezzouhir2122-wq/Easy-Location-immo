@@ -6,6 +6,7 @@ import LoyerForm from "@/components/loyers/LoyerForm";
 import LoyerStatusBadge from "@/components/loyers/LoyerStatusBadge";
 import SlideOver from "@/components/ui/SlideOver";
 import Toast from "@/components/ui/Toast";
+import { exportToExcel } from "@/lib/export/excel";
 
 // ─── Constantes vue mensuelle ─────────────────────────────────────────────────
 
@@ -318,6 +319,24 @@ export default function LoyersPage() {
               </button>
             ))}
           </div>
+          <button
+            onClick={() => {
+              const rows = filtered.map(l => ({
+                "Bien": l.bien_nom ?? "",
+                "Locataire": l.locataire_nom ?? "",
+                "Montant (DH)": l.montant,
+                "Échéance": l.date_echeance,
+                "Paiement": l.date_paiement ?? "",
+                "Statut": { paye: "Payé", en_attente: "En attente", retard: "En retard", partiel: "Partiel" }[l.statut] ?? l.statut,
+                "Type": l.type,
+                "Notes": l.notes ?? "",
+              }));
+              exportToExcel(rows, `loyers_${new Date().toISOString().slice(0,10)}`, "Loyers");
+            }}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold border border-emerald-200 text-emerald-700 bg-emerald-50 hover:bg-emerald-100 transition-colors"
+          >
+            ⬇ Export Excel
+          </button>
           <button
             onClick={handleAdd}
             className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-semibold shadow-sm hover:shadow-md transition-shadow"

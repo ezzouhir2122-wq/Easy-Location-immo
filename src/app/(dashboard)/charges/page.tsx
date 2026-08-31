@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { Charge, getCharges, deleteCharge } from "@/lib/supabase/charges";
 import { getBiens, Bien } from "@/lib/supabase/biens";
+import { exportToExcel } from "@/lib/export/excel";
 import ChargeForm from "@/components/charges/ChargeForm";
 import SlideOver from "@/components/ui/SlideOver";
 import Toast from "@/components/ui/Toast";
@@ -77,6 +78,22 @@ export default function ChargesPage() {
           <h1 className="text-2xl font-bold text-slate-900" style={{ fontFamily: "Syne, sans-serif" }}>Charges</h1>
           <p className="text-slate-500 text-sm mt-1">Eau, électricité, assurance, entretien...</p>
         </div>
+        <button
+          onClick={() => {
+            const rows = filtered.map(c => ({
+              "Bien": c.bien_nom ?? "",
+              "Type": TYPE_LABELS[c.type] ?? c.type,
+              "Description": c.description ?? "",
+              "Montant (DH)": c.montant,
+              "Date": c.date,
+              "Statut": c.statut === "paye" ? "Payé" : "En attente",
+            }));
+            exportToExcel(rows, `charges_${new Date().toISOString().slice(0,10)}`, "Charges");
+          }}
+          className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold border border-emerald-200 text-emerald-700 bg-emerald-50 hover:bg-emerald-100 transition-colors"
+        >
+          ⬇ Export Excel
+        </button>
         <button onClick={handleAdd} className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-semibold shadow-sm hover:shadow-md transition-shadow" style={{ background: "linear-gradient(135deg, #2563EB, #1D4ED8)" }}>
           + Ajouter une charge
         </button>
