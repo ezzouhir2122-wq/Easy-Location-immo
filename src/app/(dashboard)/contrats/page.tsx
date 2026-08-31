@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { Contrat, getContrats, deleteContrat, StatutContrat } from "@/lib/supabase/contrats";
 import ContratForm from "@/components/contrats/ContratForm";
 import SlideOver from "@/components/ui/SlideOver";
@@ -34,6 +34,13 @@ function formatDate(d: string | null) {
   return new Date(d).toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit", year: "numeric" });
 }
 
+const SIG_LABELS: Record<string, { label: string; color: string; bg: string }> = {
+  en_attente: { label: "Signature en attente", color: "#D97706", bg: "#FFFBEB" },
+  signe:      { label: "Signé ✓",              color: "#16A34A", bg: "#F0FDF4" },
+  refuse:     { label: "Refusé",               color: "#DC2626", bg: "#FEF2F2" },
+  expire:     { label: "Expiré",               color: "#64748B", bg: "#F1F5F9" },
+};
+
 export default function ContratsPage() {
   const [contrats, setContrats] = useState<Contrat[]>([]);
   const [loading, setLoading] = useState(true);
@@ -41,6 +48,10 @@ export default function ContratsPage() {
   const [editTarget, setEditTarget] = useState<Contrat | undefined>(undefined);
   const [filterStatut, setFilterStatut] = useState<string>("tous");
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
+  const [sigContrat, setSigContrat] = useState<Contrat | null>(null);
+  const [sigFile, setSigFile] = useState<File | null>(null);
+  const [sigSending, setSigSending] = useState(false);
+  const fileRef = useRef<HTMLInputElement>(null);
 
   async function load() {
     setLoading(true);
@@ -73,6 +84,27 @@ export default function ContratsPage() {
     });
     setToast({ message: editTarget ? "Contrat mis à jour" : "Contrat créé", type: "success" });
     setEditTarget(undefined);
+  }
+
+  async function handleSignature(e: FormEvent) {
+    e.preventDefault();
+    if (!sigContrat || !sigFile) return;
+    setSigSending(true);
+    try {
+      const fd = new FormData(e.target as HTMLFormElement);
+      fd.append("contrat_id", sigContrat.id);
+      fd.append("pdf", sigFile);
+      const res = await fetch("/api/yousign/create", { method: "POST", body: fd });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error);
+      setContrats(prev => prev.map(c => c.id === sigContrat.id ? { ...c, signature_status: "en_attente" } as any : c));
+      setToast({ message: "Demande de signature envoyée au locataire.", type: "success" });
+      setSigContrat(null);
+    } catch (err: any) {
+      setToast({ message: err?.message ?? "Erreur Yousign", type: "error" });
+    } finally {
+      setSigSending(false);
+    }
   }
 
   const filtered = filterStatut === "tous" ? contrats : contrats.filter(c => c.statut === filterStatut);
@@ -213,9 +245,23 @@ export default function ContratsPage() {
                   </td>
                   <td className="px-5 py-3.5">
                     <StatutBadge statut={c.statut} />
+                    {(c as any).signature_status && (
+                      <span className="mt-1 block text-[10px] font-semibold px-2 py-0.5 rounded-full w-fit"
+                        style={{ background: SIG_LABELS[(c as any).signature_status]?.bg, color: SIG_LABELS[(c as any).signature_status]?.color }}>
+                        {SIG_LABELS[(c as any).signature_status]?.label}
+                      </span>
+                    )}
                   </td>
                   <td className="px-5 py-3.5">
-                    <div className="flex gap-2 justify-end">
+                    <div className="flex gap-2 justify-end flex-wrap">
+                      {!(c as any).signature_status && c.statut === "actif" && (
+                        <button
+                          onClick={() => { setSigContrat(c); setSigFile(null); }}
+                          className="text-xs text-violet-600 hover:text-violet-800 font-medium transition"
+                        >
+                          ✍ Signer
+                        </button>
+                      )}
                       <button
                         onClick={() => handleEdit(c)}
                         className="text-xs text-blue-600 hover:text-blue-800 font-medium transition"
@@ -250,6 +296,73 @@ export default function ContratsPage() {
       </SlideOver>
 
       {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
+
+      {/* Modal signature Yousign */}
+      {sigContrat && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+          <div className="bg-white rounded-2xl shadow-xl w-full max-w-md">
+            <div className="flex items-center justify-between border-b border-slate-100 px-6 py-4">
+              <div>
+                <h2 className="font-bold text-slate-800" style={{ fontFamily: "Syne, sans-serif" }}>Signature électronique</h2>
+                <p className="text-xs text-slate-400 mt-0.5">{sigContrat.bien_nom} — {sigContrat.locataire_nom}</p>
+              </div>
+              <button onClick={() => setSigContrat(null)} className="text-slate-400 hover:text-slate-600 text-xl leading-none">×</button>
+            </div>
+            <form onSubmit={handleSignature} className="px-6 py-5 space-y-4">
+              <div className="rounded-xl bg-violet-50 border border-violet-100 px-4 py-3 text-xs text-violet-700">
+                Le bail PDF sera envoyé via <strong>Yousign</strong> au locataire pour signature électronique. Il recevra un email avec un lien de signature.
+              </div>
+
+              {/* PDF upload */}
+              <div>
+                <label className="text-xs font-semibold text-slate-500 block mb-1.5">Bail PDF à signer *</label>
+                <div
+                  onClick={() => fileRef.current?.click()}
+                  className="flex items-center justify-center gap-2 rounded-xl border-2 border-dashed border-slate-200 px-4 py-5 cursor-pointer hover:border-violet-300 hover:bg-violet-50 transition"
+                >
+                  <span className="text-2xl">{sigFile ? "📄" : "⬆"}</span>
+                  <span className="text-sm text-slate-500">{sigFile ? sigFile.name : "Cliquer pour uploader le bail PDF"}</span>
+                </div>
+                <input ref={fileRef} type="file" accept=".pdf" className="hidden" onChange={e => setSigFile(e.target.files?.[0] ?? null)} />
+              </div>
+
+              {/* Infos signataire */}
+              <div className="grid grid-cols-2 gap-3">
+                <label className="flex flex-col gap-1 text-xs font-medium text-slate-500">
+                  Prénom *
+                  <input name="prenom" defaultValue={sigContrat.locataire_nom?.split(" ")[0] ?? ""} required className="input mt-0" placeholder="Mohammed" />
+                </label>
+                <label className="flex flex-col gap-1 text-xs font-medium text-slate-500">
+                  Nom *
+                  <input name="nom" defaultValue={sigContrat.locataire_nom?.split(" ").slice(1).join(" ") ?? ""} required className="input mt-0" placeholder="El Alami" />
+                </label>
+              </div>
+              <label className="flex flex-col gap-1 text-xs font-medium text-slate-500">
+                Email du locataire *
+                <input name="email" type="email" defaultValue={sigContrat.locataire_email ?? ""} required className="input mt-0" placeholder="locataire@email.com" />
+              </label>
+              <label className="flex flex-col gap-1 text-xs font-medium text-slate-500">
+                Téléphone (optionnel)
+                <input name="telephone" defaultValue={sigContrat.locataire_telephone ?? ""} className="input mt-0" placeholder="+212 6XX XXX XXX" />
+              </label>
+
+              <div className="flex gap-3 pt-2">
+                <button type="button" onClick={() => setSigContrat(null)} className="flex-1 rounded-xl border border-slate-200 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 transition">
+                  Annuler
+                </button>
+                <button
+                  type="submit"
+                  disabled={sigSending || !sigFile}
+                  className="flex-1 rounded-xl py-2.5 text-sm font-semibold text-white disabled:opacity-50 transition"
+                  style={{ background: "linear-gradient(135deg, #7C3AED, #6D28D9)" }}
+                >
+                  {sigSending ? "Envoi…" : "Envoyer pour signature"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
