@@ -118,16 +118,112 @@ export default function DeclarationPage() {
   const totalIR = items.reduce((s, it) => s + (it.result?.impot_net ?? 0), 0)
   const nbImposables = items.filter((it) => (it.result?.impot_net ?? 0) > 0).length
 
+  function exportPDF() {
+    const dh = (v: number) => v.toLocaleString("fr-FR", { minimumFractionDigits: 2 }) + " DH"
+    const rows = items.map((it) => {
+      const r = it.result
+      if (!r) return `<tr><td>${it.bien.nom}</td><td colspan="6" style="color:#ef4444">Erreur de calcul</td></tr>`
+      const statut = r.impot_net <= 0 ? `<span style="color:#10b981;font-weight:600">Exonéré</span>`
+        : `<span style="color:#ef4444;font-weight:600">Imposable</span>`
+      return `<tr>
+        <td>${it.bien.nom}<br><small style="color:#94a3b8">${it.bien.adresse}, ${it.bien.ville}</small></td>
+        <td>${dh(r.revenus_encaisses)}</td>
+        <td>${dh(r.tsc_deduit)}</td>
+        <td>${dh(r.abattement)}</td>
+        <td>${dh(r.revenu_net_imposable)}</td>
+        <td>${dh(r.impot_net)}</td>
+        <td>${statut}</td>
+      </tr>`
+    }).join("")
+
+    const html = `<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Déclaration IR Foncier ${year}</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; font-size: 12px; color: #1e293b; padding: 32px; }
+    h1 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+    .subtitle { color: #64748b; font-size: 11px; margin-bottom: 24px; }
+    .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+    .kpi { border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px; }
+    .kpi-label { font-size: 10px; color: #94a3b8; margin-bottom: 4px; }
+    .kpi-value { font-size: 16px; font-weight: 700; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+    th { background: #f8fafc; text-align: left; padding: 8px 10px; font-size: 10px; color: #64748b; text-transform: uppercase; border-bottom: 2px solid #e2e8f0; }
+    td { padding: 8px 10px; border-bottom: 1px solid #f1f5f9; vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    .footer { color: #94a3b8; font-size: 10px; margin-top: 32px; border-top: 1px solid #e2e8f0; padding-top: 12px; }
+    @media print { body { padding: 16px; } }
+  </style>
+</head>
+<body>
+  <h1>Déclaration IR Foncier — Exercice ${year}</h1>
+  <p class="subtitle">
+    Régime : ${regime === "forfaitaire" ? "Forfaitaire (abattement 40%)" : "Réel (charges déductibles)"}
+    &nbsp;·&nbsp; Personnes à charge : ${nbPersonnes}
+    &nbsp;·&nbsp; Généré le ${new Date().toLocaleDateString("fr-FR")}
+  </p>
+
+  <div class="kpis">
+    <div class="kpi"><div class="kpi-label">Biens déclarés</div><div class="kpi-value">${items.length}</div></div>
+    <div class="kpi"><div class="kpi-label">Revenus encaissés</div><div class="kpi-value">${dh(totalEncaisses)}</div></div>
+    <div class="kpi"><div class="kpi-label">Biens imposables</div><div class="kpi-value" style="color:${nbImposables > 0 ? "#f59e0b" : "#10b981"}">${nbImposables}</div></div>
+    <div class="kpi"><div class="kpi-label">IR total dû</div><div class="kpi-value" style="color:${totalIR > 0 ? "#ef4444" : "#10b981"}">${dh(totalIR)}</div></div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Bien</th>
+        <th>Revenus encaissés</th>
+        <th>TSC déduit</th>
+        <th>Abattement</th>
+        <th>RNI</th>
+        <th>IR net</th>
+        <th>Statut</th>
+      </tr>
+    </thead>
+    <tbody>${rows}</tbody>
+  </table>
+
+  <div class="footer">
+    Document préparatoire basé sur les données enregistrées — à vérifier avec votre conseiller fiscal avant dépôt.
+    &nbsp;·&nbsp; Easy Location Immo
+  </div>
+</body>
+</html>`
+
+    const win = window.open("", "_blank")
+    if (!win) return
+    win.document.write(html)
+    win.document.close()
+    win.focus()
+    setTimeout(() => win.print(), 400)
+  }
+
   return (
     <div className="p-8 max-w-6xl">
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-slate-900" style={{ fontFamily: "Syne, sans-serif" }}>
-          Déclaration IR Foncier — Perception
-        </h1>
-        <p className="text-slate-500 text-sm mt-1">
-          État fiscal par bien — à déposer auprès du bureau de la perception
-        </p>
+      <div className="mb-8 flex items-start justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-slate-900" style={{ fontFamily: "Syne, sans-serif" }}>
+            Déclaration IR Foncier — Perception
+          </h1>
+          <p className="text-slate-500 text-sm mt-1">
+            État fiscal par bien — à déposer auprès du bureau de la perception
+          </p>
+        </div>
+        {!loadingAll && items.length > 0 && (
+          <button
+            onClick={exportPDF}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-semibold shadow-sm hover:shadow-md transition-shadow flex-shrink-0"
+            style={{ background: "linear-gradient(135deg, #10B981, #059669)" }}
+          >
+            ⬇ Télécharger PDF
+          </button>
+        )}
       </div>
 
       {/* Filtres */}
