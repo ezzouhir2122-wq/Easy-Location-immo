@@ -43,6 +43,8 @@ export default function ComptabilitePage() {
   const [entries, setEntries] = useState<ComptaEcriture[]>([]);
   const [biens, setBiens] = useState<Bien[]>([]);
   const [open, setOpen] = useState(false);
+  const [openCompte, setOpenCompte] = useState(false);
+  const [compteForm, setCompteForm] = useState({ code: "", libelle: "", classe: 5 });
   const [tab, setTab] = useState<"journal" | "comptes">("journal");
   const [form, setForm] = useState({
     bien_id: "", date_operation: new Date().toISOString().slice(0, 10),
@@ -86,6 +88,25 @@ export default function ComptabilitePage() {
       setMessage({ text: error?.message ?? "Initialisation impossible.", type: "error" });
     } finally {
       setInitializing(false);
+    }
+  }
+
+  async function submitCompte(event: FormEvent) {
+    event.preventDefault();
+    if (!compteForm.code.trim() || !compteForm.libelle.trim()) {
+      setMessage({ text: "Code et libellé obligatoires.", type: "error" }); return;
+    }
+    if (accounts.some(a => a.code === compteForm.code.trim())) {
+      setMessage({ text: `Le compte ${compteForm.code} existe déjà.`, type: "error" }); return;
+    }
+    try {
+      const created = await createComptaCompte({ code: compteForm.code.trim(), libelle: compteForm.libelle.trim(), classe: compteForm.classe });
+      setAccounts(current => [...current, created].sort((a, b) => a.code.localeCompare(b.code)));
+      setCompteForm({ code: "", libelle: "", classe: 5 });
+      setOpenCompte(false);
+      setMessage({ text: `Compte ${created.code} — ${created.libelle} créé.`, type: "success" });
+    } catch (error: any) {
+      setMessage({ text: error?.message ?? "Création impossible.", type: "error" });
     }
   }
 
@@ -134,6 +155,12 @@ export default function ComptabilitePage() {
             className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 disabled:opacity-50"
           >
             {initializing ? "Initialisation…" : "Initialiser le plan"}
+          </button>
+          <button
+            onClick={() => { setOpenCompte(x => !x); setTab("comptes"); setOpen(false); }}
+            className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700"
+          >
+            {openCompte ? "Fermer" : "+ Nouveau compte"}
           </button>
           <button
             onClick={() => { setOpen(x => !x); setTab("journal"); }}
@@ -270,7 +297,52 @@ export default function ComptabilitePage() {
           </div>
         )
       ) : (
-        accounts.length === 0 ? (
+        <>
+          {openCompte && (
+            <form onSubmit={submitCompte} className="mb-4 rounded-2xl border border-slate-100 bg-white p-6 shadow-sm">
+              <h2 className="mb-4 font-semibold text-slate-800">Nouveau compte CGNC</h2>
+              <div className="grid grid-cols-3 gap-4">
+                <Field label="Code CGNC (ex: 6141)">
+                  <input
+                    required
+                    value={compteForm.code}
+                    onChange={e => setCompteForm({ ...compteForm, code: e.target.value })}
+                    className="input"
+                    placeholder="4 chiffres minimum"
+                    maxLength={10}
+                  />
+                </Field>
+                <Field label="Libellé">
+                  <input
+                    required
+                    value={compteForm.libelle}
+                    onChange={e => setCompteForm({ ...compteForm, libelle: e.target.value })}
+                    className="input"
+                    placeholder="Ex: Publicité et communication"
+                  />
+                </Field>
+                <Field label="Classe CGNC">
+                  <select
+                    value={compteForm.classe}
+                    onChange={e => setCompteForm({ ...compteForm, classe: Number(e.target.value) })}
+                    className="input"
+                  >
+                    <option value={1}>1 — Financement permanent</option>
+                    <option value={2}>2 — Actif immobilisé</option>
+                    <option value={3}>3 — Actif circulant</option>
+                    <option value={4}>4 — Passif circulant</option>
+                    <option value={5}>5 — Trésorerie</option>
+                    <option value={6}>6 — Charges</option>
+                    <option value={7}>7 — Produits</option>
+                  </select>
+                </Field>
+              </div>
+              <div className="mt-5 flex justify-end">
+                <button className="rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white">Créer le compte</button>
+              </div>
+            </form>
+          )}
+          {accounts.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-slate-200 bg-white py-20 text-center">
             <div className="mb-4 text-5xl">📂</div>
             <h3 className="font-semibold text-slate-700">Plan de comptes vide</h3>
@@ -304,6 +376,7 @@ export default function ComptabilitePage() {
             </table>
           </div>
         )
+        }</>
       )}
     </div>
   );
