@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Charge, getCharges, deleteCharge } from "@/lib/supabase/charges";
+import { getBiens, Bien } from "@/lib/supabase/biens";
 import ChargeForm from "@/components/charges/ChargeForm";
 import SlideOver from "@/components/ui/SlideOver";
 import Toast from "@/components/ui/Toast";
@@ -16,14 +17,21 @@ const TYPE_ICONS: Record<string, string> = {
 
 export default function ChargesPage() {
   const [charges, setCharges] = useState<Charge[]>([]);
+  const [biens, setBiens] = useState<Bien[]>([]);
   const [loading, setLoading] = useState(true);
   const [formOpen, setFormOpen] = useState(false);
   const [editTarget, setEditTarget] = useState<Charge | undefined>(undefined);
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
+  const [filterBien, setFilterBien] = useState<string>("tous");
+  const [filterType, setFilterType] = useState<string>("tous");
+  const [filterStatut, setFilterStatut] = useState<string>("tous");
 
   async function load() {
     setLoading(true);
-    try { setCharges(await getCharges()); }
+    try {
+      const [c, b] = await Promise.all([getCharges(), getBiens()]);
+      setCharges(c); setBiens(b);
+    }
     catch { setToast({ message: "Erreur de chargement", type: "error" }); }
     finally { setLoading(false); }
   }
@@ -54,8 +62,13 @@ export default function ChargesPage() {
     setEditTarget(undefined);
   }
 
-  const totalPaye = charges.filter(c => c.statut === "paye").reduce((s, c) => s + c.montant, 0);
-  const totalAttente = charges.filter(c => c.statut === "en_attente").reduce((s, c) => s + c.montant, 0);
+  const filtered = charges.filter(c =>
+    (filterBien === "tous" || c.bien_id === filterBien) &&
+    (filterType === "tous" || c.type === filterType) &&
+    (filterStatut === "tous" || c.statut === filterStatut)
+  );
+  const totalPaye = filtered.filter(c => c.statut === "paye").reduce((s, c) => s + c.montant, 0);
+  const totalAttente = filtered.filter(c => c.statut === "en_attente").reduce((s, c) => s + c.montant, 0);
 
   return (
     <div className="p-8">
@@ -83,14 +96,41 @@ export default function ChargesPage() {
         ))}
       </div>
 
+      {/* Filtres */}
+      <div className="flex flex-wrap gap-2 mb-5 items-center">
+        <select value={filterBien} onChange={e => setFilterBien(e.target.value)} className="input mt-0 w-auto text-xs py-1.5">
+          <option value="tous">Tous les biens</option>
+          {biens.map(b => <option key={b.id} value={b.id}>{b.nom}</option>)}
+        </select>
+        <select value={filterType} onChange={e => setFilterType(e.target.value)} className="input mt-0 w-auto text-xs py-1.5">
+          <option value="tous">Tous les types</option>
+          {Object.entries(TYPE_LABELS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
+        </select>
+        <select value={filterStatut} onChange={e => setFilterStatut(e.target.value)} className="input mt-0 w-auto text-xs py-1.5">
+          <option value="tous">Tous les statuts</option>
+          <option value="paye">Payé</option>
+          <option value="en_attente">En attente</option>
+        </select>
+        {(filterBien !== "tous" || filterType !== "tous" || filterStatut !== "tous") && (
+          <button onClick={() => { setFilterBien("tous"); setFilterType("tous"); setFilterStatut("tous"); }} className="text-xs text-slate-400 hover:text-slate-600 underline">
+            Réinitialiser
+          </button>
+        )}
+        <span className="ml-auto text-xs text-slate-400">{filtered.length} charge{filtered.length !== 1 ? "s" : ""}</span>
+      </div>
+
       {loading ? (
         <div className="space-y-3">{[...Array(4)].map((_, i) => <div key={i} className="rounded-xl h-14 animate-pulse" style={{ background: "#F1F5F9" }} />)}</div>
-      ) : charges.length === 0 ? (
+      ) : filtered.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-24 text-center">
           <div className="text-5xl mb-4">📊</div>
-          <h3 className="text-slate-700 font-semibold text-lg mb-2" style={{ fontFamily: "Syne, sans-serif" }}>Aucune charge enregistrée</h3>
-          <p className="text-slate-400 text-sm mb-6">Suivez vos dépenses liées à vos biens immobiliers</p>
-          <button onClick={handleAdd} className="px-5 py-2.5 rounded-xl text-white text-sm font-semibold" style={{ background: "linear-gradient(135deg, #2563EB, #1D4ED8)" }}>+ Ajouter une charge</button>
+          <h3 className="text-slate-700 font-semibold text-lg mb-2" style={{ fontFamily: "Syne, sans-serif" }}>
+            {charges.length === 0 ? "Aucune charge enregistrée" : "Aucun résultat pour ces filtres"}
+          </h3>
+          <p className="text-slate-400 text-sm mb-6">
+            {charges.length === 0 ? "Suivez vos dépenses liées à vos biens immobiliers" : "Modifiez ou réinitialisez les filtres"}
+          </p>
+          {charges.length === 0 && <button onClick={handleAdd} className="px-5 py-2.5 rounded-xl text-white text-sm font-semibold" style={{ background: "linear-gradient(135deg, #2563EB, #1D4ED8)" }}>+ Ajouter une charge</button>}
         </div>
       ) : (
         <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
@@ -107,8 +147,8 @@ export default function ChargesPage() {
               </tr>
             </thead>
             <tbody>
-              {charges.map((c, i) => (
-                <tr key={c.id} className="border-b border-slate-50 hover:bg-slate-50 transition" style={{ borderBottom: i === charges.length - 1 ? "none" : undefined }}>
+              {filtered.map((c, i) => (
+                <tr key={c.id} className="border-b border-slate-50 hover:bg-slate-50 transition" style={{ borderBottom: i === filtered.length - 1 ? "none" : undefined }}>
                   <td className="px-5 py-3.5">
                     <span className="flex items-center gap-2 font-medium text-slate-800">
                       <span>{TYPE_ICONS[c.type]}</span>{TYPE_LABELS[c.type] ?? c.type}

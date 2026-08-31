@@ -179,6 +179,7 @@ export default function LoyersPage() {
   const [formOpen, setFormOpen] = useState(false)
   const [editTarget, setEditTarget] = useState<Loyer | undefined>(undefined)
   const [filterStatut, setFilterStatut] = useState<string>("tous")
+  const [filterBien, setFilterBien] = useState<string>("tous")
 
   // Vue mensuelle
   const [biens, setBiens] = useState<Bien[]>([])
@@ -214,7 +215,7 @@ export default function LoyersPage() {
   }, [annee])
 
   useEffect(() => { loadLoyers() }, [])
-  useEffect(() => { if (vue === "mensuelle") loadMensuel() }, [vue, loadMensuel])
+  useEffect(() => { loadMensuel() }, [loadMensuel])
 
   function handleAdd() { setEditTarget(undefined); setFormOpen(true) }
   function handleEdit(l: Loyer) { setEditTarget(l); setFormOpen(true) }
@@ -284,7 +285,10 @@ export default function LoyersPage() {
     }
   }
 
-  const filtered = filterStatut === "tous" ? loyers : loyers.filter(l => l.statut === filterStatut)
+  const filtered = loyers.filter(l =>
+    (filterStatut === "tous" || l.statut === filterStatut) &&
+    (filterBien === "tous" || l.bien_id === filterBien)
+  )
   const totalPaye = loyers.filter(l => l.statut === "paye").reduce((s, l) => s + l.montant, 0)
   const totalAttente = loyers.filter(l => l.statut === "en_attente").reduce((s, l) => s + l.montant, 0)
   const totalRetard = loyers.filter(l => l.statut === "retard").reduce((s, l) => s + l.montant, 0)
@@ -346,8 +350,20 @@ export default function LoyersPage() {
             )}
           </div>
 
+          {/* Filtre bien vue mensuelle */}
+          <div className="mb-4">
+            <select
+              value={filterBien}
+              onChange={e => setFilterBien(e.target.value)}
+              className="input mt-0 w-auto text-xs py-1.5"
+            >
+              <option value="tous">Tous les biens</option>
+              {biens.map(b => <option key={b.id} value={b.id}>{b.nom}</option>)}
+            </select>
+          </div>
+
           <VueMensuelle
-            biens={biens}
+            biens={filterBien === "tous" ? biens : biens.filter(b => b.id === filterBien)}
             loyers={loyersMensuels}
             annee={annee}
             toggling={toggling}
@@ -375,8 +391,8 @@ export default function LoyersPage() {
             ))}
           </div>
 
-          {/* Filtres statut */}
-          <div className="flex gap-2 mb-5">
+          {/* Filtres statut + bien */}
+          <div className="flex flex-wrap gap-2 mb-5 items-center">
             {["tous", "paye", "en_attente", "retard", "partiel"].map(s => (
               <button
                 key={s}
@@ -387,9 +403,19 @@ export default function LoyersPage() {
                   color: filterStatut === s ? "#fff" : "#64748B",
                 }}
               >
-                {s === "tous" ? "Tous" : s === "paye" ? "Payés" : s === "en_attente" ? "En attente" : s === "retard" ? "Retard" : "Partiel"}
+                {s === "tous" ? "Tous statuts" : s === "paye" ? "Payés" : s === "en_attente" ? "En attente" : s === "retard" ? "Retard" : "Partiel"}
               </button>
             ))}
+            <div className="ml-auto">
+              <select
+                value={filterBien}
+                onChange={e => setFilterBien(e.target.value)}
+                className="input mt-0 w-auto text-xs py-1.5"
+              >
+                <option value="tous">Tous les biens</option>
+                {biens.map(b => <option key={b.id} value={b.id}>{b.nom}</option>)}
+              </select>
+            </div>
           </div>
 
           {/* Tableau */}
