@@ -4,19 +4,39 @@ import { FormEvent, useEffect, useState } from "react";
 import { Bien, getBiens } from "@/lib/supabase/biens";
 import { ComptaCompte, ComptaEcriture, createComptaCompte, createComptaEcriture, getComptaComptes, getComptaEcritures, validateComptaEcriture } from "@/lib/supabase/conciergerie";
 
+// Plan de comptes CGNC Maroc — immobilier locatif
 const defaultAccounts = [
-  { code: "512000", libelle: "Banque", classe: 5 },
-  { code: "706000", libelle: "Revenus locatifs", classe: 7 },
-  { code: "613000", libelle: "Charges d'entretien", classe: 6 },
-  { code: "445710", libelle: "TVA collectée", classe: 4 },
-  { code: "411000", libelle: "Locataires / Clients", classe: 4 },
-  { code: "401000", libelle: "Fournisseurs", classe: 4 },
-  { code: "616000", libelle: "Primes d'assurance", classe: 6 },
-  { code: "614000", libelle: "Charges de copropriété", classe: 6 },
+  // Classe 3 — Actif circulant
+  { code: "3421", libelle: "Clients — Locataires", classe: 3 },
+  { code: "3455", libelle: "État — TVA récupérable", classe: 3 },
+  // Classe 4 — Passif circulant
+  { code: "4411", libelle: "Fournisseurs — Prestataires", classe: 4 },
+  { code: "4455", libelle: "État — TVA facturée", classe: 4 },
+  // Classe 5 — Trésorerie
+  { code: "5141", libelle: "Banques (CIH, Attijari, BCP…)", classe: 5 },
+  { code: "5161", libelle: "Caisse", classe: 5 },
+  // Classe 6 — Charges
+  { code: "6131", libelle: "Charges locatives et copropriété", classe: 6 },
+  { code: "6152", libelle: "Primes d'assurance", classe: 6 },
+  { code: "6163", libelle: "Honoraires (syndic, agence, CEC)", classe: 6 },
+  { code: "6511", libelle: "Impôts directs (IR Foncier, TSC, TH)", classe: 6 },
+  { code: "6132", libelle: "Travaux d'entretien et réparations", classe: 6 },
+  // Classe 7 — Produits
+  { code: "7127", libelle: "Revenus des immeubles en location", classe: 7 },
+  { code: "7181", libelle: "Récupération de charges sur locataires", classe: 7 },
 ];
 
-const classeLabel: Record<number, string> = { 1: "Comptes de capitaux", 2: "Immobilisations", 3: "Stocks", 4: "Tiers", 5: "Financiers", 6: "Charges", 7: "Produits" };
-const classeColor: Record<number, string> = { 4: "#8B5CF6", 5: "#2563EB", 6: "#EF4444", 7: "#10B981" };
+// CGNC Maroc — libellés des classes
+const classeLabel: Record<number, string> = {
+  1: "Financement permanent",
+  2: "Actif immobilisé",
+  3: "Actif circulant",
+  4: "Passif circulant",
+  5: "Trésorerie",
+  6: "Charges",
+  7: "Produits",
+};
+const classeColor: Record<number, string> = { 3: "#06B6D4", 4: "#8B5CF6", 5: "#2563EB", 6: "#EF4444", 7: "#10B981" };
 
 export default function ComptabilitePage() {
   const [accounts, setAccounts] = useState<ComptaCompte[]>([]);
@@ -26,7 +46,7 @@ export default function ComptabilitePage() {
   const [tab, setTab] = useState<"journal" | "comptes">("journal");
   const [form, setForm] = useState({
     bien_id: "", date_operation: new Date().toISOString().slice(0, 10),
-    libelle: "", reference: "", compte_debit: "512000", compte_credit: "706000", montant: "",
+    libelle: "", reference: "", compte_debit: "5141", compte_credit: "7127", montant: "",
   });
   const [message, setMessage] = useState<{ text: string; type: "info" | "error" | "success" } | null>(null);
   const [loading, setLoading] = useState(true);
