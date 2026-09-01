@@ -1,0 +1,3 @@
+import { NextResponse } from "next/server";
+import { requireAdmin } from "@/lib/supabase/auth";
+export async function PATCH(request: Request) { const { supabase, user } = await requireAdmin(); const body = await request.json(); if (!body?.id || !["pending", "under_review", "approved", "rejected", "needs_info"].includes(body.statut)) return NextResponse.json({ error: "Données invalides" }, { status: 400 }); const { error } = await supabase.from("partner_requests").update({ statut: body.statut, reviewed_by: user.id, reviewed_at: new Date().toISOString() }).eq("id", body.id); if (error) return NextResponse.json({ error: error.message }, { status: 403 }); return NextResponse.json({ ok: true }); }
