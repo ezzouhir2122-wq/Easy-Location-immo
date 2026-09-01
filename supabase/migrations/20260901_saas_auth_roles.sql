@@ -18,6 +18,15 @@ create table if not exists public.profiles (
   updated_at timestamptz not null default now()
 );
 
+-- Compatibilité avec l'ancienne table profiles déjà présente dans le projet.
+alter table public.profiles add column if not exists role text default 'client';
+alter table public.profiles add column if not exists status text default 'active';
+alter table public.profiles add column if not exists created_at timestamptz default now();
+alter table public.profiles add column if not exists updated_at timestamptz default now();
+update public.profiles set role = coalesce(role, 'client'), status = coalesce(status, 'active');
+alter table public.profiles alter column role set default 'client';
+alter table public.profiles alter column status set default 'active';
+
 create table if not exists public.subscriptions (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null references public.profiles(id) on delete cascade,

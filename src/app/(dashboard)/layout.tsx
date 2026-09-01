@@ -3,7 +3,7 @@ import CommandPalette from "@/components/layout/CommandPalette";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex min-h-screen bg-[#fbfaf7]">
+    <div className="flex min-h-screen bg-[#f5f8fc]">
       <Sidebar />
       <main className="min-w-0 flex-1 overflow-auto">
         {children}

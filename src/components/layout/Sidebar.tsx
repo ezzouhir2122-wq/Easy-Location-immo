@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { FiBarChart2, FiCalendar, FiCheckSquare, FiChevronDown, FiDollarSign, FiFileText, FiFolder, FiHome, FiSettings, FiUsers } from "react-icons/fi";
+import { FiBarChart2, FiCalendar, FiCheckSquare, FiChevronDown, FiCreditCard, FiDollarSign, FiFileText, FiFolder, FiHome, FiSettings, FiUsers } from "react-icons/fi";
 import { createClient } from "@/lib/supabase/client";
 
 type Icon = React.ComponentType<{ size?: number; strokeWidth?: number }>;
@@ -38,6 +38,7 @@ const fiscalNav: NavItem[] = [
 ];
 const gestionNav: NavItem[] = [
   { href: "/documents", icon: FiFolder, label: "Documents" },
+  { href: "/abonnement", icon: FiCreditCard, label: "Mon abonnement" },
   { href: "/parametres", icon: FiSettings, label: "Paramètres" },
 ];
 
@@ -48,7 +49,7 @@ function SectionLabel({ label }: { label: string }) {
 function NavLink({ item, pathname }: { item: NavItem; pathname: string }) {
   const active = item.exact ? pathname === item.href : pathname.startsWith(item.href);
   const Icon = item.icon;
-  return <Link href={item.href} className="relative flex items-center gap-2.5 rounded-lg px-3 py-2 text-xs transition-colors hover:bg-white/[.06]" style={{ color: active ? "#FFFFFF" : "#A1B2C8", background: active ? "rgba(37,99,235,.18)" : "transparent", fontWeight: active ? 600 : 400 }}>
+  return <Link href={item.href} className="relative flex items-center gap-2.5 rounded-lg px-3 py-2 text-xs transition-colors hover:bg-white/[.06]" style={{ color: active ? "#FFFFFF" : "#A1B2C8", background: active ? "linear-gradient(90deg, rgba(6,182,212,.22), rgba(37,99,235,.16))" : "transparent", fontWeight: active ? 600 : 400 }}>
     {active && <span className="absolute left-0 top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-r bg-blue-500" />}
     <Icon size={15} strokeWidth={1.8} />{item.label}
   </Link>;
@@ -67,8 +68,8 @@ export default function Sidebar() {
   const initials = userFullName ? userFullName.split(" ").map(p => p[0]).slice(0, 2).join("").toUpperCase() : (userEmail?.slice(0, 2).toUpperCase() ?? "?");
   const onFiscalPage = pathname.startsWith("/fiscalite");
 
-  return <aside className="flex h-screen w-60 flex-col" style={{ background: "linear-gradient(180deg,#0B1A2F 0%,#0d1f38 100%)", borderRight: "1px solid #1E3352" }}>
-    <div className="h-0.5 bg-gradient-to-r from-transparent via-blue-500 to-transparent" />
+  return <aside className="flex h-screen w-60 flex-col" style={{ background: "linear-gradient(180deg,#0A1020 0%,#0D1830 100%)", borderRight: "1px solid #243653" }}>
+    <div className="h-0.5 bg-gradient-to-r from-transparent via-cyan-400 to-blue-500" />
     <div className="flex-shrink-0 border-b px-5 py-3" style={{ borderColor: "#1E3352" }}><Image src="/logo.png" alt="Easy Location Immo" width={140} height={40} style={{ height: 40, width: "auto" }} priority /></div>
     <nav className="flex-1 overflow-y-auto px-2 py-2">
       <button onClick={() => window.dispatchEvent(new KeyboardEvent("keydown", { key: "k", ctrlKey: true, bubbles: true }))} className="mb-2 flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-xs transition-colors hover:bg-white/[.06]" style={{ color: "#607694", border: "1px solid #1E3352" }}>

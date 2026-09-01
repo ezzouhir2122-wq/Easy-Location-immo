@@ -5,10 +5,11 @@
 @tailwind utilities;
 
 :root {
-  --navy: #0B1A2F;
-  --navy-light: #152238;
-  --navy-border: #1E3352;
+  --navy: #0A1020;
+  --navy-light: #111C33;
+  --navy-border: #243653;
   --blue: #2563EB;
+  --cyan: #06B6D4;
   --green: #10B981;
   --red: #EF4444;
   --amber: #F59E0B;
@@ -20,13 +21,13 @@
 
 body {
   font-family: 'DM Sans', sans-serif;
-  background: #fbfaf7;
-  color: #1E293B;
+  background: #F5F8FC;
+  color: #172033;
   -webkit-font-smoothing: antialiased;
 }
 
 button, a { -webkit-tap-highlight-color: transparent; }
-::selection { background: #ccebdc; color: #0b2d20; }
+::selection { background: #A5F3FC; color: #083344; }
 
 @layer utilities {
   .font-syne {
