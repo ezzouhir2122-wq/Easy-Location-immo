@@ -100,7 +100,7 @@ export default function DashboardPage() {
   );
 
   return (
-    <div className="ocean-dashboard p-8 max-w-6xl">
+    <div className="ocean-dashboard w-full max-w-6xl p-8">
 
       {/* Header */}
       <div className="mb-8">
@@ -117,7 +117,7 @@ export default function DashboardPage() {
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-2 gap-4 mb-6 lg:grid-cols-4">
+      <div className="grid min-w-0 grid-cols-2 gap-4 mb-6 lg:grid-cols-4">
         <KpiCard
           label="Taux d'occupation"
           value={pct(kpis.tauxOccupation)}
@@ -151,7 +151,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Graphique + Alertes */}
-      <div className="grid gap-6 lg:grid-cols-[1fr_340px]">
+      <div className="grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
 
         {/* Graphique revenus / charges 6 mois */}
         <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm">
@@ -237,7 +237,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Accès rapides */}
-      <div className="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <div className="mt-6 grid min-w-0 grid-cols-2 gap-4 lg:grid-cols-4">
         {[
           { href: "/biens", emoji: "🏠", label: "Biens", count: biens.length },
           { href: "/loyers", emoji: "💰", label: "Loyers", count: loyers.filter(l => l.statut === "en_attente").length + " en attente" },

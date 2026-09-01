@@ -47,6 +47,8 @@ button, a { -webkit-tap-highlight-color: transparent; }
 /* Ocean Command — dashboard client */
 .ocean-dashboard {
   min-height: 100%;
+  min-width: 0;
+  overflow-x: hidden;
   background:
     radial-gradient(circle at 8% 0%, rgba(6, 182, 212, .08), transparent 24rem),
     radial-gradient(circle at 92% 12%, rgba(37, 99, 235, .06), transparent 22rem);
@@ -58,6 +60,22 @@ button, a { -webkit-tap-highlight-color: transparent; }
   background: linear-gradient(110deg, rgba(255,255,255,.94), rgba(236,250,253,.72));
   border: 1px solid rgba(186, 230, 239, .8);
   box-shadow: 0 14px 34px rgba(15, 56, 85, .05);
+  min-width: 0;
+}
+
+.ocean-dashboard .grid > * { min-width: 0; }
+.ocean-dashboard a { max-width: 100%; }
+
+@media (max-width: 1100px) {
+  .ocean-dashboard { padding: 24px !important; }
+  .ocean-dashboard > div:first-child { padding: 18px; }
+  .ocean-dashboard > div:first-child .rounded-xl { white-space: normal; }
+}
+
+@media (max-width: 700px) {
+  .ocean-dashboard { padding: 16px !important; }
+  .ocean-dashboard > div:first-child { border-radius: 18px; }
+  .ocean-dashboard .grid { grid-template-columns: minmax(0, 1fr) !important; }
 }
 
 .ocean-dashboard > div:first-child h1 { font-size: clamp(28px, 3vw, 38px); }
