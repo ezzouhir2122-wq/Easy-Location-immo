@@ -1,0 +1,573 @@
+{"kind":"deck","id":"pr/tkv4xd","name":"Deck"}
+{"kind":"layout","layoutId":"1e482940-a23f-49ca-9e6c-87bb32ca62e8","name":"Master","type":"master"}
+{"kind":"layout","layoutId":"5b1acd42-2cfa-4c33-b9d4-200f3cbfb0bc","name":"Title Slide","type":"title"}
+{"kind":"slide","id":"sl/n2n4wh","slide":1,"title":"SOUTENANCE","textShapes":8}
+{"kind":"shape","id":"sh/hwfi5w32","slide":1,"bbox":[0,0,510,720]}
+{"kind":"textbox","id":"sh/vax03mlw","slide":1,"text":"SOUTENANCE","textPreview":"SOUTENANCE","textChars":10,"textLines":1,"bbox":[72,370,330,26]}
+{"kind":"textbox","id":"sh/4z61grmd","slide":1,"text":"Competencia IA","textPreview":"Competencia IA","textChars":14,"textLines":1,"bbox":[72,408,520,72]}
+{"kind":"textbox","id":"sh/50z29w3y","slide":1,"text":"Plateforme d’intelligence artificielle générative pour l’ingénierie pédagogique des formateurs OFPPT","textPreview":"Plateforme d’intelligence artificielle générative pour l’ingénierie pédagogique des formateurs OFPPT","textChars":100,"textLines":1,"bbox":[72,490,470,100]}
+{"kind":"textbox","id":"sh/ixoje147","slide":1,"text":"ElMustapha EZZOUHIR\nEncadré par : Mustapha LOUAFIR","textPreview":"ElMustapha EZZOUHIR | Encadré par : Mustapha LOUAFIR","textChars":50,"textLines":2,"bbox":[72,625,460,50]}
+{"kind":"textbox","id":"sh/jyx076ls","slide":1,"text":"Concours de promotion interne — Échelle 22","textPreview":"Concours de promotion interne — Échelle 22","textChars":42,"textLines":1,"bbox":[690,200,440,34]}
+{"kind":"textbox","id":"sh/s3q1kbmp","slide":1,"text":"Préparer mieux.\nEn moins de deux minutes.","textPreview":"Préparer mieux. | En moins de deux minutes.","textChars":41,"textLines":2,"bbox":[690,270,480,140]}
+{"kind":"shape","id":"sh/t4z2dg3u","slide":1,"bbox":[690,440,440,5]}
+{"kind":"textbox","id":"sh/hw7ylkny","slide":1,"text":"Une innovation pédagogique ancrée dans le référentiel OFPPT.","textPreview":"Une innovation pédagogique ancrée dans le référentiel OFPPT.","textChars":60,"textLines":1,"bbox":[690,475,430,60]}
+{"kind":"textbox","id":"sh/gvyhcf6d","slide":1,"text":"2026","textPreview":"2026","textChars":4,"textLines":1,"bbox":[1090,650,90,30]}
+{"kind":"image","id":"im/rqx47q58","slide":1,"name":"","alt":"image1.png","bbox":[88,100,210,210]}
+{"kind":"notes","id":"nt/n2n4wh","slide":1,"text":"[Sources]\nRapport fourni : 1A__Rapport Complet VF_10_07_2026.docx\nVisuel : logo OFPPT extrait du rapport fourni."}
+{"kind":"slide","id":"sl/ncedcz","slide":2,"title":"LE POINT DE DÉPART","textShapes":12}
+{"kind":"textbox","id":"sh/72l8v2pc","slide":2,"text":"LE POINT DE DÉPART","textPreview":"LE POINT DE DÉPART","textChars":18,"textLines":1,"bbox":[72,42,600,22]}
+{"kind":"textbox","id":"sh/83u94n6x","slide":2,"text":"Le formateur doit consacrer son énergie à la pédagogie","textPreview":"Le formateur doit consacrer son énergie à la pédagogie","textChars":54,"textLines":1,"bbox":[72,78,1120,70]}
+{"kind":"textbox","id":"sh/943qxs7i","slide":2,"text":"La production documentaire prend trop de place dans le quotidien.","textPreview":"La production documentaire prend trop de place dans le quotidien.","textChars":65,"textLines":1,"bbox":[72,155,1050,44]}
+{"kind":"shape","id":"sh/ydsrydov","slide":2,"bbox":[72,215,1136,1]}
+{"kind":"textbox","id":"sh/zel8ripg","slide":2,"text":"COMPETENCIA IA","textPreview":"COMPETENCIA IA","textChars":14,"textLines":1,"bbox":[72,682,350,18]}
+{"kind":"textbox","id":"sh/kfu90n61","slide":2,"text":"02","textPreview":"02","textChars":2,"textLines":1,"bbox":[1180,682,28,18]}
+{"kind":"textbox","id":"sh/lg3qts7m","slide":2,"text":"1 à 3 h","textPreview":"1 à 3 h","textChars":7,"textLines":1,"bbox":[92,270,260,62]}
+{"kind":"textbox","id":"sh/i9wrahoz","slide":2,"text":"pour préparer une séance conforme","textPreview":"pour préparer une séance conforme","textChars":33,"textLines":1,"bbox":[92,335,260,40]}
+{"kind":"textbox","id":"sh/ja5s3mpk","slide":2,"text":"20–25 h","textPreview":"20–25 h","textChars":7,"textLines":1,"bbox":[455,270,300,62]}
+{"kind":"textbox","id":"sh/zut0fu5c","slide":2,"text":"par mois pour 20 séances","textPreview":"par mois pour 20 séances","textChars":24,"textLines":1,"bbox":[455,335,300,40]}
+{"kind":"textbox","id":"sh/etkzmpor","slide":2,"text":"< 2 min","textPreview":"< 2 min","textChars":7,"textLines":1,"bbox":[850,270,300,62]}
+{"kind":"textbox","id":"sh/1wbih4ni","slide":2,"text":"avec Competencia IA","textPreview":"avec Competencia IA","textChars":19,"textLines":1,"bbox":[850,335,300,40]}
+{"kind":"shape","id":"sh/0v2hozmx","slide":2,"bbox":[72,545,1136,1]}
+{"kind":"textbox","id":"sh/nyd0ju5o","slide":2,"text":"Le projet ne remplace pas l’expertise du formateur : il la rend immédiatement exploitable.","textPreview":"Le projet ne remplace pas l’expertise du formateur : il la rend immédiatement exploitable.","textChars":90,"textLines":1,"bbox":[92,575,1000,40]}
+{"kind":"notes","id":"nt/ncedcz","slide":2,"text":"[Sources]\nRapport fourni : 1A__Rapport Complet VF_10_07_2026.docx"}
+{"kind":"slide","id":"sl/6wxece","slide":3,"title":"CONTEXTE INSTITUTIONNEL","textShapes":14}
+{"kind":"textbox","id":"sh/a1snmhoj","slide":3,"text":"CONTEXTE INSTITUTIONNEL","textPreview":"CONTEXTE INSTITUTIONNEL","textChars":23,"textLines":1,"bbox":[72,42,600,22]}
+{"kind":"textbox","id":"sh/xoj6hcna","slide":3,"text":"La transformation numérique crée une fenêtre d’action","textPreview":"La transformation numérique crée une fenêtre d’action","textChars":53,"textLines":1,"bbox":[72,78,1120,70]}
+{"kind":"textbox","id":"sh/c3a5o76p","slide":3,"text":"Le projet s’inscrit dans la modernisation de la formation professionnelle au Maroc.","textPreview":"Le projet s’inscrit dans la modernisation de la formation professionnelle au Maroc.","textChars":83,"textLines":1,"bbox":[72,155,1050,44]}
+{"kind":"shape","id":"sh/nyhob25s","slide":3,"bbox":[72,215,1136,1]}
+{"kind":"textbox","id":"sh/2x8nixo7","slide":3,"text":"COMPETENCIA IA","textPreview":"COMPETENCIA IA","textChars":14,"textLines":1,"bbox":[72,682,350,18]}
+{"kind":"textbox","id":"sh/p0z6dcny","slide":3,"text":"03","textPreview":"03","textChars":2,"textLines":1,"bbox":[1180,682,28,18]}
+{"kind":"textbox","id":"sh/ozq5k76d","slide":3,"text":"•","textPreview":"•","textChars":1,"textLines":1,"bbox":[110,270,22,28]}
+{"kind":"textbox","id":"sh/7ulonm5c","slide":3,"text":"Former des compétences adaptées aux besoins de l’économie","textPreview":"Former des compétences adaptées aux besoins de l’économie","textChars":57,"textLines":1,"bbox":[140,270,500,34]}
+{"kind":"textbox","id":"sh/mtc7u14r","slide":3,"text":"•","textPreview":"•","textChars":1,"textLines":1,"bbox":[110,335,22,28]}
+{"kind":"textbox","id":"sh/wfypobe9","slide":3,"text":"Équiper les établissements et accompagner les formateurs","textPreview":"Équiper les établissements et accompagner les formateurs","textChars":56,"textLines":1,"bbox":[140,335,500,34]}
+{"kind":"textbox","id":"sh/xg7qhgvu","slide":3,"text":"•","textPreview":"•","textChars":1,"textLines":1,"bbox":[110,400,22,28]}
+{"kind":"textbox","id":"sh/atg7m1w3","slide":3,"text":"Intégrer l’IA dans des pratiques pédagogiques concrètes","textPreview":"Intégrer l’IA dans des pratiques pédagogiques concrètes","textChars":55,"textLines":1,"bbox":[140,400,500,34]}
+{"kind":"shape","id":"sh/bep8f6do","slide":3,"bbox":[735,260,350,210]}
+{"kind":"textbox","id":"sh/orepkbex","slide":3,"text":"OFPPT","textPreview":"OFPPT","textChars":5,"textLines":1,"bbox":[775,295,270,50]}
+{"kind":"textbox","id":"sh/9s7qdwvi","slide":3,"text":"EFP  →  DR  →  DG","textPreview":"EFP  →  DR  →  DG","textChars":17,"textLines":1,"bbox":[775,365,270,32]}
+{"kind":"textbox","id":"sh/mpw7i1w7","slide":3,"text":"Une logique de proximité, de mutualisation et de pilotage.","textPreview":"Une logique de proximité, de mutualisation et de pilotage.","textChars":58,"textLines":1,"bbox":[770,420,280,50]}
+{"kind":"notes","id":"nt/6wxece","slide":3,"text":"[Sources]\nRapport fourni : 1A__Rapport Complet VF_10_07_2026.docx"}
+{"kind":"slide","id":"sl/e5i5yk","slide":4,"title":"LE TERRAIN","textShapes":12}
+{"kind":"textbox","id":"sh/mdsrqhkn","slide":4,"text":"LE TERRAIN","textPreview":"LE TERRAIN","textChars":10,"textLines":1,"bbox":[72,42,600,22]}
+{"kind":"textbox","id":"sh/9gjalc3y","slide":4,"text":"L’enquête confirme un problème de productivité et de capitalisation","textPreview":"L’enquête confirme un problème de productivité et de capitalisation","textChars":67,"textLines":1,"bbox":[72,78,1120,70]}
+{"kind":"textbox","id":"sh/ofa9s72d","slide":4,"text":"47 formateurs ont nourri l’analyse de l’existant.","textPreview":"47 formateurs ont nourri l’analyse de l’existant.","textChars":49,"textLines":1,"bbox":[72,155,1050,44]}
+{"kind":"shape","id":"sh/bilsnml4","slide":4,"bbox":[72,215,1136,1]}
+{"kind":"textbox","id":"sh/ahcbehkj","slide":4,"text":"COMPETENCIA IA","textPreview":"COMPETENCIA IA","textChars":14,"textLines":1,"bbox":[72,682,350,18]}
+{"kind":"textbox","id":"sh/xk3apw3a","slide":4,"text":"04","textPreview":"04","textChars":2,"textLines":1,"bbox":[1180,682,28,18]}
+{"kind":"textbox","id":"sh/wjutgr2p","slide":4,"text":"95 %","textPreview":"95 %","textChars":4,"textLines":1,"bbox":[100,270,270,62]}
+{"kind":"textbox","id":"sh/j6lsrml0","slide":4,"text":"utilisent Word comme outil principal","textPreview":"utilisent Word comme outil principal","textChars":36,"textLines":1,"bbox":[100,335,270,40]}
+{"kind":"textbox","id":"sh/ylcbi1kv","slide":4,"text":"< 20 %","textPreview":"< 20 %","textChars":6,"textLines":1,"bbox":[500,270,300,62]}
+{"kind":"textbox","id":"sh/wny5snit","slide":4,"text":"disposent d’un modèle standardisé","textPreview":"disposent d’un modèle standardisé","textChars":33,"textLines":1,"bbox":[500,335,300,40]}
+{"kind":"textbox","id":"sh/xo7m1sze","slide":4,"text":"85 %","textPreview":"85 %","textChars":4,"textLines":1,"bbox":[900,270,300,62]}
+{"kind":"textbox","id":"sh/alwnqd0n","slide":4,"text":"sont intéressés par la génération automatique","textPreview":"sont intéressés par la génération automatique","textChars":45,"textLines":1,"bbox":[900,335,300,40]}
+{"kind":"textbox","id":"sh/vm54zih8","slide":4,"text":"Le problème n’est pas Word. C’est l’absence d’un environnement commun, structuré et réutilisable.","textPreview":"Le problème n’est pas Word. C’est l’absence d’un environnement commun, structuré et réutilisable.","textChars":97,"textLines":1,"bbox":[105,520,1060,60]}
+{"kind":"notes","id":"nt/e5i5yk","slide":4,"text":"[Sources]\nRapport fourni : 1A__Rapport Complet VF_10_07_2026.docx"}
+{"kind":"slide","id":"sl/p7y6qu","slide":5,"title":"LES DYSFONCTIONNEMENTS","textShapes":15}
+{"kind":"textbox","id":"sh/2xsvql4b","slide":5,"text":"LES DYSFONCTIONNEMENTS","textPreview":"LES DYSFONCTIONNEMENTS","textChars":22,"textLines":1,"bbox":[72,42,600,22]}
+{"kind":"textbox","id":"sh/pkjul032","slide":5,"text":"Cinq frictions transforment un travail utile en tâches répétitives","textPreview":"Cinq frictions transforment un travail utile en tâches répétitives","textChars":66,"textLines":1,"bbox":[72,78,1120,70]}
+{"kind":"textbox","id":"sh/ojadsvmh","slide":5,"text":"Elles touchent le temps, la qualité et la continuité pédagogique.","textPreview":"Elles touchent le temps, la qualité et la continuité pédagogique.","textChars":65,"textLines":1,"bbox":[72,155,1050,44]}
+{"kind":"shape","id":"sh/bm1cnql8","slide":5,"bbox":[72,215,1136,1]}
+{"kind":"textbox","id":"sh/qlsvu54n","slide":5,"text":"COMPETENCIA IA","textPreview":"COMPETENCIA IA","textChars":14,"textLines":1,"bbox":[72,682,350,18]}
+{"kind":"textbox","id":"sh/do3up03y","slide":5,"text":"05","textPreview":"05","textChars":2,"textLines":1,"bbox":[1180,682,28,18]}
+{"kind":"shape","id":"sh/cnadwvmd","slide":5,"bbox":[90,255,16,42]}
+{"kind":"textbox","id":"sh/zqlcral4","slide":5,"text":"Temps de production excessif","textPreview":"Temps de production excessif","textChars":28,"textLines":1,"bbox":[130,255,330,30]}
+{"kind":"textbox","id":"sh/ypcvy54j","slide":5,"text":"Fatigue, moins de temps d’animation","textPreview":"Fatigue, moins de temps d’animation","textChars":35,"textLines":1,"bbox":[505,255,550,30]}
+{"kind":"shape","id":"sh/8ji50fe5","slide":5,"bbox":[90,304,1020,1]}
+{"kind":"shape","id":"sh/94rmtkfa","slide":5,"bbox":[90,323,16,42]}
+{"kind":"textbox","id":"sh/mhgny5wz","slide":5,"text":"Modèles hétérogènes","textPreview":"Modèles hétérogènes","textChars":19,"textLines":1,"bbox":[130,323,330,30]}
+{"kind":"textbox","id":"sh/ni94raxk","slide":5,"text":"Qualité variable entre formateurs","textPreview":"Qualité variable entre formateurs","textChars":33,"textLines":1,"bbox":[505,323,550,30]}
+{"kind":"shape","id":"sh/w7i54ze1","slide":5,"bbox":[90,372,1020,1]}
+{"kind":"shape","id":"sh/x8r6x4fm","slide":5,"bbox":[90,391,16,42]}
+{"kind":"textbox","id":"sh/a50n2pwv","slide":5,"text":"Référentiel peu intégré","textPreview":"Référentiel peu intégré","textChars":23,"textLines":1,"bbox":[130,391,330,30]}
+{"kind":"textbox","id":"sh/v694vuxg","slide":5,"text":"Compétences parfois mal couvertes","textPreview":"Compétences parfois mal couvertes","textChars":33,"textLines":1,"bbox":[505,391,550,30]}
+{"kind":"shape","id":"sh/kb258zex","slide":5,"bbox":[90,440,1020,1]}
+{"kind":"shape","id":"sh/5cb614fi","slide":5,"bbox":[90,459,16,42]}
+{"kind":"textbox","id":"sh/ts7ml4nm","slide":5,"text":"Ressources isolées","textPreview":"Ressources isolées","textChars":18,"textLines":1,"bbox":[130,459,330,30]}
+{"kind":"textbox","id":"sh/sry5sz6h","slide":5,"text":"Perte de mémoire pédagogique","textPreview":"Perte de mémoire pédagogique","textChars":28,"textLines":1,"bbox":[505,459,550,30]}
+{"kind":"shape","id":"sh/rqp4jupw","slide":5,"bbox":[90,508,1020,1]}
+{"kind":"shape","id":"sh/6pgnqpob","slide":5,"bbox":[90,527,16,42]}
+{"kind":"textbox","id":"sh/1wrmp4ny","slide":5,"text":"Suivi peu traçable","textPreview":"Suivi peu traçable","textChars":18,"textLines":1,"bbox":[130,527,330,30]}
+{"kind":"textbox","id":"sh/gvy5wj6d","slide":5,"text":"Reporting long et fragile","textPreview":"Reporting long et fragile","textChars":25,"textLines":1,"bbox":[505,527,550,30]}
+{"kind":"shape","id":"sh/fup4ne5s","slide":5,"bbox":[90,576,1020,1]}
+{"kind":"notes","id":"nt/p7y6qu","slide":5,"text":"[Sources]\nRapport fourni : 1A__Rapport Complet VF_10_07_2026.docx"}
+{"kind":"slide","id":"sl/hm0cgg","slide":6,"title":"LA PROBLÉMATIQUE","textShapes":7}
+{"kind":"textbox","id":"sh/upknip4f","slide":6,"text":"LA PROBLÉMATIQUE","textPreview":"LA PROBLÉMATIQUE","textChars":16,"textLines":1,"bbox":[72,42,600,22]}
+{"kind":"textbox","id":"sh/hcb6d436","slide":6,"text":"Comment faire de l’IA un levier de productivité pédagogique ?","textPreview":"Comment faire de l’IA un levier de productivité pédagogique ?","textChars":61,"textLines":1,"bbox":[72,78,1120,70]}
+{"kind":"textbox","id":"sh/gb25kzml","slide":6,"text":"La réponse doit respecter la complexité des documents et l’exigence du référentiel.","textPreview":"La réponse doit respecter la complexité des documents et l’exigence du référentiel.","textChars":83,"textLines":1,"bbox":[72,155,1050,44]}
+{"kind":"shape","id":"sh/3etofulw","slide":6,"bbox":[72,215,1136,1]}
+{"kind":"textbox","id":"sh/idknmp4b","slide":6,"text":"COMPETENCIA IA","textPreview":"COMPETENCIA IA","textChars":14,"textLines":1,"bbox":[72,682,350,18]}
+{"kind":"textbox","id":"sh/5gv6h432","slide":6,"text":"06","textPreview":"06","textChars":2,"textLines":1,"bbox":[1180,682,28,18]}
+{"kind":"shape","id":"sh/4fm5ozmh","slide":6,"bbox":[120,280,1040,180]}
+{"kind":"textbox","id":"sh/ridojel8","slide":6,"text":"Comment automatiser la génération de ressources pédagogiques,\ntout en garantissant leur alignement, leur partage et leur suivi ?","textPreview":"Comment automatiser la génération de ressources pédagogiques, | tout en garantissant leur alignement, leur partage et leur suivi ?","textChars":128,"textLines":2,"bbox":[170,320,940,100]}
+{"kind":"textbox","id":"sh/qh47q94n","slide":6,"text":"Trois exigences structurent la solution : produire juste, partager mieux, suivre dans la durée.","textPreview":"Trois exigences structurent la solution : produire juste, partager mieux, suivre dans la durée.","textChars":95,"textLines":1,"bbox":[170,500,940,34]}
+{"kind":"notes","id":"nt/hm0cgg","slide":6,"text":"[Sources]\nRapport fourni : 1A__Rapport Complet VF_10_07_2026.docx"}
+{"kind":"slide","id":"sl/x7gtoj","slide":7,"title":"LES OBJECTIFS","textShapes":19}
+{"kind":"textbox","id":"sh/ve50n6xk","slide":7,"text":"LES OBJECTIFS","textPreview":"LES OBJECTIFS","textChars":13,"textLines":1,"bbox":[72,42,600,22]}
+{"kind":"textbox","id":"sh/gfe1gby5","slide":7,"text":"Une plateforme utile à la fois au formateur et à l’institution","textPreview":"Une plateforme utile à la fois au formateur et à l’institution","textChars":62,"textLines":1,"bbox":[72,78,1120,70]}
+{"kind":"textbox","id":"sh/hgnipwfq","slide":7,"text":"Le projet poursuit deux niveaux d’impact complémentaires.","textPreview":"Le projet poursuit deux niveaux d’impact complémentaires.","textChars":57,"textLines":1,"bbox":[72,155,1050,44]}
+{"kind":"shape","id":"sh/69czahg3","slide":7,"bbox":[72,215,1136,1]}
+{"kind":"textbox","id":"sh/7al0jmxo","slide":7,"text":"COMPETENCIA IA","textPreview":"COMPETENCIA IA","textChars":14,"textLines":1,"bbox":[72,682,350,18]}
+{"kind":"textbox","id":"sh/8behcry9","slide":7,"text":"07","textPreview":"07","textChars":2,"textLines":1,"bbox":[1180,682,28,18]}
+{"kind":"shape","id":"sh/tcnilwfu","slide":7,"bbox":[92,270,500,250]}
+{"kind":"textbox","id":"sh/q5gjmlw7","slide":7,"text":"Niveau opérationnel","textPreview":"Niveau opérationnel","textChars":19,"textLines":1,"bbox":[125,300,400,35]}
+{"kind":"textbox","id":"sh/r6p0vqxs","slide":7,"text":"•","textPreview":"•","textChars":1,"textLines":1,"bbox":[125,360,22,28]}
+{"kind":"textbox","id":"sh/j6pwfelc","slide":7,"text":"Générer séances, fiches et évaluations","textPreview":"Générer séances, fiches et évaluations","textChars":38,"textLines":1,"bbox":[155,360,400,34]}
+{"kind":"textbox","id":"sh/i5gfm94r","slide":7,"text":"•","textPreview":"•","textChars":1,"textLines":1,"bbox":[125,415,22,28]}
+{"kind":"textbox","id":"sh/587yho32","slide":7,"text":"Partager et réutiliser les ressources","textPreview":"Partager et réutiliser les ressources","textChars":37,"textLines":1,"bbox":[155,415,400,34]}
+{"kind":"textbox","id":"sh/47yxojmx","slide":7,"text":"•","textPreview":"•","textChars":1,"textLines":1,"bbox":[125,470,22,28]}
+{"kind":"textbox","id":"sh/ru9gjel8","slide":7,"text":"Suivre les compétences des stagiaires","textPreview":"Suivre les compétences des stagiaires","textChars":37,"textLines":1,"bbox":[155,470,400,34]}
+{"kind":"shape","id":"sh/6t0fqt4n","slide":7,"bbox":[675,270,500,250]}
+{"kind":"textbox","id":"sh/twrylo3e","slide":7,"text":"Niveau institutionnel","textPreview":"Niveau institutionnel","textChars":21,"textLines":1,"bbox":[708,300,400,35]}
+{"kind":"textbox","id":"sh/svixsjmt","slide":7,"text":"•","textPreview":"•","textChars":1,"textLines":1,"bbox":[708,360,22,28]}
+{"kind":"textbox","id":"sh/fy9gnylk","slide":7,"text":"Visualiser l’activité pédagogique","textPreview":"Visualiser l’activité pédagogique","textChars":33,"textLines":1,"bbox":[738,360,400,34]}
+{"kind":"textbox","id":"sh/ex0futkz","slide":7,"text":"•","textPreview":"•","textChars":1,"textLines":1,"bbox":[708,415,22,28]}
+{"kind":"textbox","id":"sh/qt4zmxo7","slide":7,"text":"Piloter EFP, DR et DG","textPreview":"Piloter EFP, DR et DG","textChars":21,"textLines":1,"bbox":[738,415,400,34]}
+{"kind":"textbox","id":"sh/bud0f25s","slide":7,"text":"•","textPreview":"•","textChars":1,"textLines":1,"bbox":[708,470,22,28]}
+{"kind":"textbox","id":"sh/cvm1o7mx","slide":7,"text":"Exporter des données structurées","textPreview":"Exporter des données structurées","textChars":32,"textLines":1,"bbox":[738,470,400,34]}
+{"kind":"notes","id":"nt/x7gtoj","slide":7,"text":"[Sources]\nRapport fourni : 1A__Rapport Complet VF_10_07_2026.docx"}
+{"kind":"slide","id":"sl/hdpkxy","slide":8,"title":"LE PARTI PRIS","textShapes":11}
+{"kind":"textbox","id":"sh/ovmtwn2t","slide":8,"text":"LE PARTI PRIS","textPreview":"LE PARTI PRIS","textChars":13,"textLines":1,"bbox":[72,42,600,22]}
+{"kind":"textbox","id":"sh/3utsni1o","slide":8,"text":"L’IA génère, le formateur valide","textPreview":"L’IA génère, le formateur valide","textChars":32,"textLines":1,"bbox":[72,78,1120,70]}
+{"kind":"textbox","id":"sh/29krudk3","slide":8,"text":"La plateforme est conçue comme un assistant, pas comme un substitut.","textPreview":"La plateforme est conçue comme un assistant, pas comme un substitut.","textChars":68,"textLines":1,"bbox":[72,155,1050,44]}
+{"kind":"shape","id":"sh/18bal8ji","slide":8,"bbox":[72,215,1136,1]}
+{"kind":"textbox","id":"sh/g729s32x","slide":8,"text":"COMPETENCIA IA","textPreview":"COMPETENCIA IA","textChars":14,"textLines":1,"bbox":[72,682,350,18]}
+{"kind":"textbox","id":"sh/f6tsji1c","slide":8,"text":"08","textPreview":"08","textChars":2,"textLines":1,"bbox":[1180,682,28,18]}
+{"kind":"textbox","id":"sh/e5krqdkr","slide":8,"text":"Référentiel","textPreview":"Référentiel","textChars":11,"textLines":1,"bbox":[110,305,260,40]}
+{"kind":"textbox","id":"sh/t4bah8j6","slide":8,"text":"→","textPreview":"→","textChars":1,"textLines":1,"bbox":[390,305,90,40]}
+{"kind":"textbox","id":"sh/s3i9o321","slide":8,"text":"Contexte pédagogique","textPreview":"Contexte pédagogique","textChars":20,"textLines":1,"bbox":[480,305,300,40]}
+{"kind":"textbox","id":"sh/mpkj6xk3","slide":8,"text":"→","textPreview":"→","textChars":1,"textLines":1,"bbox":[810,305,90,40]}
+{"kind":"textbox","id":"sh/nqt0z21o","slide":8,"text":"Génération IA","textPreview":"Génération IA","textChars":13,"textLines":1,"bbox":[900,305,250,40]}
+{"kind":"shape","id":"sh/or218729","slide":8,"bbox":[150,410,940,4]}
+{"kind":"textbox","id":"sh/9sbi1cju","slide":8,"text":"Le formateur relit, ajuste, régénère et exporte.","textPreview":"Le formateur relit, ajuste, régénère et exporte.","textChars":48,"textLines":1,"bbox":[350,455,580,42]}
+{"kind":"notes","id":"nt/hdpkxy","slide":8,"text":"[Sources]\nRapport fourni : 1A__Rapport Complet VF_10_07_2026.docx"}
+{"kind":"slide","id":"sl/4b3qeg","slide":9,"title":"LA MÉTHODE","textShapes":21}
+{"kind":"textbox","id":"sh/sf6l83i9","slide":9,"text":"LA MÉTHODE","textPreview":"LA MÉTHODE","textChars":10,"textLines":1,"bbox":[72,42,600,22]}
+{"kind":"textbox","id":"sh/redkfy1o","slide":9,"text":"Un développement par itérations, guidé par le besoin réel","textPreview":"Un développement par itérations, guidé par le besoin réel","textChars":57,"textLines":1,"bbox":[72,78,1120,70]}
+{"kind":"textbox","id":"sh/6d436tk3","slide":9,"text":"Le choix du vibe coding a accéléré le passage de l’idée à l’usage.","textPreview":"Le choix du vibe coding a accéléré le passage de l’idée à l’usage.","textChars":66,"textLines":1,"bbox":[72,155,1050,44]}
+{"kind":"shape","id":"sh/5cv2doji","slide":9,"bbox":[72,215,1136,1]}
+{"kind":"textbox","id":"sh/4bm14j2x","slide":9,"text":"COMPETENCIA IA","textPreview":"COMPETENCIA IA","textChars":14,"textLines":1,"bbox":[72,682,350,18]}
+{"kind":"textbox","id":"sh/jadkbe1c","slide":9,"text":"09","textPreview":"09","textChars":2,"textLines":1,"bbox":[1180,682,28,18]}
+{"kind":"shape","id":"sh/i94j29kr","slide":9,"bbox":[90,300,220,145]}
+{"kind":"textbox","id":"sh/p8z2p8jm","slide":9,"text":"1","textPreview":"1","textChars":1,"textLines":1,"bbox":[110,320,55,55]}
+{"kind":"textbox","id":"sh/o7qlgni1","slide":9,"text":"Décrire","textPreview":"Décrire","textChars":7,"textLines":1,"bbox":[175,322,120,30]}
+{"kind":"textbox","id":"sh/y14n2poj","slide":9,"text":"Le besoin en langage naturel","textPreview":"Le besoin en langage naturel","textChars":28,"textLines":1,"bbox":[110,380,180,48]}
+{"kind":"textbox","id":"sh/z2d4vup4","slide":9,"text":"→","textPreview":"→","textChars":1,"textLines":1,"bbox":[315,350,40,40]}
+{"kind":"shape","id":"sh/k3m54z69","slide":9,"bbox":[365,300,220,145]}
+{"kind":"textbox","id":"sh/l4vmx4nu","slide":9,"text":"2","textPreview":"2","textChars":1,"textLines":1,"bbox":[385,320,55,55]}
+{"kind":"textbox","id":"sh/axkny5o7","slide":9,"text":"Générer","textPreview":"Générer","textChars":7,"textLines":1,"bbox":[450,322,120,30]}
+{"kind":"textbox","id":"sh/byt4raps","slide":9,"text":"Une première version avec l’IA","textPreview":"Une première version avec l’IA","textChars":30,"textLines":1,"bbox":[385,380,180,48]}
+{"kind":"textbox","id":"sh/cz250f6d","slide":9,"text":"→","textPreview":"→","textChars":1,"textLines":1,"bbox":[590,350,40,40]}
+{"kind":"shape","id":"sh/x0vmtk7y","slide":9,"bbox":[640,300,220,145]}
+{"kind":"textbox","id":"sh/utona9or","slide":9,"text":"3","textPreview":"3","textChars":1,"textLines":1,"bbox":[660,320,55,55]}
+{"kind":"textbox","id":"sh/vuxo3e5w","slide":9,"text":"Tester","textPreview":"Tester","textChars":6,"textLines":1,"bbox":[725,322,120,30]}
+{"kind":"textbox","id":"sh/repkv65o","slide":9,"text":"La fonctionnalité en situation","textPreview":"La fonctionnalité en situation","textChars":30,"textLines":1,"bbox":[660,380,180,48]}
+{"kind":"textbox","id":"sh/qdgj2143","slide":9,"text":"→","textPreview":"→","textChars":1,"textLines":1,"bbox":[865,350,40,40]}
+{"kind":"shape","id":"sh/dg72xgne","slide":9,"bbox":[915,300,220,145]}
+{"kind":"textbox","id":"sh/sfy14bm9","slide":9,"text":"4","textPreview":"4","textChars":1,"textLines":1,"bbox":[935,320,55,55]}
+{"kind":"textbox","id":"sh/fi9kz65k","slide":9,"text":"Ajuster","textPreview":"Ajuster","textChars":7,"textLines":1,"bbox":[1000,322,120,30]}
+{"kind":"textbox","id":"sh/eh0j6l4z","slide":9,"text":"Jusqu’à obtenir le comportement attendu","textPreview":"Jusqu’à obtenir le comportement attendu","textChars":39,"textLines":1,"bbox":[935,380,180,48]}
+{"kind":"textbox","id":"sh/14r21gnq","slide":9,"text":"Rôle du porteur : décrire, tester, juger, recommencer.","textPreview":"Rôle du porteur : décrire, tester, juger, recommencer.","textChars":54,"textLines":1,"bbox":[280,540,720,34]}
+{"kind":"notes","id":"nt/4b3qeg","slide":9,"text":"[Sources]\nRapport fourni : 1A__Rapport Complet VF_10_07_2026.docx"}
+{"kind":"slide","id":"sl/p150h1","slide":10,"title":"LES UTILISATEURS","textShapes":12}
+{"kind":"textbox","id":"sh/p8fq5wvu","slide":10,"text":"LES UTILISATEURS","textPreview":"LES UTILISATEURS","textChars":16,"textLines":1,"bbox":[72,42,600,22]}
+{"kind":"textbox","id":"sh/25oruhc3","slide":10,"text":"Le formateur est le centre de gravité de la plateforme","textPreview":"Le formateur est le centre de gravité de la plateforme","textChars":54,"textLines":1,"bbox":[72,78,1120,70]}
+{"kind":"textbox","id":"sh/36x83mdo","slide":10,"text":"Les autres profils bénéficient d’une vision adaptée à leur niveau d’action.","textPreview":"Les autres profils bénéficient d’une vision adaptée à leur niveau d’action.","textChars":75,"textLines":1,"bbox":[72,155,1050,44]}
+{"kind":"shape","id":"sh/gjm9srud","slide":10,"bbox":[72,215,1136,1]}
+{"kind":"textbox","id":"sh/14fq1wvi","slide":10,"text":"COMPETENCIA IA","textPreview":"COMPETENCIA IA","textChars":14,"textLines":1,"bbox":[72,682,350,18]}
+{"kind":"textbox","id":"sh/eh4rqhc7","slide":10,"text":"10","textPreview":"10","textChars":2,"textLines":1,"bbox":[1180,682,28,18]}
+{"kind":"textbox","id":"sh/fid8zmds","slide":10,"text":"FORMATEUR","textPreview":"FORMATEUR","textChars":9,"textLines":1,"bbox":[120,275,240,30]}
+{"kind":"textbox","id":"sh/sfm9o7e1","slide":10,"text":"STAGIAIRE","textPreview":"STAGIAIRE","textChars":9,"textLines":1,"bbox":[450,275,240,30]}
+{"kind":"textbox","id":"sh/tgvqxcvm","slide":10,"text":"EFP / DR / DG","textPreview":"EFP / DR / DG","textChars":13,"textLines":1,"bbox":[780,275,260,30]}
+{"kind":"shape","id":"sh/xcjmlove","slide":10,"bbox":[240,335,1,4]}
+{"kind":"shape","id":"sh/wba5sjet","slide":10,"bbox":[570,335,1,4]}
+{"kind":"shape","id":"sh/vah4jed8","slide":10,"bbox":[910,335,1,4]}
+{"kind":"textbox","id":"sh/a98nqtwn","slide":10,"text":"Produit\nGère\nSuit","textPreview":"Produit | Gère | Suit","textChars":17,"textLines":3,"bbox":[155,365,170,105]}
+{"kind":"textbox","id":"sh/98zmhov2","slide":10,"text":"Participe\naux simulations","textPreview":"Participe | aux simulations","textChars":25,"textLines":2,"bbox":[480,365,170,105]}
+{"kind":"textbox","id":"sh/onq5ojex","slide":10,"text":"Consulte\nPilote\nExporte","textPreview":"Consulte | Pilote | Exporte","textChars":23,"textLines":3,"bbox":[810,365,200,105]}
+{"kind":"textbox","id":"sh/nmh4fedc","slide":10,"text":"Un accès par rôle pour protéger les données et clarifier les usages.","textPreview":"Un accès par rôle pour protéger les données et clarifier les usages.","textChars":68,"textLines":1,"bbox":[240,550,800,34]}
+{"kind":"notes","id":"nt/p150h1","slide":10,"text":"[Sources]\nRapport fourni : 1A__Rapport Complet VF_10_07_2026.docx"}
+{"kind":"slide","id":"sl/6umgv4","slide":11,"title":"LE RÉFÉRENTIEL","textShapes":15}
+{"kind":"textbox","id":"sh/fmlcr6l4","slide":11,"text":"LE RÉFÉRENTIEL","textPreview":"LE RÉFÉRENTIEL","textChars":14,"textLines":1,"bbox":[72,42,600,22]}
+{"kind":"textbox","id":"sh/gnut0b2p","slide":11,"text":"Le référentiel OFPPT devient l’épine dorsale de la génération","textPreview":"Le référentiel OFPPT devient l’épine dorsale de la génération","textChars":61,"textLines":1,"bbox":[72,78,1120,70]}
+{"kind":"textbox","id":"sh/1o3utg3a","slide":11,"text":"Chaque production part d’une sélection pédagogique contextualisée.","textPreview":"Chaque production part d’une sélection pédagogique contextualisée.","textChars":66,"textLines":1,"bbox":[72,155,1050,44]}
+{"kind":"shape","id":"sh/2pcb2lkf","slide":11,"bbox":[72,215,1136,1]}
+{"kind":"textbox","id":"sh/3q5cvq10","slide":11,"text":"COMPETENCIA IA","textPreview":"COMPETENCIA IA","textChars":14,"textLines":1,"bbox":[72,682,350,18]}
+{"kind":"textbox","id":"sh/oret4v2l","slide":11,"text":"11","textPreview":"11","textChars":2,"textLines":1,"bbox":[1180,682,28,18]}
+{"kind":"shape","id":"sh/psnux0j6","slide":11,"bbox":[88,305,190,88]}
+{"kind":"textbox","id":"sh/qtwb6lkr","slide":11,"text":"Filière","textPreview":"Filière","textChars":7,"textLines":1,"bbox":[98,334,170,28]}
+{"kind":"textbox","id":"sh/bu5czq1c","slide":11,"text":"→","textPreview":"→","textChars":1,"textLines":1,"bbox":[282,330,30,30]}
+{"kind":"shape","id":"sh/ji90vy1k","slide":11,"bbox":[313,305,190,88]}
+{"kind":"textbox","id":"sh/ih0jmdkz","slide":11,"text":"Module","textPreview":"Module","textChars":6,"textLines":1,"bbox":[323,334,170,28]}
+{"kind":"textbox","id":"sh/54rix8jq","slide":11,"text":"→","textPreview":"→","textChars":1,"textLines":1,"bbox":[507,330,30,30]}
+{"kind":"shape","id":"sh/k3i1o325","slide":11,"bbox":[538,305,190,88]}
+{"kind":"textbox","id":"sh/ve90ry18","slide":11,"text":"Séquence","textPreview":"Séquence","textChars":8,"textLines":1,"bbox":[548,334,170,28]}
+{"kind":"textbox","id":"sh/adgzitk3","slide":11,"text":"→","textPreview":"→","textChars":1,"textLines":1,"bbox":[732,330,30,30]}
+{"kind":"shape","id":"sh/xgrit8je","slide":11,"bbox":[763,305,190,88]}
+{"kind":"textbox","id":"sh/wfi1k32t","slide":11,"text":"Compétence","textPreview":"Compétence","textChars":10,"textLines":1,"bbox":[773,334,170,28]}
+{"kind":"textbox","id":"sh/fat0321s","slide":11,"text":"→","textPreview":"→","textChars":1,"textLines":1,"bbox":[957,330,30,30]}
+{"kind":"shape","id":"sh/u9kjux07","slide":11,"bbox":[988,305,190,88]}
+{"kind":"textbox","id":"sh/q5o3m14f","slide":11,"text":"Objectif / critère","textPreview":"Objectif / critère","textChars":18,"textLines":1,"bbox":[998,334,170,28]}
+{"kind":"textbox","id":"sh/r6x4vml0","slide":11,"text":"Résultat : une IA qui travaille à partir d’un contexte, et non à l’aveugle.","textPreview":"Résultat : une IA qui travaille à partir d’un contexte, et non à l’aveugle.","textChars":75,"textLines":1,"bbox":[170,500,940,36]}
+{"kind":"notes","id":"nt/6umgv4","slide":11,"text":"[Sources]\nRapport fourni : 1A__Rapport Complet VF_10_07_2026.docx"}
+{"kind":"slide","id":"sl/exj81u","slide":12,"title":"CONCEPTION FONCTIONNELLE","textShapes":12}
+{"kind":"textbox","id":"sh/98juxsju","slide":12,"text":"CONCEPTION FONCTIONNELLE","textPreview":"CONCEPTION FONCTIONNELLE","textChars":24,"textLines":1,"bbox":[72,42,600,22]}
+{"kind":"textbox","id":"sh/ml8bmd0j","slide":12,"text":"Les cas d’utilisation couvrent toute la chaîne de valeur","textPreview":"Les cas d’utilisation couvrent toute la chaîne de valeur","textChars":56,"textLines":1,"bbox":[72,78,1120,70]}
+{"kind":"textbox","id":"sh/n61cvi14","slide":12,"text":"La plateforme relie production, collaboration, suivi et pilotage.","textPreview":"La plateforme relie production, collaboration, suivi et pilotage.","textChars":65,"textLines":1,"bbox":[72,155,1050,44]}
+{"kind":"shape","id":"sh/wbatsnil","slide":12,"bbox":[72,215,1136,1]}
+{"kind":"textbox","id":"sh/hcju1sj6","slide":12,"text":"COMPETENCIA IA","textPreview":"COMPETENCIA IA","textChars":14,"textLines":1,"bbox":[72,682,350,18]}
+{"kind":"textbox","id":"sh/a9sbqx0f","slide":12,"text":"12","textPreview":"12","textChars":2,"textLines":1,"bbox":[1180,682,28,18]}
+{"kind":"textbox","id":"sh/cfqtg3ih","slide":12,"text":"Actions communes","textPreview":"Actions communes","textChars":16,"textLines":1,"bbox":[740,300,350,30]}
+{"kind":"textbox","id":"sh/dgzap8j2","slide":12,"text":"•","textPreview":"•","textChars":1,"textLines":1,"bbox":[740,355,22,28]}
+{"kind":"textbox","id":"sh/dk7mhkfy","slide":12,"text":"S’authentifier et gérer son profil","textPreview":"S’authentifier et gérer son profil","textChars":34,"textLines":1,"bbox":[770,355,390,34]}
+{"kind":"textbox","id":"sh/cjylofed","slide":12,"text":"•","textPreview":"•","textChars":1,"textLines":1,"bbox":[740,410,22,28]}
+{"kind":"textbox","id":"sh/bip4fax8","slide":12,"text":"Consulter le tableau de bord","textPreview":"Consulter le tableau de bord","textChars":28,"textLines":1,"bbox":[770,410,390,34]}
+{"kind":"textbox","id":"sh/qhg3m5wn","slide":12,"text":"•","textPreview":"•","textChars":1,"textLines":1,"bbox":[740,465,22,28]}
+{"kind":"textbox","id":"sh/l8rmlkfa","slide":12,"text":"Accéder aux services selon son rôle","textPreview":"Accéder aux services selon son rôle","textChars":35,"textLines":1,"bbox":[770,465,390,34]}
+{"kind":"image","id":"im/yt8n2lkr","slide":12,"name":"","alt":"image7.png","bbox":[90,270,560,280]}
+{"kind":"notes","id":"nt/exj81u","slide":12,"text":"[Sources]\nRapport fourni : 1A__Rapport Complet VF_10_07_2026.docx"}
+{"kind":"slide","id":"sl/e14zg4","slide":13,"title":"LE MODÈLE DE DONNÉES","textShapes":17}
+{"kind":"textbox","id":"sh/z6ts3e9g","slide":13,"text":"LE MODÈLE DE DONNÉES","textPreview":"LE MODÈLE DE DONNÉES","textChars":20,"textLines":1,"bbox":[72,42,600,22]}
+{"kind":"textbox","id":"sh/k729wjql","slide":13,"text":"Une structure conçue pour relier contenus, compétences et usages","textPreview":"Une structure conçue pour relier contenus, compétences et usages","textChars":64,"textLines":1,"bbox":[72,78,1120,70]}
+{"kind":"textbox","id":"sh/l8va54r6","slide":13,"text":"Le modèle soutient à la fois la génération et le pilotage.","textPreview":"Le modèle soutient à la fois la génération et le pilotage.","textChars":58,"textLines":1,"bbox":[72,155,1050,44]}
+{"kind":"shape","id":"sh/a1krqp8j","slide":13,"bbox":[72,215,1136,1]}
+{"kind":"textbox","id":"sh/b2tszu94","slide":13,"text":"COMPETENCIA IA","textPreview":"COMPETENCIA IA","textChars":14,"textLines":1,"bbox":[72,682,350,18]}
+{"kind":"textbox","id":"sh/c329szqp","slide":13,"text":"13","textPreview":"13","textChars":2,"textLines":1,"bbox":[1180,682,28,18]}
+{"kind":"shape","id":"sh/x4ba14ra","slide":13,"bbox":[100,270,300,105]}
+{"kind":"textbox","id":"sh/2d0rmp8n","slide":13,"text":"Utilisateur","textPreview":"Utilisateur","textChars":11,"textLines":1,"bbox":[120,290,260,28]}
+{"kind":"textbox","id":"sh/ne9svu98","slide":13,"text":"rôle, établissement","textPreview":"rôle, établissement","textChars":19,"textLines":1,"bbox":[120,330,260,24]}
+{"kind":"shape","id":"sh/7y1k7elw","slide":13,"bbox":[460,270,300,105]}
+{"kind":"textbox","id":"sh/6xs3e94b","slide":13,"text":"Référentiel","textPreview":"Référentiel","textChars":11,"textLines":1,"bbox":[480,290,260,28]}
+{"kind":"textbox","id":"sh/t0329o3m","slide":13,"text":"filière → compétence","textPreview":"filière → compétence","textChars":20,"textLines":1,"bbox":[480,330,260,24]}
+{"kind":"shape","id":"sh/8zalgjmh","slide":13,"bbox":[820,270,300,105]}
+{"kind":"textbox","id":"sh/v2lkbels","slide":13,"text":"Ressources","textPreview":"Ressources","textChars":10,"textLines":1,"bbox":[840,290,260,28]}
+{"kind":"textbox","id":"sh/u1c3it47","slide":13,"text":"séance, fiche, évaluation","textPreview":"séance, fiche, évaluation","textChars":25,"textLines":1,"bbox":[840,330,260,24]}
+{"kind":"shape","id":"sh/h43mdo3y","slide":13,"bbox":[100,415,300,105]}
+{"kind":"textbox","id":"sh/g3ulkjmd","slide":13,"text":"Suivi","textPreview":"Suivi","textChars":5,"textLines":1,"bbox":[120,435,260,28]}
+{"kind":"textbox","id":"sh/b6hkzulo","slide":13,"text":"groupe, stagiaire, acquisition","textPreview":"groupe, stagiaire, acquisition","textChars":30,"textLines":1,"bbox":[120,475,260,24]}
+{"kind":"shape","id":"sh/a58j6p43","slide":13,"bbox":[460,415,300,105]}
+{"kind":"textbox","id":"sh/e1gnexor","slide":13,"text":"Collaboration","textPreview":"Collaboration","textChars":13,"textLines":1,"bbox":[480,435,260,28]}
+{"kind":"textbox","id":"sh/fmpo725c","slide":13,"text":"likes, commentaires, partage","textPreview":"likes, commentaires, partage","textChars":28,"textLines":1,"bbox":[480,475,260,24]}
+{"kind":"shape","id":"sh/0ny5g7mx","slide":13,"bbox":[820,415,300,105]}
+{"kind":"textbox","id":"sh/1o769cn2","slide":13,"text":"Simulation","textPreview":"Simulation","textChars":10,"textLines":1,"bbox":[840,435,260,28]}
+{"kind":"textbox","id":"sh/qxwnadof","slide":13,"text":"entreprise virtuelle, run","textPreview":"entreprise virtuelle, run","textChars":25,"textLines":1,"bbox":[840,475,260,24]}
+{"kind":"notes","id":"nt/e14zg4","slide":13,"text":"[Sources]\nRapport fourni : 1A__Rapport Complet VF_10_07_2026.docx"}
+{"kind":"slide","id":"sl/ads0tw","slide":14,"title":"ARCHITECTURE TECHNIQUE","textShapes":18}
+{"kind":"textbox","id":"sh/nml0jy90","slide":14,"text":"ARCHITECTURE TECHNIQUE","textPreview":"ARCHITECTURE TECHNIQUE","textChars":22,"textLines":1,"bbox":[72,42,600,22]}
+{"kind":"textbox","id":"sh/8nuhs3al","slide":14,"text":"Une stack moderne, adaptée à une application web SaaS","textPreview":"Une stack moderne, adaptée à une application web SaaS","textChars":53,"textLines":1,"bbox":[72,78,1120,70]}
+{"kind":"textbox","id":"sh/9o3il8r6","slide":14,"text":"Les choix privilégient maturité, productivité et performances en production.","textPreview":"Les choix privilégient maturité, productivité et performances en production.","textChars":76,"textLines":1,"bbox":[72,155,1050,44]}
+{"kind":"shape","id":"sh/yxszmtsj","slide":14,"bbox":[72,215,1136,1]}
+{"kind":"textbox","id":"sh/zy1gfyt4","slide":14,"text":"COMPETENCIA IA","textPreview":"COMPETENCIA IA","textChars":14,"textLines":1,"bbox":[72,682,350,18]}
+{"kind":"textbox","id":"sh/0zaho3a9","slide":14,"text":"14","textPreview":"14","textChars":2,"textLines":1,"bbox":[1180,682,28,18]}
+{"kind":"textbox","id":"sh/lk3ih8ru","slide":14,"text":"Next.js / React","textPreview":"Next.js / React","textChars":15,"textLines":1,"bbox":[110,260,270,28]}
+{"kind":"textbox","id":"sh/itwzyxsn","slide":14,"text":"Interface et routes applicatives","textPreview":"Interface et routes applicatives","textChars":32,"textLines":1,"bbox":[430,260,540,28]}
+{"kind":"shape","id":"sh/ju50ri98","slide":14,"bbox":[110,298,860,1]}
+{"kind":"textbox","id":"sh/vepkjy9c","slide":14,"text":"TypeScript","textPreview":"TypeScript","textChars":10,"textLines":1,"bbox":[110,320,270,28]}
+{"kind":"textbox","id":"sh/adg3ats7","slide":14,"text":"Fiabilité et maintenabilité","textPreview":"Fiabilité et maintenabilité","textChars":27,"textLines":1,"bbox":[430,320,540,28]}
+{"kind":"shape","id":"sh/hg72lori","slide":14,"bbox":[110,358,860,1]}
+{"kind":"textbox","id":"sh/wfylc3ax","slide":14,"text":"Supabase / PostgreSQL","textPreview":"Supabase / PostgreSQL","textChars":21,"textLines":1,"bbox":[110,380,270,28]}
+{"kind":"textbox","id":"sh/jipkny9o","slide":14,"text":"Données et authentification","textPreview":"Données et authentification","textChars":27,"textLines":1,"bbox":[430,380,540,28]}
+{"kind":"shape","id":"sh/ihg3ets3","slide":14,"bbox":[110,418,860,1]}
+{"kind":"textbox","id":"sh/54r2p8ru","slide":14,"text":"Prisma ORM","textPreview":"Prisma ORM","textChars":10,"textLines":1,"bbox":[110,440,270,28]}
+{"kind":"textbox","id":"sh/4jylg3a9","slide":14,"text":"Accès typé à la base","textPreview":"Accès typé à la base","textChars":20,"textLines":1,"bbox":[430,440,540,28]}
+{"kind":"shape","id":"sh/r69kri9k","slide":14,"bbox":[110,478,860,1]}
+{"kind":"textbox","id":"sh/6503idsz","slide":14,"text":"Claude API","textPreview":"Claude API","textChars":10,"textLines":1,"bbox":[110,500,270,28]}
+{"kind":"textbox","id":"sh/21knqhc7","slide":14,"text":"Extraction et génération","textPreview":"Extraction et génération","textChars":24,"textLines":1,"bbox":[430,500,540,28]}
+{"kind":"shape","id":"sh/32tojmts","slide":14,"bbox":[110,538,860,1]}
+{"kind":"textbox","id":"sh/o3m5s7ud","slide":14,"text":"Vercel","textPreview":"Vercel","textChars":6,"textLines":1,"bbox":[110,560,270,28]}
+{"kind":"textbox","id":"sh/p4v6lcby","slide":14,"text":"Hébergement et déploiement","textPreview":"Hébergement et déploiement","textChars":26,"textLines":1,"bbox":[430,560,540,28]}
+{"kind":"shape","id":"sh/exknmxcb","slide":14,"bbox":[110,598,860,1]}
+{"kind":"shape","id":"sh/fyt4f2tw","slide":14,"bbox":[1000,275,170,230]}
+{"kind":"textbox","id":"sh/gz25o7uh","slide":14,"text":"IA\n+\nWeb\n+\nDonnées","textPreview":"IA | + | Web | + | Données","textChars":18,"textLines":5,"bbox":[1020,315,130,150]}
+{"kind":"notes","id":"nt/ads0tw","slide":14,"text":"[Sources]\nRapport fourni : 1A__Rapport Complet VF_10_07_2026.docx"}
+{"kind":"slide","id":"sl/c4tect","slide":15,"title":"SÉCURITÉ ET CONTINUITÉ","textShapes":9}
+{"kind":"textbox","id":"sh/3q5kbidk","slide":15,"text":"SÉCURITÉ ET CONTINUITÉ","textPreview":"SÉCURITÉ ET CONTINUITÉ","textChars":22,"textLines":1,"bbox":[72,42,600,22]}
+{"kind":"textbox","id":"sh/ore143e5","slide":15,"text":"Deux garde-fous protègent l’expérience utilisateur","textPreview":"Deux garde-fous protègent l’expérience utilisateur","textChars":50,"textLines":1,"bbox":[72,78,1120,70]}
+{"kind":"textbox","id":"sh/psn2d8vq","slide":15,"text":"La fluidité de l’IA ne doit pas fragiliser la confiance.","textPreview":"La fluidité de l’IA ne doit pas fragiliser la confiance.","textChars":56,"textLines":1,"bbox":[72,155,1050,44]}
+{"kind":"shape","id":"sh/e1cjytw3","slide":15,"bbox":[72,215,1136,1]}
+{"kind":"textbox","id":"sh/f25k7ydo","slide":15,"text":"COMPETENCIA IA","textPreview":"COMPETENCIA IA","textChars":14,"textLines":1,"bbox":[72,682,350,18]}
+{"kind":"textbox","id":"sh/g3e103e9","slide":15,"text":"15","textPreview":"15","textChars":2,"textLines":1,"bbox":[1180,682,28,18]}
+{"kind":"shape","id":"sh/14n298ve","slide":15,"bbox":[110,290,440,190]}
+{"kind":"textbox","id":"sh/6xcjutwr","slide":15,"text":"Sécurité par rôle","textPreview":"Sécurité par rôle","textChars":17,"textLines":1,"bbox":[150,325,360,34]}
+{"kind":"textbox","id":"sh/ryl03ydc","slide":15,"text":"Les utilisateurs accèdent uniquement\naux données de leur périmètre.","textPreview":"Les utilisateurs accèdent uniquement | aux données de leur périmètre.","textChars":67,"textLines":2,"bbox":[150,385,360,60]}
+{"kind":"shape","id":"sh/bmx8jq5k","slide":15,"bbox":[690,290,440,190]}
+{"kind":"textbox","id":"sh/qloraloz","slide":15,"text":"Fallback automatique","textPreview":"Fallback automatique","textChars":20,"textLines":1,"bbox":[730,325,360,34]}
+{"kind":"textbox","id":"sh/dofql0na","slide":15,"text":"Si le service principal est indisponible,\nla génération bascule vers un second modèle.","textPreview":"Si le service principal est indisponible, | la génération bascule vers un second modèle.","textChars":86,"textLines":2,"bbox":[730,385,360,60]}
+{"kind":"notes","id":"nt/c4tect","slide":15,"text":"[Sources]\nRapport fourni : 1A__Rapport Complet VF_10_07_2026.docx"}
+{"kind":"slide","id":"sl/fs92k3","slide":16,"title":"EXPÉRIENCE CENTRALE","textShapes":9}
+{"kind":"textbox","id":"sh/876dor2l","slide":16,"text":"EXPÉRIENCE CENTRALE","textPreview":"EXPÉRIENCE CENTRALE","textChars":19,"textLines":1,"bbox":[72,42,600,22]}
+{"kind":"textbox","id":"sh/76xcf610","slide":16,"text":"Une séance complète se construit en moins de deux minutes","textPreview":"Une séance complète se construit en moins de deux minutes","textChars":57,"textLines":1,"bbox":[72,78,1120,70]}
+{"kind":"textbox","id":"sh/m54vm1kv","slide":16,"text":"Le parcours réduit la saisie et laisse le contrôle au formateur.","textPreview":"Le parcours réduit la saisie et laisse le contrôle au formateur.","textChars":64,"textLines":1,"bbox":[72,155,1050,44]}
+{"kind":"shape","id":"sh/l4vudw3a","slide":16,"bbox":[72,215,1136,1]}
+{"kind":"textbox","id":"sh/k3mdkr2p","slide":16,"text":"COMPETENCIA IA","textPreview":"COMPETENCIA IA","textChars":14,"textLines":1,"bbox":[72,682,350,18]}
+{"kind":"textbox","id":"sh/z2dcbml4","slide":16,"text":"16","textPreview":"16","textChars":2,"textLines":1,"bbox":[1180,682,28,18]}
+{"kind":"textbox","id":"sh/d0vu9c3y","slide":16,"text":"1. Sélectionner le contexte","textPreview":"1. Sélectionner le contexte","textChars":27,"textLines":1,"bbox":[850,300,310,32]}
+{"kind":"textbox","id":"sh/czmtg72d","slide":16,"text":"2. Générer en streaming","textPreview":"2. Générer en streaming","textChars":23,"textLines":1,"bbox":[850,360,310,32]}
+{"kind":"textbox","id":"sh/a9ofm98n","slide":16,"text":"3. Modifier et exporter","textPreview":"3. Modifier et exporter","textChars":23,"textLines":1,"bbox":[850,420,310,32]}
+{"kind":"textbox","id":"sh/buxgfep8","slide":16,"text":"PDF · Word · PowerPoint","textPreview":"PDF · Word · PowerPoint","textChars":23,"textLines":1,"bbox":[850,500,310,34]}
+{"kind":"image","id":"im/3uhcbixw","slide":16,"name":"","alt":"image10.png","bbox":[90,255,710,365]}
+{"kind":"notes","id":"nt/fs92k3","slide":16,"text":"[Sources]\nRapport fourni : 1A__Rapport Complet VF_10_07_2026.docx"}
+{"kind":"slide","id":"sl/jdffnr","slide":17,"title":"SÉANCES PÉDAGOGIQUES","textShapes":11}
+{"kind":"textbox","id":"sh/krix0n2t","slide":17,"text":"SÉANCES PÉDAGOGIQUES","textPreview":"SÉANCES PÉDAGOGIQUES","textChars":20,"textLines":1,"bbox":[72,42,600,22]}
+{"kind":"textbox","id":"sh/jqpg7ilo","slide":17,"text":"Le streaming transforme l’attente en interaction","textPreview":"Le streaming transforme l’attente en interaction","textChars":48,"textLines":1,"bbox":[72,78,1120,70]}
+{"kind":"textbox","id":"sh/ipgfydk3","slide":17,"text":"Le contenu apparaît ligne par ligne, pour permettre un contrôle immédiat.","textPreview":"Le contenu apparaît ligne par ligne, pour permettre un contrôle immédiat.","textChars":73,"textLines":1,"bbox":[72,155,1050,44]}
+{"kind":"shape","id":"sh/xo7y583i","slide":17,"bbox":[72,215,1136,1]}
+{"kind":"textbox","id":"sh/wnyxw32x","slide":17,"text":"COMPETENCIA IA","textPreview":"COMPETENCIA IA","textChars":14,"textLines":1,"bbox":[72,682,350,18]}
+{"kind":"textbox","id":"sh/bmpg3ylc","slide":17,"text":"17","textPreview":"17","textChars":2,"textLines":1,"bbox":[1180,682,28,18]}
+{"kind":"textbox","id":"sh/hkbyhc3m","slide":17,"text":"•","textPreview":"•","textChars":1,"textLines":1,"bbox":[850,300,22,28]}
+{"kind":"textbox","id":"sh/gj2h8721","slide":17,"text":"Sélection cascade : filière → module → séquence → compétence","textPreview":"Sélection cascade : filière → module → séquence → compétence","textChars":60,"textLines":1,"bbox":[880,300,340,34]}
+{"kind":"textbox","id":"sh/axgvitcb","slide":17,"text":"•","textPreview":"•","textChars":1,"textLines":1,"bbox":[850,370,22,28]}
+{"kind":"textbox","id":"sh/bipwbydg","slide":17,"text":"Instructions spécifiques optionnelles","textPreview":"Instructions spécifiques optionnelles","textChars":37,"textLines":1,"bbox":[880,370,340,34]}
+{"kind":"textbox","id":"sh/wjydk3u1","slide":17,"text":"•","textPreview":"•","textChars":1,"textLines":1,"bbox":[850,440,22,28]}
+{"kind":"textbox","id":"sh/xkred8vm","slide":17,"text":"Régénérer, modifier ou exporter","textPreview":"Régénérer, modifier ou exporter","textChars":31,"textLines":1,"bbox":[880,440,340,34]}
+{"kind":"image","id":"im/fal03qto","slide":17,"name":"","alt":"image10.png","bbox":[90,260,700,360]}
+{"kind":"notes","id":"nt/jdffnr","slide":17,"text":"[Sources]\nRapport fourni : 1A__Rapport Complet VF_10_07_2026.docx"}
+{"kind":"slide","id":"sl/4h5kgs","slide":18,"title":"FICHES PÉDAGOGIQUES","textShapes":8}
+{"kind":"textbox","id":"sh/ofu5cf2t","slide":18,"text":"FICHES PÉDAGOGIQUES","textPreview":"FICHES PÉDAGOGIQUES","textChars":19,"textLines":1,"bbox":[72,42,600,22]}
+{"kind":"textbox","id":"sh/3el4ja18","slide":18,"text":"La même logique produit des documents homogènes","textPreview":"La même logique produit des documents homogènes","textChars":47,"textLines":1,"bbox":[72,78,1120,70]}
+{"kind":"textbox","id":"sh/2tcnapkn","slide":18,"text":"La cohérence d’interface accélère la prise en main.","textPreview":"La cohérence d’interface accélère la prise en main.","textChars":51,"textLines":1,"bbox":[72,155,1050,44]}
+{"kind":"shape","id":"sh/1s3mhkji","slide":18,"bbox":[72,215,1136,1]}
+{"kind":"textbox","id":"sh/gru58f2x","slide":18,"text":"COMPETENCIA IA","textPreview":"COMPETENCIA IA","textChars":14,"textLines":1,"bbox":[72,682,350,18]}
+{"kind":"textbox","id":"sh/fql4fa1c","slide":18,"text":"18","textPreview":"18","textChars":2,"textLines":1,"bbox":[1180,682,28,18]}
+{"kind":"textbox","id":"sh/lon6t4jm","slide":18,"text":"Paramètres pédagogiques","textPreview":"Paramètres pédagogiques","textChars":23,"textLines":1,"bbox":[850,305,320,30]}
+{"kind":"textbox","id":"sh/0ne5kz21","slide":18,"text":"Objectifs · durée · méthodes\nconsignes particulières","textPreview":"Objectifs · durée · méthodes | consignes particulières","textChars":52,"textLines":2,"bbox":[850,355,330,65]}
+{"kind":"textbox","id":"sh/ixc7yps7","slide":18,"text":"Un même geste, plusieurs types de ressources.","textPreview":"Un même geste, plusieurs types de ressources.","textChars":45,"textLines":1,"bbox":[850,475,330,50]}
+{"kind":"image","id":"im/f2lgryp0","slide":18,"name":"","alt":"image11.png","bbox":[90,260,700,360]}
+{"kind":"notes","id":"nt/4h5kgs","slide":18,"text":"[Sources]\nRapport fourni : 1A__Rapport Complet VF_10_07_2026.docx"}
+{"kind":"slide","id":"sl/d9jyqy","slide":19,"title":"ÉVALUATIONS","textShapes":12}
+{"kind":"textbox","id":"sh/ipkbexcr","slide":19,"text":"ÉVALUATIONS","textPreview":"ÉVALUATIONS","textChars":11,"textLines":1,"bbox":[72,42,600,22]}
+{"kind":"textbox","id":"sh/5sba9cbi","slide":19,"text":"Générer des évaluations adaptées au niveau visé","textPreview":"Générer des évaluations adaptées au niveau visé","textChars":47,"textLines":1,"bbox":[72,78,1120,70]}
+{"kind":"textbox","id":"sh/4r2tg7ux","slide":19,"text":"Le formateur choisit la forme, la difficulté et le volume.","textPreview":"Le formateur choisit la forme, la difficulté et le volume.","textChars":58,"textLines":1,"bbox":[72,155,1050,44]}
+{"kind":"shape","id":"sh/rudsbmto","slide":19,"bbox":[72,215,1136,1]}
+{"kind":"textbox","id":"sh/6tkbihc3","slide":19,"text":"COMPETENCIA IA","textPreview":"COMPETENCIA IA","textChars":14,"textLines":1,"bbox":[72,682,350,18]}
+{"kind":"textbox","id":"sh/tgvadcbe","slide":19,"text":"19","textPreview":"19","textChars":2,"textLines":1,"bbox":[1180,682,28,18]}
+{"kind":"textbox","id":"sh/fidsfmtk","slide":19,"text":"Paramètres configurables","textPreview":"Paramètres configurables","textChars":24,"textLines":1,"bbox":[850,305,320,30]}
+{"kind":"textbox","id":"sh/eh4bmhcz","slide":19,"text":"•","textPreview":"•","textChars":1,"textLines":1,"bbox":[850,360,22,28]}
+{"kind":"textbox","id":"sh/gnqx8bat","slide":19,"text":"Type et niveau de difficulté","textPreview":"Type et niveau de difficulté","textChars":28,"textLines":1,"bbox":[880,360,330,34]}
+{"kind":"textbox","id":"sh/h8zy1gre","slide":19,"text":"•","textPreview":"•","textChars":1,"textLines":1,"bbox":[850,415,22,28]}
+{"kind":"textbox","id":"sh/ul8f61sn","slide":19,"text":"Nombre de questions","textPreview":"Nombre de questions","textChars":19,"textLines":1,"bbox":[880,415,330,34]}
+{"kind":"textbox","id":"sh/vmhgz698","slide":19,"text":"•","textPreview":"•","textChars":1,"textLines":1,"bbox":[850,470,22,28]}
+{"kind":"textbox","id":"sh/4bqxcbap","slide":19,"text":"Objectifs pédagogiques","textPreview":"Objectifs pédagogiques","textChars":22,"textLines":1,"bbox":[880,470,330,34]}
+{"kind":"image","id":"im/tkbuhs72","slide":19,"name":"","alt":"image12.png","bbox":[90,260,700,360]}
+{"kind":"notes","id":"nt/d9jyqy","slide":19,"text":"[Sources]\nRapport fourni : 1A__Rapport Complet VF_10_07_2026.docx"}
+{"kind":"slide","id":"sl/6iehkt","slide":20,"title":"BIBLIOTHÈQUE COLLABORATIVE","textShapes":9}
+{"kind":"textbox","id":"sh/7upc76tg","slide":20,"text":"BIBLIOTHÈQUE COLLABORATIVE","textPreview":"BIBLIOTHÈQUE COLLABORATIVE","textChars":26,"textLines":1,"bbox":[72,42,600,22]}
+{"kind":"textbox","id":"sh/svytgba1","slide":20,"text":"La ressource produite une fois peut servir à plusieurs","textPreview":"La ressource produite une fois peut servir à plusieurs","textChars":54,"textLines":1,"bbox":[72,78,1120,70]}
+{"kind":"textbox","id":"sh/tw7u9wbm","slide":20,"text":"La capitalisation devient un réflexe collectif.","textPreview":"La capitalisation devient un réflexe collectif.","textChars":47,"textLines":1,"bbox":[72,155,1050,44]}
+{"kind":"shape","id":"sh/ypwbahsj","slide":20,"bbox":[72,215,1136,1]}
+{"kind":"textbox","id":"sh/jq5c3mt4","slide":20,"text":"COMPETENCIA IA","textPreview":"COMPETENCIA IA","textChars":14,"textLines":1,"bbox":[72,682,350,18]}
+{"kind":"textbox","id":"sh/kretcrap","slide":20,"text":"20","textPreview":"20","textChars":2,"textLines":1,"bbox":[1180,682,28,18]}
+{"kind":"textbox","id":"sh/2l0vmls3","slide":20,"text":"Rechercher","textPreview":"Rechercher","textChars":10,"textLines":1,"bbox":[850,300,300,28]}
+{"kind":"textbox","id":"sh/3m9cfq9o","slide":20,"text":"par type, filière, module ou mot-clé","textPreview":"par type, filière, module ou mot-clé","textChars":36,"textLines":1,"bbox":[850,335,330,28]}
+{"kind":"textbox","id":"sh/n2ho3ilw","slide":20,"text":"Partager","textPreview":"Partager","textChars":8,"textLines":1,"bbox":[850,410,300,28]}
+{"kind":"textbox","id":"sh/mhonud4b","slide":20,"text":"likes, commentaires, copie dans l’espace de travail","textPreview":"likes, commentaires, copie dans l’espace de travail","textChars":51,"textLines":1,"bbox":[850,445,330,50]}
+{"kind":"image","id":"im/0vapwnex","slide":20,"name":"","alt":"image15.png","bbox":[90,260,700,360]}
+{"kind":"notes","id":"nt/6iehkt","slide":20,"text":"[Sources]\nRapport fourni : 1A__Rapport Complet VF_10_07_2026.docx"}
+{"kind":"slide","id":"sl/au0vzh","slide":21,"title":"ASSISTANT IA","textShapes":8}
+{"kind":"textbox","id":"sh/cb6ps729","slide":21,"text":"ASSISTANT IA","textPreview":"ASSISTANT IA","textChars":12,"textLines":1,"bbox":[72,42,600,22]}
+{"kind":"textbox","id":"sh/bqx8z21o","slide":21,"text":"Un accompagnement conversationnel disponible au fil du travail","textPreview":"Un accompagnement conversationnel disponible au fil du travail","textChars":62,"textLines":1,"bbox":[72,78,1120,70]}
+{"kind":"textbox","id":"sh/qpo7qxk3","slide":21,"text":"Le formateur peut demander, reformuler, approfondir et réutiliser.","textPreview":"Le formateur peut demander, reformuler, approfondir et réutiliser.","textChars":66,"textLines":1,"bbox":[72,155,1050,44]}
+{"kind":"shape","id":"sh/pof6xsjy","slide":21,"bbox":[72,215,1136,1]}
+{"kind":"textbox","id":"sh/on6pon2d","slide":21,"text":"COMPETENCIA IA","textPreview":"COMPETENCIA IA","textChars":14,"textLines":1,"bbox":[72,682,350,18]}
+{"kind":"textbox","id":"sh/3mxovi1s","slide":21,"text":"21","textPreview":"21","textChars":2,"textLines":1,"bbox":[1180,682,28,18]}
+{"kind":"textbox","id":"sh/1kv6tsjm","slide":21,"text":"Préparer une activité","textPreview":"Préparer une activité","textChars":21,"textLines":1,"bbox":[850,300,330,30]}
+{"kind":"textbox","id":"sh/gjmp0n21","slide":21,"text":"Reformuler un objectif\nCréer un exercice\nProposer une méthode","textPreview":"Reformuler un objectif | Créer un exercice | Proposer une méthode","textChars":61,"textLines":3,"bbox":[850,355,320,110]}
+{"kind":"textbox","id":"sh/qtwv2p8j","slide":21,"text":"La conversation devient un espace de préparation.","textPreview":"La conversation devient un espace de préparation.","textChars":49,"textLines":1,"bbox":[850,520,330,44]}
+{"kind":"image","id":"im/3m987u98","slide":21,"name":"","alt":"image16.png","bbox":[90,255,710,370]}
+{"kind":"notes","id":"nt/au0vzh","slide":21,"text":"[Sources]\nRapport fourni : 1A__Rapport Complet VF_10_07_2026.docx"}
+{"kind":"slide","id":"sl/e9x79g","slide":22,"title":"COMPETENCIA SIMULATOR","textShapes":8}
+{"kind":"textbox","id":"sh/zip0bydo","slide":22,"text":"COMPETENCIA SIMULATOR","textPreview":"COMPETENCIA SIMULATOR","textChars":21,"textLines":1,"bbox":[72,42,600,22]}
+{"kind":"textbox","id":"sh/0jyhk3ut","slide":22,"text":"Apprendre en prenant des décisions","textPreview":"Apprendre en prenant des décisions","textChars":34,"textLines":1,"bbox":[72,78,1120,70]}
+{"kind":"textbox","id":"sh/1k7id8ve","slide":22,"text":"L’entreprise virtuelle rapproche les stagiaires des situations professionnelles.","textPreview":"L’entreprise virtuelle rapproche les stagiaires des situations professionnelles.","textChars":80,"textLines":1,"bbox":[72,155,1050,44]}
+{"kind":"shape","id":"sh/qdwze9wr","slide":22,"bbox":[72,215,1136,1]}
+{"kind":"textbox","id":"sh/re5g7edc","slide":22,"text":"COMPETENCIA IA","textPreview":"COMPETENCIA IA","textChars":14,"textLines":1,"bbox":[72,682,350,18]}
+{"kind":"textbox","id":"sh/cfehgjex","slide":22,"text":"22","textPreview":"22","textChars":2,"textLines":1,"bbox":[1180,682,28,18]}
+{"kind":"textbox","id":"sh/a90zqdcb","slide":22,"text":"Une entreprise marocaine fictive","textPreview":"Une entreprise marocaine fictive","textChars":32,"textLines":1,"bbox":[850,305,330,32]}
+{"kind":"textbox","id":"sh/ba90jidg","slide":22,"text":"secteur · équipe · clients · fournisseurs\ncontraintes et scénarios de décision","textPreview":"secteur · équipe · clients · fournisseurs | contraintes et scénarios de décision","textChars":78,"textLines":2,"bbox":[850,360,330,70]}
+{"kind":"textbox","id":"sh/n6tcv694","slide":22,"text":"≈ 70–90 s pour générer le contexte","textPreview":"≈ 70–90 s pour générer le contexte","textChars":34,"textLines":1,"bbox":[850,485,330,30]}
+{"kind":"image","id":"im/knyp47up","slide":22,"name":"","alt":"image13.png","bbox":[90,260,700,360]}
+{"kind":"notes","id":"nt/e9x79g","slide":22,"text":"[Sources]\nRapport fourni : 1A__Rapport Complet VF_10_07_2026.docx"}
+{"kind":"slide","id":"sl/4r7i1k","slide":23,"title":"LE DÉROULÉ D’UNE SIMULATION","textShapes":23}
+{"kind":"textbox","id":"sh/cjy1obq5","slide":23,"text":"LE DÉROULÉ D’UNE SIMULATION","textPreview":"LE DÉROULÉ D’UNE SIMULATION","textChars":27,"textLines":1,"bbox":[72,42,600,22]}
+{"kind":"textbox","id":"sh/bi5kf69k","slide":23,"text":"Six étapes font passer de la configuration au feedback","textPreview":"Six étapes font passer de la configuration au feedback","textChars":54,"textLines":1,"bbox":[72,78,1120,70]}
+{"kind":"textbox","id":"sh/qhwjm18z","slide":23,"text":"Chaque décision modifie les indicateurs de l’entreprise.","textPreview":"Chaque décision modifie les indicateurs de l’entreprise.","textChars":56,"textLines":1,"bbox":[72,155,1050,44]}
+{"kind":"shape","id":"sh/lo72lgrm","slide":23,"bbox":[72,215,1136,1]}
+{"kind":"textbox","id":"sh/0ny1sbq1","slide":23,"text":"COMPETENCIA IA","textPreview":"COMPETENCIA IA","textChars":14,"textLines":1,"bbox":[72,682,350,18]}
+{"kind":"textbox","id":"sh/zmpkj69w","slide":23,"text":"23","textPreview":"23","textChars":2,"textLines":1,"bbox":[1180,682,28,18]}
+{"kind":"textbox","id":"sh/ylgjq18b","slide":23,"text":"1","textPreview":"1","textChars":1,"textLines":1,"bbox":[78,285,55,55]}
+{"kind":"textbox","id":"sh/9cr2pg7y","slide":23,"text":"Ouvrir","textPreview":"Ouvrir","textChars":6,"textLines":1,"bbox":[78,350,140,30]}
+{"kind":"textbox","id":"sh/8bi1wvqd","slide":23,"text":"→","textPreview":"→","textChars":1,"textLines":1,"bbox":[223,290,35,35]}
+{"kind":"textbox","id":"sh/q1gvm5kf","slide":23,"text":"2","textPreview":"2","textChars":1,"textLines":1,"bbox":[266,285,55,55]}
+{"kind":"textbox","id":"sh/r2pcfa10","slide":23,"text":"Contextualiser","textPreview":"Contextualiser","textChars":14,"textLines":1,"bbox":[266,350,140,30]}
+{"kind":"textbox","id":"sh/s3ydof2l","slide":23,"text":"→","textPreview":"→","textChars":1,"textLines":1,"bbox":[411,290,35,35]}
+{"kind":"textbox","id":"sh/d47uhkj6","slide":23,"text":"3","textPreview":"3","textChars":1,"textLines":1,"bbox":[454,285,55,55]}
+{"kind":"textbox","id":"sh/e5gvq5kr","slide":23,"text":"Générer","textPreview":"Générer","textChars":7,"textLines":1,"bbox":[454,350,140,30]}
+{"kind":"textbox","id":"sh/f6pcja1c","slide":23,"text":"→","textPreview":"→","textChars":1,"textLines":1,"bbox":[599,290,35,35]}
+{"kind":"textbox","id":"sh/07idsf2h","slide":23,"text":"4","textPreview":"4","textChars":1,"textLines":1,"bbox":[642,285,55,55]}
+{"kind":"textbox","id":"sh/18rulkj2","slide":23,"text":"Lancer","textPreview":"Lancer","textChars":6,"textLines":1,"bbox":[642,350,140,30]}
+{"kind":"textbox","id":"sh/u9wbelk7","slide":23,"text":"→","textPreview":"→","textChars":1,"textLines":1,"bbox":[787,290,35,35]}
+{"kind":"textbox","id":"sh/va5c7q1s","slide":23,"text":"5","textPreview":"5","textChars":1,"textLines":1,"bbox":[830,285,55,55]}
+{"kind":"textbox","id":"sh/ze1sfmhk","slide":23,"text":"Décider","textPreview":"Décider","textChars":7,"textLines":1,"bbox":[830,350,140,30]}
+{"kind":"textbox","id":"sh/ydsrmh0z","slide":23,"text":"→","textPreview":"→","textChars":1,"textLines":1,"bbox":[975,290,35,35]}
+{"kind":"textbox","id":"sh/lg3ahwzq","slide":23,"text":"6","textPreview":"6","textChars":1,"textLines":1,"bbox":[1018,285,55,55]}
+{"kind":"textbox","id":"sh/kfa9ori5","slide":23,"text":"Évaluer","textPreview":"Évaluer","textChars":7,"textLines":1,"bbox":[1018,350,140,30]}
+{"kind":"shape","id":"sh/bq1sb2ho","slide":23,"bbox":[110,440,1000,4]}
+{"kind":"textbox","id":"sh/apsrih03","slide":23,"text":"Satisfaction client · santé financière · moral d’équipe · score global","textPreview":"Satisfaction client · santé financière · moral d’équipe · score global","textChars":70,"textLines":1,"bbox":[150,500,980,35]}
+{"kind":"notes","id":"nt/4r7i1k","slide":23,"text":"[Sources]\nRapport fourni : 1A__Rapport Complet VF_10_07_2026.docx"}
+{"kind":"slide","id":"sl/wj8i85","slide":24,"title":"LE RAPPORT IA","textShapes":12}
+{"kind":"textbox","id":"sh/tc7udojq","slide":24,"text":"LE RAPPORT IA","textPreview":"LE RAPPORT IA","textChars":13,"textLines":1,"bbox":[72,42,600,22]}
+{"kind":"textbox","id":"sh/69gvitkf","slide":24,"text":"La simulation se termine par une évaluation exploitable","textPreview":"La simulation se termine par une évaluation exploitable","textChars":55,"textLines":1,"bbox":[72,78,1120,70]}
+{"kind":"textbox","id":"sh/7apcbe10","slide":24,"text":"Le feedback transforme l’expérience en apprentissage.","textPreview":"Le feedback transforme l’expérience en apprentissage.","textChars":53,"textLines":1,"bbox":[72,155,1050,44]}
+{"kind":"shape","id":"sh/knedgj29","slide":24,"bbox":[72,215,1136,1]}
+{"kind":"textbox","id":"sh/l8nu9oju","slide":24,"text":"COMPETENCIA IA","textPreview":"COMPETENCIA IA","textChars":14,"textLines":1,"bbox":[72,682,350,18]}
+{"kind":"textbox","id":"sh/ylwve9k3","slide":24,"text":"24","textPreview":"24","textChars":2,"textLines":1,"bbox":[1180,682,28,18]}
+{"kind":"textbox","id":"sh/4jids32d","slide":24,"text":"Le rapport couvre :","textPreview":"Le rapport couvre :","textChars":19,"textLines":1,"bbox":[850,300,320,30]}
+{"kind":"textbox","id":"sh/54rel8jy","slide":24,"text":"•","textPreview":"•","textChars":1,"textLines":1,"bbox":[850,355,22,28]}
+{"kind":"textbox","id":"sh/dw76h4n2","slide":24,"text":"note sur 20 et score pédagogique","textPreview":"note sur 20 et score pédagogique","textChars":32,"textLines":1,"bbox":[880,355,340,34]}
+{"kind":"textbox","id":"sh/cvyp8j6h","slide":24,"text":"•","textPreview":"•","textChars":1,"textLines":1,"bbox":[850,410,22,28]}
+{"kind":"textbox","id":"sh/bupofe5w","slide":24,"text":"compétences mobilisées","textPreview":"compétences mobilisées","textChars":22,"textLines":1,"bbox":[880,410,340,34]}
+{"kind":"textbox","id":"sh/q9g769ob","slide":24,"text":"•","textPreview":"•","textChars":1,"textLines":1,"bbox":[850,465,22,28]}
+{"kind":"textbox","id":"sh/p876d4nq","slide":24,"text":"forces, erreurs et conseils personnalisés","textPreview":"forces, erreurs et conseils personnalisés","textChars":41,"textLines":1,"bbox":[880,465,340,34]}
+{"kind":"image","id":"im/ahwfipw7","slide":24,"name":"","alt":"image14.png","bbox":[90,255,710,370]}
+{"kind":"notes","id":"nt/wj8i85","slide":24,"text":"[Sources]\nRapport fourni : 1A__Rapport Complet VF_10_07_2026.docx"}
+{"kind":"slide","id":"sl/fsi7yf","slide":25,"title":"TABLEAU DE BORD","textShapes":7}
+{"kind":"textbox","id":"sh/650fytsz","slide":25,"text":"TABLEAU DE BORD","textPreview":"TABLEAU DE BORD","textChars":15,"textLines":1,"bbox":[72,42,600,22]}
+{"kind":"textbox","id":"sh/t8byt8rq","slide":25,"text":"Une vue synthétique relie production et progression","textPreview":"Une vue synthétique relie production et progression","textChars":51,"textLines":1,"bbox":[72,78,1120,70]}
+{"kind":"textbox","id":"sh/87ix03a5","slide":25,"text":"Le formateur voit ce qui mérite son attention aujourd’hui.","textPreview":"Le formateur voit ce qui mérite son attention aujourd’hui.","textChars":58,"textLines":1,"bbox":[72,155,1050,44]}
+{"kind":"shape","id":"sh/vatgvy9g","slide":25,"bbox":[72,215,1136,1]}
+{"kind":"textbox","id":"sh/u9kf2dsb","slide":25,"text":"COMPETENCIA IA","textPreview":"COMPETENCIA IA","textChars":14,"textLines":1,"bbox":[72,682,350,18]}
+{"kind":"textbox","id":"sh/hwbyx8rm","slide":25,"text":"25","textPreview":"25","textChars":2,"textLines":1,"bbox":[1180,682,28,18]}
+{"kind":"textbox","id":"sh/3ytgzi9s","slide":25,"text":"Activité récente","textPreview":"Activité récente","textChars":16,"textLines":1,"bbox":[865,300,300,30]}
+{"kind":"textbox","id":"sh/ixkz6ds7","slide":25,"text":"Statistiques de production\nRessources les plus appréciées\nTaux de complétion des groupes","textPreview":"Statistiques de production | Ressources les plus appréciées | Taux de complétion des groupes","textChars":88,"textLines":3,"bbox":[865,355,310,110]}
+{"kind":"image","id":"im/183uxwfq","slide":25,"name":"","alt":"image9.png","bbox":[90,255,730,370]}
+{"kind":"notes","id":"nt/fsi7yf","slide":25,"text":"[Sources]\nRapport fourni : 1A__Rapport Complet VF_10_07_2026.docx"}
+{"kind":"slide","id":"sl/6angnw","slide":26,"title":"LA VALEUR CRÉÉE","textShapes":14}
+{"kind":"textbox","id":"sh/lsvix8f2","slide":26,"text":"LA VALEUR CRÉÉE","textPreview":"LA VALEUR CRÉÉE","textChars":15,"textLines":1,"bbox":[72,42,600,22]}
+{"kind":"textbox","id":"sh/ypkzmdgb","slide":26,"text":"Le gain ne se limite pas à la vitesse","textPreview":"Le gain ne se limite pas à la vitesse","textChars":37,"textLines":1,"bbox":[72,78,1120,70]}
+{"kind":"textbox","id":"sh/zqt0vyxw","slide":26,"text":"Competencia IA agit sur quatre dimensions de la pratique pédagogique.","textPreview":"Competencia IA agit sur quatre dimensions de la pratique pédagogique.","textChars":69,"textLines":1,"bbox":[72,155,1050,44]}
+{"kind":"shape","id":"sh/8vm1snyt","slide":26,"bbox":[72,215,1136,1]}
+{"kind":"textbox","id":"sh/9wvi1sfy","slide":26,"text":"COMPETENCIA IA","textPreview":"COMPETENCIA IA","textChars":14,"textLines":1,"bbox":[72,682,350,18]}
+{"kind":"textbox","id":"sh/mt4zqdgn","slide":26,"text":"26","textPreview":"26","textChars":2,"textLines":1,"bbox":[1180,682,28,18]}
+{"kind":"shape","id":"sh/7ud0zix8","slide":26,"bbox":[100,290,220,170]}
+{"kind":"textbox","id":"sh/wj61wnyp","slide":26,"text":"Temps","textPreview":"Temps","textChars":5,"textLines":1,"bbox":[120,320,180,30]}
+{"kind":"textbox","id":"sh/hkfi5sfa","slide":26,"text":"Préparer plus vite","textPreview":"Préparer plus vite","textChars":18,"textLines":1,"bbox":[120,380,180,50]}
+{"kind":"shape","id":"sh/d4je1w3u","slide":26,"bbox":[375,290,220,170]}
+{"kind":"textbox","id":"sh/s3ad8rm9","slide":26,"text":"Qualité","textPreview":"Qualité","textChars":7,"textLines":1,"bbox":[395,320,180,30]}
+{"kind":"textbox","id":"sh/r2hczmlo","slide":26,"text":"Structurer avec le référentiel","textPreview":"Structurer avec le référentiel","textChars":30,"textLines":1,"bbox":[395,380,180,50]}
+{"kind":"shape","id":"sh/q18v6143","slide":26,"bbox":[650,290,220,170]}
+{"kind":"textbox","id":"sh/18je5g3q","slide":26,"text":"Capitalisation","textPreview":"Capitalisation","textChars":14,"textLines":1,"bbox":[670,320,180,30]}
+{"kind":"textbox","id":"sh/07adcbml","slide":26,"text":"Réutiliser l’expertise","textPreview":"Réutiliser l’expertise","textChars":22,"textLines":1,"bbox":[670,380,180,50]}
+{"kind":"shape","id":"sh/f61w36l0","slide":26,"bbox":[925,290,220,170]}
+{"kind":"textbox","id":"sh/e5sva14f","slide":26,"text":"Pilotage","textPreview":"Pilotage","textChars":8,"textLines":1,"bbox":[945,320,180,30]}
+{"kind":"textbox","id":"sh/hczutc3m","slide":26,"text":"Décider avec des données","textPreview":"Décider avec des données","textChars":24,"textLines":1,"bbox":[945,380,180,50]}
+{"kind":"textbox","id":"sh/gb6d07m1","slide":26,"text":"Le formateur récupère du temps pour ce qui ne peut pas être automatisé : la relation pédagogique.","textPreview":"Le formateur récupère du temps pour ce qui ne peut pas être automatisé : la relation pédagogique.","textChars":97,"textLines":1,"bbox":[140,535,1000,55]}
+{"kind":"notes","id":"nt/6angnw","slide":26,"text":"[Sources]\nRapport fourni : 1A__Rapport Complet VF_10_07_2026.docx"}
+{"kind":"slide","id":"sl/eupi1t","slide":27,"title":"RÉSULTATS ET RETOURS","textShapes":12}
+{"kind":"textbox","id":"sh/apwnepwb","slide":27,"text":"RÉSULTATS ET RETOURS","textPreview":"RÉSULTATS ET RETOURS","textChars":20,"textLines":1,"bbox":[72,42,600,22]}
+{"kind":"textbox","id":"sh/xc769kv2","slide":27,"text":"Le prototype est fonctionnel et déployé","textPreview":"Le prototype est fonctionnel et déployé","textChars":39,"textLines":1,"bbox":[72,78,1120,70]}
+{"kind":"textbox","id":"sh/wby5gzeh","slide":27,"text":"Les premiers retours confirment l’intérêt d’un assistant pédagogique contextualisé.","textPreview":"Les premiers retours confirment l’intérêt d’un assistant pédagogique contextualisé.","textChars":83,"textLines":1,"bbox":[72,155,1050,44]}
+{"kind":"shape","id":"sh/nm5o3ad0","slide":27,"bbox":[72,215,1136,1]}
+{"kind":"textbox","id":"sh/mlwna5wf","slide":27,"text":"COMPETENCIA IA","textPreview":"COMPETENCIA IA","textChars":14,"textLines":1,"bbox":[72,682,350,18]}
+{"kind":"textbox","id":"sh/9on65kv6","slide":27,"text":"27","textPreview":"27","textChars":2,"textLines":1,"bbox":[1180,682,28,18]}
+{"kind":"textbox","id":"sh/one5cfel","slide":27,"text":"Fonctionnelle","textPreview":"Fonctionnelle","textChars":13,"textLines":1,"bbox":[130,285,260,62]}
+{"kind":"textbox","id":"sh/zil4zado","slide":27,"text":"plateforme web déployée","textPreview":"plateforme web déployée","textChars":23,"textLines":1,"bbox":[130,350,260,40]}
+{"kind":"textbox","id":"sh/ehcn65wj","slide":27,"text":"Multi-format","textPreview":"Multi-format","textChars":12,"textLines":1,"bbox":[510,285,280,62]}
+{"kind":"textbox","id":"sh/gn61kfa1","slide":27,"text":"PDF · Word · PowerPoint","textPreview":"PDF · Word · PowerPoint","textChars":23,"textLines":1,"bbox":[510,350,280,40]}
+{"kind":"textbox","id":"sh/hofitkrm","slide":27,"text":"Multi-module","textPreview":"Multi-module","textChars":12,"textLines":1,"bbox":[860,285,300,62]}
+{"kind":"textbox","id":"sh/u14ji5sb","slide":27,"text":"production · partage · suivi · simulation","textPreview":"production · partage · suivi · simulation","textChars":41,"textLines":1,"bbox":[860,350,300,40]}
+{"kind":"shape","id":"sh/vmd0ra9g","slide":27,"bbox":[190,510,900,70]}
+{"kind":"textbox","id":"sh/8zm1gfa5","slide":27,"text":"« Un assistant pédagogique disponible à minuit, qui connaît le référentiel OFPPT. »","textPreview":"« Un assistant pédagogique disponible à minuit, qui connaît le référentiel OFPPT. »","textChars":83,"textLines":1,"bbox":[220,528,840,30]}
+{"kind":"notes","id":"nt/eupi1t","slide":27,"text":"[Sources]\nRapport fourni : 1A__Rapport Complet VF_10_07_2026.docx"}
+{"kind":"slide","id":"sl/qjxcsu","slide":28,"title":"LIMITES À GARDER EN TÊTE","textShapes":12}
+{"kind":"textbox","id":"sh/4r6t0nm5","slide":28,"text":"LIMITES À GARDER EN TÊTE","textPreview":"LIMITES À GARDER EN TÊTE","textChars":24,"textLines":1,"bbox":[72,42,600,22]}
+{"kind":"textbox","id":"sh/3qxc7ilk","slide":28,"text":"L’IA accélère la production, elle ne garantit pas seule la pertinence","textPreview":"L’IA accélère la production, elle ne garantit pas seule la pertinence","textChars":69,"textLines":1,"bbox":[72,78,1120,70]}
+{"kind":"textbox","id":"sh/ipobyd4z","slide":28,"text":"La validation humaine reste une étape pédagogique indispensable.","textPreview":"La validation humaine reste une étape pédagogique indispensable.","textChars":64,"textLines":1,"bbox":[72,155,1050,44]}
+{"kind":"shape","id":"sh/dwzuxs3m","slide":28,"bbox":[72,215,1136,1]}
+{"kind":"textbox","id":"sh/svqd4nm1","slide":28,"text":"COMPETENCIA IA","textPreview":"COMPETENCIA IA","textChars":14,"textLines":1,"bbox":[72,682,350,18]}
+{"kind":"textbox","id":"sh/ruxcvilg","slide":28,"text":"28","textPreview":"28","textChars":2,"textLines":1,"bbox":[1180,682,28,18]}
+{"kind":"textbox","id":"sh/qtob2d4b","slide":28,"text":"•","textPreview":"•","textChars":1,"textLines":1,"bbox":[120,290,22,28]}
+{"kind":"textbox","id":"sh/1kzu1s3y","slide":28,"text":"Les contenus doivent être relus et adaptés au groupe","textPreview":"Les contenus doivent être relus et adaptés au groupe","textChars":52,"textLines":1,"bbox":[150,290,900,34]}
+{"kind":"textbox","id":"sh/0jqd87md","slide":28,"text":"•","textPreview":"•","textChars":1,"textLines":1,"bbox":[120,360,22,28]}
+{"kind":"textbox","id":"sh/a1gnux8v","slide":28,"text":"La qualité dépend du contexte fourni et du référentiel disponible","textPreview":"La qualité dépend du contexte fourni et du référentiel disponible","textChars":65,"textLines":1,"bbox":[150,360,900,34]}
+{"kind":"textbox","id":"sh/b2pon2pg","slide":28,"text":"•","textPreview":"•","textChars":1,"textLines":1,"bbox":[120,430,22,28]}
+{"kind":"textbox","id":"sh/c3y5w7q1","slide":28,"text":"Les usages institutionnels exigent accompagnement et gouvernance","textPreview":"Les usages institutionnels exigent accompagnement et gouvernance","textChars":64,"textLines":1,"bbox":[150,430,900,34]}
+{"kind":"textbox","id":"sh/x476ps7m","slide":28,"text":"La bonne question n’est pas « l’IA peut-elle produire ? » mais « comment l’intégrer avec discernement ? »","textPreview":"La bonne question n’est pas « l’IA peut-elle produire ? » mais « comment l’intégrer avec discernement ? »","textChars":105,"textLines":1,"bbox":[150,550,980,50]}
+{"kind":"notes","id":"nt/qjxcsu","slide":28,"text":"[Sources]\nRapport fourni : 1A__Rapport Complet VF_10_07_2026.docx"}
+{"kind":"slide","id":"sl/b10ctm","slide":29,"title":"FEUILLE DE ROUTE","textShapes":11}
+{"kind":"textbox","id":"sh/nq5kvux4","slide":29,"text":"FEUILLE DE ROUTE","textPreview":"FEUILLE DE ROUTE","textChars":16,"textLines":1,"bbox":[72,42,600,22]}
+{"kind":"textbox","id":"sh/orel4zep","slide":29,"text":"La prochaine étape est l’automatisation pédagogique","textPreview":"La prochaine étape est l’automatisation pédagogique","textChars":51,"textLines":1,"bbox":[72,78,1120,70]}
+{"kind":"textbox","id":"sh/9sn2x4fa","slide":29,"text":"Competencia doit passer de la génération ponctuelle à la planification continue.","textPreview":"Competencia doit passer de la génération ponctuelle à la planification continue.","textChars":80,"textLines":1,"bbox":[72,155,1050,44]}
+{"kind":"shape","id":"sh/atw369wf","slide":29,"bbox":[72,215,1136,1]}
+{"kind":"textbox","id":"sh/bepkzux0","slide":29,"text":"COMPETENCIA IA","textPreview":"COMPETENCIA IA","textChars":14,"textLines":1,"bbox":[72,682,350,18]}
+{"kind":"textbox","id":"sh/wfyl8zel","slide":29,"text":"29","textPreview":"29","textChars":2,"textLines":1,"bbox":[1180,682,28,18]}
+{"kind":"textbox","id":"sh/xg7214v6","slide":29,"text":"COURT TERME","textPreview":"COURT TERME","textChars":11,"textLines":1,"bbox":[120,285,210,28]}
+{"kind":"shape","id":"sh/qxcju5wb","slide":29,"bbox":[350,297,50,4]}
+{"kind":"textbox","id":"sh/rylknaxw","slide":29,"text":"Notifications et recommandations","textPreview":"Notifications et recommandations","textChars":32,"textLines":1,"bbox":[440,285,650,32]}
+{"kind":"textbox","id":"sh/rehszqtw","slide":29,"text":"MOYEN TERME","textPreview":"MOYEN TERME","textChars":11,"textLines":1,"bbox":[120,380,210,28]}
+{"kind":"shape","id":"sh/qd8rqlcb","slide":29,"bbox":[350,392,50,4]}
+{"kind":"textbox","id":"sh/dgza10b2","slide":29,"text":"Simulation jouée directement par le stagiaire","textPreview":"Simulation jouée directement par le stagiaire","textChars":45,"textLines":1,"bbox":[440,380,650,32]}
+{"kind":"textbox","id":"sh/cfq9svuh","slide":29,"text":"LONG TERME","textPreview":"LONG TERME","textChars":10,"textLines":1,"bbox":[120,475,210,28]}
+{"kind":"shape","id":"sh/3axsv6tk","slide":29,"bbox":[350,487,50,4]}
+{"kind":"textbox","id":"sh/29orm1cf","slide":29,"text":"Connexion au SI OFPPT et analyse d’alignement","textPreview":"Connexion au SI OFPPT et analyse d’alignement","textChars":45,"textLines":1,"bbox":[440,475,650,32]}
+{"kind":"notes","id":"nt/b10ctm","slide":29,"text":"[Sources]\nRapport fourni : 1A__Rapport Complet VF_10_07_2026.docx"}
+{"kind":"slide","id":"sl/732vlf","slide":30,"title":"PERSPECTIVES FONCTIONNELLES","textShapes":11}
+{"kind":"textbox","id":"sh/uhcva18v","slide":30,"text":"PERSPECTIVES FONCTIONNELLES","textPreview":"PERSPECTIVES FONCTIONNELLES","textChars":27,"textLines":1,"bbox":[72,42,600,22]}
+{"kind":"textbox","id":"sh/h43elw7m","slide":30,"text":"Trois extensions peuvent amplifier l’impact","textPreview":"Trois extensions peuvent amplifier l’impact","textChars":43,"textLines":1,"bbox":[72,78,1120,70]}
+{"kind":"textbox","id":"sh/g3udcrq1","slide":30,"text":"La feuille de route s’appuie sur les besoins déjà observés.","textPreview":"La feuille de route s’appuie sur les besoins déjà observés.","textChars":59,"textLines":1,"bbox":[72,155,1050,44]}
+{"kind":"shape","id":"sh/7elwfmpk","slide":30,"bbox":[72,215,1136,1]}
+{"kind":"textbox","id":"sh/6dsv6h8z","slide":30,"text":"COMPETENCIA IA","textPreview":"COMPETENCIA IA","textChars":14,"textLines":1,"bbox":[72,682,350,18]}
+{"kind":"textbox","id":"sh/tg3ehw7a","slide":30,"text":"30","textPreview":"30","textChars":2,"textLines":1,"bbox":[1180,682,28,18]}
+{"kind":"shape","id":"sh/8fud8rqp","slide":30,"bbox":[100,290,300,190]}
+{"kind":"textbox","id":"sh/ra5wrqpo","slide":30,"text":"Planification","textPreview":"Planification","textChars":13,"textLines":1,"bbox":[120,325,260,35]}
+{"kind":"textbox","id":"sh/q9wfil83","slide":30,"text":"Programme annuel, rappels, remédiation","textPreview":"Programme annuel, rappels, remédiation","textChars":38,"textLines":1,"bbox":[125,390,250,55]}
+{"kind":"shape","id":"sh/srq5wjap","slide":30,"bbox":[460,290,300,190]}
+{"kind":"textbox","id":"sh/dszm5ora","slide":30,"text":"Mobilité","textPreview":"Mobilité","textChars":8,"textLines":1,"bbox":[480,325,260,35]}
+{"kind":"textbox","id":"sh/qp8nu9sz","slide":30,"text":"Application native, hors ligne, dictée vocale","textPreview":"Application native, hors ligne, dictée vocale","textChars":45,"textLines":1,"bbox":[485,390,250,55]}
+{"kind":"shape","id":"sh/rqh43e9k","slide":30,"bbox":[820,290,300,190]}
+{"kind":"textbox","id":"sh/4n65szat","slide":30,"text":"IA avancée","textPreview":"IA avancée","textChars":10,"textLines":1,"bbox":[840,325,260,35]}
+{"kind":"textbox","id":"sh/5ofm14re","slide":30,"text":"Personnalisation, correction et dialogue naturel","textPreview":"Personnalisation, correction et dialogue naturel","textChars":48,"textLines":1,"bbox":[845,390,250,55]}
+{"kind":"notes","id":"nt/732vlf","slide":30,"text":"[Sources]\nRapport fourni : 1A__Rapport Complet VF_10_07_2026.docx"}
+{"kind":"slide","id":"sl/25me6a","slide":31,"title":"PERSPECTIVES INSTITUTIONNELLES","textShapes":13}
+{"kind":"textbox","id":"sh/gra5wrix","slide":31,"text":"PERSPECTIVES INSTITUTIONNELLES","textPreview":"PERSPECTIVES INSTITUTIONNELLES","textChars":30,"textLines":1,"bbox":[72,42,600,22]}
+{"kind":"textbox","id":"sh/vq14nm1c","slide":31,"text":"L’outil individuel peut devenir un instrument de pilotage","textPreview":"L’outil individuel peut devenir un instrument de pilotage","textChars":57,"textLines":1,"bbox":[72,78,1120,70]}
+{"kind":"textbox","id":"sh/upsnuh0r","slide":31,"text":"La donnée pédagogique gagne en visibilité sans perdre sa finalité terrain.","textPreview":"La donnée pédagogique gagne en visibilité sans perdre sa finalité terrain.","textChars":74,"textLines":1,"bbox":[72,155,1050,44]}
+{"kind":"shape","id":"sh/tojmlcjm","slide":31,"bbox":[72,215,1136,1]}
+{"kind":"textbox","id":"sh/8nq5s7i1","slide":31,"text":"COMPETENCIA IA","textPreview":"COMPETENCIA IA","textChars":14,"textLines":1,"bbox":[72,682,350,18]}
+{"kind":"textbox","id":"sh/7mh4jm1g","slide":31,"text":"31","textPreview":"31","textChars":2,"textLines":1,"bbox":[1180,682,28,18]}
+{"kind":"textbox","id":"sh/6l8nqh0v","slide":31,"text":"Formateur","textPreview":"Formateur","textChars":9,"textLines":1,"bbox":[140,300,220,35]}
+{"kind":"textbox","id":"sh/lkzmhcja","slide":31,"text":"→","textPreview":"→","textChars":1,"textLines":1,"bbox":[380,300,80,35]}
+{"kind":"textbox","id":"sh/kjq5o72p","slide":31,"text":"EFP","textPreview":"EFP","textChars":3,"textLines":1,"bbox":[470,300,170,35]}
+{"kind":"textbox","id":"sh/ut0ji187","slide":31,"text":"→","textPreview":"→","textChars":1,"textLines":1,"bbox":[660,300,80,35]}
+{"kind":"textbox","id":"sh/fu90r69s","slide":31,"text":"DR","textPreview":"DR","textChars":2,"textLines":1,"bbox":[750,300,170,35]}
+{"kind":"textbox","id":"sh/gvi1kbqd","slide":31,"text":"→","textPreview":"→","textChars":1,"textLines":1,"bbox":[940,300,80,35]}
+{"kind":"textbox","id":"sh/hwritgry","slide":31,"text":"DG","textPreview":"DG","textChars":2,"textLines":1,"bbox":[1030,300,150,35]}
+{"kind":"shape","id":"sh/6pgze18b","slide":31,"bbox":[160,410,960,4]}
+{"kind":"textbox","id":"sh/7qp0nm9w","slide":31,"text":"Une chaîne de pilotage fondée sur l’activité réelle et les compétences acquises.","textPreview":"Une chaîne de pilotage fondée sur l’activité réelle et les compétences acquises.","textChars":80,"textLines":1,"bbox":[180,470,920,42]}
+{"kind":"notes","id":"nt/25me6a","slide":31,"text":"[Sources]\nRapport fourni : 1A__Rapport Complet VF_10_07_2026.docx"}
+{"kind":"slide","id":"sl/8esyqr","slide":32,"title":"CONCLUSION","textShapes":11}
+{"kind":"textbox","id":"sh/ipkrq5sr","slide":32,"text":"CONCLUSION","textPreview":"CONCLUSION","textChars":10,"textLines":1,"bbox":[72,42,600,22]}
+{"kind":"textbox","id":"sh/5cbalkbi","slide":32,"text":"Competencia IA remet la technologie à sa juste place","textPreview":"Competencia IA remet la technologie à sa juste place","textChars":52,"textLines":1,"bbox":[72,78,1120,70]}
+{"kind":"textbox","id":"sh/kr29sfax","slide":32,"text":"Elle libère du temps documentaire pour renforcer la relation pédagogique.","textPreview":"Elle libère du temps documentaire pour renforcer la relation pédagogique.","textChars":73,"textLines":1,"bbox":[72,155,1050,44]}
+{"kind":"shape","id":"sh/7edsnut8","slide":32,"bbox":[72,215,1136,1]}
+{"kind":"textbox","id":"sh/6dkrupsn","slide":32,"text":"COMPETENCIA IA","textPreview":"COMPETENCIA IA","textChars":14,"textLines":1,"bbox":[72,682,350,18]}
+{"kind":"textbox","id":"sh/tgvap4be","slide":32,"text":"32","textPreview":"32","textChars":2,"textLines":1,"bbox":[1180,682,28,18]}
+{"kind":"textbox","id":"sh/sfmtwzat","slide":32,"text":"Un problème vécu sur le terrain","textPreview":"Un problème vécu sur le terrain","textChars":31,"textLines":1,"bbox":[100,280,280,70]}
+{"kind":"textbox","id":"sh/ni9sbqt4","slide":32,"text":"→","textPreview":"→","textChars":1,"textLines":1,"bbox":[420,300,80,40]}
+{"kind":"textbox","id":"sh/mh0rilcj","slide":32,"text":"Une plateforme contextualisée","textPreview":"Une plateforme contextualisée","textChars":29,"textLines":1,"bbox":[500,280,280,70]}
+{"kind":"textbox","id":"sh/kf6lgnad","slide":32,"text":"→","textPreview":"→","textChars":1,"textLines":1,"bbox":[820,300,80,40]}
+{"kind":"textbox","id":"sh/5gfmpsby","slide":32,"text":"Un impact pédagogique","textPreview":"Un impact pédagogique","textChars":21,"textLines":1,"bbox":[900,280,280,70]}
+{"kind":"shape","id":"sh/ido3eds7","slide":32,"bbox":[160,430,960,5]}
+{"kind":"textbox","id":"sh/jex4nits","slide":32,"text":"L’innovation utile est celle qui s’intègre au quotidien de ceux qu’elle accompagne.","textPreview":"L’innovation utile est celle qui s’intègre au quotidien de ceux qu’elle accompagne.","textChars":83,"textLines":1,"bbox":[150,500,980,55]}
+{"kind":"notes","id":"nt/8esyqr","slide":32,"text":"[Sources]\nRapport fourni : 1A__Rapport Complet VF_10_07_2026.docx"}
+{"kind":"slide","id":"sl/tbfrrt","slide":33,"title":"OUVERTURE","textShapes":8}
+{"kind":"textbox","id":"sh/2xovetsn","slide":33,"text":"OUVERTURE","textPreview":"OUVERTURE","textChars":9,"textLines":1,"bbox":[72,42,600,22]}
+{"kind":"textbox","id":"sh/p0fupoby","slide":33,"text":"Merci pour votre attention","textPreview":"Merci pour votre attention","textChars":26,"textLines":1,"bbox":[72,78,1120,70]}
+{"kind":"textbox","id":"sh/oz6dgjad","slide":33,"text":"Questions et échanges","textPreview":"Questions et échanges","textChars":21,"textLines":1,"bbox":[72,155,1050,44]}
+{"kind":"shape","id":"sh/fudcjetw","slide":33,"bbox":[72,215,1136,1]}
+{"kind":"textbox","id":"sh/et4ba9sb","slide":33,"text":"COMPETENCIA IA","textPreview":"COMPETENCIA IA","textChars":14,"textLines":1,"bbox":[72,682,350,18]}
+{"kind":"textbox","id":"sh/1wvulob2","slide":33,"text":"33","textPreview":"33","textChars":2,"textLines":1,"bbox":[1180,682,28,18]}
+{"kind":"textbox","id":"sh/0vmtcjah","slide":33,"text":"Competencia IA","textPreview":"Competencia IA","textChars":14,"textLines":1,"bbox":[120,300,500,64]}
+{"kind":"textbox","id":"sh/jqhcvit0","slide":33,"text":"Transformer la préparation pédagogique\nen temps gagné pour apprendre mieux.","textPreview":"Transformer la préparation pédagogique | en temps gagné pour apprendre mieux.","textChars":75,"textLines":2,"bbox":[120,390,560,90]}
+{"kind":"textbox","id":"sh/o321kfad","slide":33,"text":"competencia.one","textPreview":"competencia.one","textChars":15,"textLines":1,"bbox":[120,585,300,30]}
+{"kind":"image","id":"im/3y10j250","slide":33,"name":"","alt":"image1.png","bbox":[900,245,190,190]}
+{"kind":"notes","id":"nt/tbfrrt","slide":33,"text":"[Sources]\nRapport fourni : 1A__Rapport Complet VF_10_07_2026.docx"}

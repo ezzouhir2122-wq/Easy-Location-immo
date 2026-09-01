@@ -71,6 +71,11 @@ export default function Sidebar() {
     <div className="h-0.5 bg-gradient-to-r from-transparent via-blue-500 to-transparent" />
     <div className="flex-shrink-0 border-b px-5 py-3" style={{ borderColor: "#1E3352" }}><Image src="/logo.png" alt="Easy Location Immo" width={140} height={40} style={{ height: 40, width: "auto" }} priority /></div>
     <nav className="flex-1 overflow-y-auto px-2 py-2">
+      <button onClick={() => window.dispatchEvent(new KeyboardEvent("keydown", { key: "k", ctrlKey: true, bubbles: true }))} className="mb-2 flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-xs transition-colors hover:bg-white/[.06]" style={{ color: "#607694", border: "1px solid #1E3352" }}>
+        <span style={{ fontSize: 13 }}>🔍</span>
+        <span className="flex-1 text-left">Recherche rapide</span>
+        <kbd className="rounded border px-1 py-0.5 text-[9px]" style={{ borderColor: "#1E3352", color: "#607694" }}>Ctrl+K</kbd>
+      </button>
       <SectionLabel label="Principal" />{mainNav.map(item => <NavLink key={item.href} item={item} pathname={pathname} />)}
       <SectionLabel label="Finances" />{financeNav.map(item => <NavLink key={item.href} item={item} pathname={pathname} />)}
       <button onClick={() => setFiscalOpen(o => !o)} aria-expanded={fiscalOpen} className="mt-0.5 flex w-full items-center justify-between rounded-lg px-3 py-2 text-xs transition-colors hover:bg-white/[.06]" style={{ color: onFiscalPage ? "#FFFFFF" : "#A1B2C8", fontWeight: onFiscalPage ? 600 : 400 }}><span className="flex items-center gap-2.5"><FiBarChart2 size={15} strokeWidth={1.8} />Fiscalité</span><FiChevronDown size={13} className={`transition-transform ${fiscalOpen ? "rotate-180" : ""}`} /></button>
