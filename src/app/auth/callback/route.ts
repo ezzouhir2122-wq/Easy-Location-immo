@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
+  const requestedNext = searchParams.get("next");
 
   if (code) {
     const supabase = createClient();
@@ -15,8 +16,10 @@ export async function GET(request: Request) {
   const { data: profile } = user
     ? await supabase.from("profiles").select("role").eq("id", user.id).maybeSingle()
     : { data: null };
-  const destination = profile?.role === "admin" || user?.email?.toLowerCase() === "ezzouhir2122@gmail.com"
-    ? "/admin"
-    : "/dashboard";
+  const destination = requestedNext?.startsWith("/")
+    ? requestedNext
+    : profile?.role === "admin" || user?.email?.toLowerCase() === "ezzouhir2122@gmail.com"
+      ? "/admin"
+      : "/dashboard";
   return NextResponse.redirect(`${origin}${destination}`);
 }

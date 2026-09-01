@@ -33,7 +33,7 @@ export default function ResetPasswordPage() {
       if (updateError) setError(updateError.message);
       else { setMessage("Mot de passe modifié. Redirection vers votre espace de bienvenue..."); setTimeout(() => router.push("/bienvenue"), 1200); }
     } else {
-      const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: `${window.location.origin}/reset-password` });
+      const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: `${window.location.origin}/auth/callback?next=/reset-password` });
       if (resetError) setError(resetError.message); else setMessage("Un nouveau lien de réinitialisation vient d’être envoyé. Utilisez le dernier email reçu.");
     }
     setLoading(false);
