@@ -17,6 +17,9 @@ export default function ResetPasswordPage() {
 
   useEffect(() => {
     const supabase = createClient();
+    supabase.auth.getSession().then(({ data }) => {
+      if (data.session) setRecoveryMode(true);
+    });
     const { data: subscription } = supabase.auth.onAuthStateChange((event) => {
       if (event === "PASSWORD_RECOVERY") setRecoveryMode(true);
     });
