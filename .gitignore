@@ -52,3 +52,11 @@ out/
 next-env.d.ts
 
 .vercel
+
+# === FICHIERS HORS PROJET ===
+*.pptx
+*.pptx.inspect.ndjson
+_ppt_build/
+affiche-*.png
+affiche-*.jpg
+*.webp
