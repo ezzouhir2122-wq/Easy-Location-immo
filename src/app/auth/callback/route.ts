@@ -10,5 +10,13 @@ export async function GET(request: Request) {
     await supabase.auth.exchangeCodeForSession(code);
   }
 
-  return NextResponse.redirect(`${origin}/dashboard`);
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const { data: profile } = user
+    ? await supabase.from("profiles").select("role").eq("id", user.id).maybeSingle()
+    : { data: null };
+  const destination = profile?.role === "admin" || user?.email?.toLowerCase() === "ezzouhir2122@gmail.com"
+    ? "/admin"
+    : "/dashboard";
+  return NextResponse.redirect(`${origin}${destination}`);
 }

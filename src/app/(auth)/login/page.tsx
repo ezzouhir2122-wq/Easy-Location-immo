@@ -30,7 +30,12 @@ export default function LoginPage() {
           : error.message);
       setLoading(false);
     } else {
-      router.push("/dashboard");
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("role")
+        .eq("id", (await supabase.auth.getUser()).data.user?.id ?? "")
+        .maybeSingle();
+      router.push(profile?.role === "admin" || email.toLowerCase() === "ezzouhir2122@gmail.com" ? "/admin" : "/dashboard");
       router.refresh();
     }
   }
