@@ -31,7 +31,7 @@ export default function ResetPasswordPage() {
       if (password !== confirmPassword) { setError("Les deux mots de passe ne correspondent pas."); setLoading(false); return; }
       const { error: updateError } = await supabase.auth.updateUser({ password });
       if (updateError) setError(updateError.message);
-      else { await supabase.auth.signOut(); setMessage("Mot de passe modifié. Vous pouvez maintenant vous connecter."); setTimeout(() => router.push("/login"), 1200); }
+      else { setMessage("Mot de passe modifié. Redirection vers votre espace de bienvenue..."); setTimeout(() => router.push("/bienvenue"), 1200); }
     } else {
       const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: `${window.location.origin}/reset-password` });
       if (resetError) setError(resetError.message); else setMessage("Un nouveau lien de réinitialisation vient d’être envoyé. Utilisez le dernier email reçu.");
