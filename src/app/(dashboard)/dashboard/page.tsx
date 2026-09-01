@@ -100,7 +100,7 @@ export default function DashboardPage() {
   );
 
   return (
-    <div className="p-8 max-w-6xl">
+    <div className="ocean-dashboard p-8 max-w-6xl">
 
       {/* Header */}
       <div className="mb-8">
