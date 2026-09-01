@@ -1,0 +1,3 @@
+import { requireAdmin } from "@/lib/supabase/auth";
+import PaymentManagement from "./PaymentManagement";
+export default async function AdminPaymentsPage() { const { supabase } = await requireAdmin(); const [{ data: payments }, { data: clients }] = await Promise.all([supabase.from("saas_payments").select("id, user_id, amount, currency, status, provider, paid_at, created_at, profiles(email, nom, prenom)").order("created_at", { ascending: false }), supabase.from("profiles").select("id, email").eq("role", "client").order("email")]); return <PaymentManagement payments={payments ?? []} clients={clients ?? []} />; }
