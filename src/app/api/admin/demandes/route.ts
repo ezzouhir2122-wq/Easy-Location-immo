@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/supabase/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { logAdminAction } from "@/lib/supabase/audit";
 
 const statuses = ["pending", "under_review", "approved", "rejected", "needs_info"];
 
@@ -36,5 +37,6 @@ export async function PATCH(request: Request) {
 
   const { error } = await supabase.from("partner_requests").update({ statut: body.statut, reviewed_by: user.id, reviewed_at: new Date().toISOString() }).eq("id", body.id);
   if (error) return NextResponse.json({ error: error.message }, { status: 403 });
+  await logAdminAction(supabase, user.id, `partner_request_${body.statut}`, body.id, { email: application.email });
   return NextResponse.json({ ok: true });
 }
