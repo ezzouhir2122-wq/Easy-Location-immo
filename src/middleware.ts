@@ -13,6 +13,9 @@ export async function middleware(request: NextRequest) {
 
   // Routes publiques — laisser passer sans vérification Supabase
   if (
+    pathname === "/" ||
+    pathname.startsWith("/pricing") ||
+    pathname.startsWith("/devenir-partenaire") ||
     pathname.startsWith("/login") ||
     pathname.startsWith("/register") ||
     pathname.startsWith("/auth")
