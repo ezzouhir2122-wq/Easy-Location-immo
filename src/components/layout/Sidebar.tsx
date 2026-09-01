@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -70,7 +69,7 @@ export default function Sidebar() {
 
   return <aside className="flex h-screen w-60 flex-col" style={{ background: "linear-gradient(180deg,#0A1020 0%,#0D1830 100%)", borderRight: "1px solid #243653" }}>
     <div className="h-0.5 bg-gradient-to-r from-transparent via-cyan-400 to-blue-500" />
-    <div className="flex-shrink-0 border-b px-5 py-3" style={{ borderColor: "#1E3352" }}><Image src="/logo.png" alt="Easy Location Immo" width={140} height={40} style={{ height: 40, width: "auto" }} priority /></div>
+    <div className="flex-shrink-0 border-b px-4 py-4" style={{ borderColor: "#243653" }}><div className="flex items-center gap-2.5"><span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-400 to-blue-600 text-xs font-black text-white shadow-lg shadow-cyan-950/30">EL</span><span className="leading-tight"><span className="block text-[13px] font-bold tracking-tight text-white">Easy Location</span><span className="block text-[9px] font-bold uppercase tracking-[.22em] text-cyan-300">IMMO</span></span></div></div>
     <nav className="flex-1 overflow-y-auto px-2 py-2">
       <button onClick={() => window.dispatchEvent(new KeyboardEvent("keydown", { key: "k", ctrlKey: true, bubbles: true }))} className="mb-2 flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-xs transition-colors hover:bg-white/[.06]" style={{ color: "#607694", border: "1px solid #1E3352" }}>
         <span style={{ fontSize: 13 }}>🔍</span>

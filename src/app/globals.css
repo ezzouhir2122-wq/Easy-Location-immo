@@ -52,6 +52,35 @@ button, a { -webkit-tap-highlight-color: transparent; }
     radial-gradient(circle at 92% 12%, rgba(37, 99, 235, .06), transparent 22rem);
 }
 
+.ocean-dashboard > div:first-child {
+  border-radius: 22px;
+  padding: 20px 22px;
+  background: linear-gradient(110deg, rgba(255,255,255,.94), rgba(236,250,253,.72));
+  border: 1px solid rgba(186, 230, 239, .8);
+  box-shadow: 0 14px 34px rgba(15, 56, 85, .05);
+}
+
+.ocean-dashboard > div:first-child h1 { font-size: clamp(28px, 3vw, 38px); }
+
+.ocean-dashboard > div:nth-child(2) > a {
+  position: relative;
+  overflow: hidden;
+}
+
+.ocean-dashboard > div:nth-child(2) > a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 25%, rgba(255,255,255,.22) 50%, transparent 75%);
+  transform: translateX(-120%);
+  transition: transform .6s ease;
+}
+
+.ocean-dashboard > div:nth-child(2) > a:hover::after { transform: translateX(120%); }
+
+.ocean-dashboard .rounded-2xl.border.border-slate-100.bg-white { position: relative; overflow: hidden; }
+.ocean-dashboard .rounded-2xl.border.border-slate-100.bg-white::before { content: ""; position: absolute; inset: 0 0 auto; height: 3px; background: linear-gradient(90deg, #06b6d4, #2563eb); opacity: .7; }
+
 .ocean-dashboard > div:first-child h1 {
   letter-spacing: -.045em;
   background: linear-gradient(100deg, #0f172a 0%, #155e75 45%, #2563eb 100%);

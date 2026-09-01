@@ -104,8 +104,16 @@ export default function DashboardPage() {
 
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-slate-900" style={{ fontFamily: "Syne, sans-serif" }}>Tableau de bord</h1>
-        <p className="text-slate-400 text-sm mt-1">{now.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long", year: "numeric" })}</p>
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p className="mb-2 text-[10px] font-bold uppercase tracking-[.22em] text-cyan-600">Espace propriétaire</p>
+            <h1 className="text-3xl font-bold text-slate-900" style={{ fontFamily: "Syne, sans-serif" }}>Tableau de bord</h1>
+            <p className="text-slate-400 text-sm mt-1">{now.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long", year: "numeric" })}</p>
+          </div>
+          <Link href="/biens" className="rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-cyan-900/10 transition hover:bg-cyan-700">
+            + Ajouter un bien
+          </Link>
+        </div>
       </div>
 
       {/* KPI Cards */}
