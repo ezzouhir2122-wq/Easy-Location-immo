@@ -26,6 +26,8 @@ alter table public.profiles add column if not exists updated_at timestamptz defa
 update public.profiles set role = coalesce(role, 'client'), status = coalesce(status, 'active');
 alter table public.profiles alter column role set default 'client';
 alter table public.profiles alter column status set default 'active';
+alter table public.profiles drop constraint if exists profiles_status_check;
+alter table public.profiles add constraint profiles_status_check check (status in ('active', 'suspended', 'pending'));
 
 create table if not exists public.subscriptions (
   id uuid primary key default gen_random_uuid(),
