@@ -53,6 +53,11 @@ drop policy if exists "profiles_update_own" on public.profiles;
 create policy "profiles_update_own" on public.profiles for update to authenticated
   using (id = auth.uid()) with check (id = auth.uid());
 
+drop policy if exists "profiles_admin_update" on public.profiles;
+create policy "profiles_admin_update" on public.profiles for update to authenticated
+  using ((auth.jwt() ->> 'email') = 'ezzouhir2122@gmail.com')
+  with check ((auth.jwt() ->> 'email') = 'ezzouhir2122@gmail.com');
+
 drop policy if exists "subscriptions_select_owner_or_admin" on public.subscriptions;
 create policy "subscriptions_select_owner_or_admin" on public.subscriptions for select to authenticated
   using (user_id = auth.uid() or (auth.jwt() ->> 'email') = 'ezzouhir2122@gmail.com');
