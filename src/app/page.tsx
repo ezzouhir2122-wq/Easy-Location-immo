@@ -1,12 +1,56 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 const services = [
-  ["01", "Gestion des biens", "Centralisez vos appartements, villas et locaux dans une seule interface."],
-  ["02", "Loyers & paiements", "Suivez les encaissements, retards, charges et revenus en temps réel."],
-  ["03", "Contrats & documents", "Créez, classez et partagez vos documents immobiliers simplement."],
-  ["04", "Fiscalité immobilière", "Préparez vos états et vos rapports par bien et par exercice."],
+  ["01", "Biens", "Vos appartements, villas et locaux, enfin réunis."],
+  ["02", "Loyers", "Des encaissements suivis avec précision, mois après mois."],
+  ["03", "Documents", "Contrats, quittances et états des lieux prêts en quelques secondes."],
+  ["04", "Fiscalité", "Une vision claire de vos obligations par bien et par exercice."],
 ];
 
 export default function HomePage() {
-  return <main className="min-h-screen overflow-hidden bg-[#07111f] text-white"><nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5"><Link href="/" className="flex items-center gap-2.5 font-bold"><span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-400 to-blue-600 text-xs font-black">EL</span><span>Easy Location <b className="block text-[9px] uppercase tracking-[.25em] text-cyan-300">IMMO</b></span></Link><div className="hidden items-center gap-7 text-sm text-slate-300 md:flex"><a href="#services" className="hover:text-white">Services</a><Link href="/pricing" className="hover:text-white">Tarifs</Link><Link href="/devenir-partenaire" className="hover:text-white">Devenir partenaire</Link></div><div className="flex items-center gap-3"><Link href="/login" className="hidden text-sm text-slate-300 hover:text-white sm:block">Connexion</Link><Link href="/devenir-partenaire" className="rounded-xl bg-cyan-400 px-4 py-2.5 text-sm font-bold text-slate-950 transition hover:bg-cyan-300">Commencer</Link></div></nav><section className="relative mx-auto max-w-7xl px-6 pb-20 pt-16 lg:pb-28 lg:pt-24"><div className="pointer-events-none absolute -right-40 -top-20 h-96 w-96 rounded-full bg-cyan-400/15 blur-3xl"/><div className="relative max-w-3xl"><p className="text-xs font-bold uppercase tracking-[.25em] text-cyan-300">La plateforme des propriétaires modernes</p><h1 className="mt-5 text-5xl font-bold leading-[1.03] tracking-[-.06em] sm:text-7xl">Votre patrimoine immobilier, <span className="bg-gradient-to-r from-cyan-300 to-blue-400 bg-clip-text text-transparent">en contrôle.</span></h1><p className="mt-7 max-w-2xl text-lg leading-8 text-slate-300">Easy Location IMMO réunit biens, locataires, loyers, contrats, documents et fiscalité dans un espace simple, sécurisé et pensé pour le Maroc.</p><div className="mt-9 flex flex-wrap gap-3"><Link href="/devenir-partenaire" className="rounded-xl bg-cyan-400 px-5 py-3.5 text-sm font-bold text-slate-950 shadow-lg shadow-cyan-950/30 hover:bg-cyan-300">Devenir partenaire →</Link><Link href="/pricing" className="rounded-xl border border-white/15 px-5 py-3.5 text-sm font-semibold text-white hover:bg-white/10">Découvrir les tarifs</Link></div></div><div className="relative mt-16 grid gap-4 sm:grid-cols-3"><div className="rounded-2xl border border-cyan-300/20 bg-white/[.08] p-5"><p className="text-3xl font-bold text-cyan-300">+360°</p><p className="mt-2 text-sm text-slate-300">Vision de votre activité</p></div><div className="rounded-2xl border border-white/10 bg-white/[.06] p-5"><p className="text-3xl font-bold text-blue-300">1 espace</p><p className="mt-2 text-sm text-slate-300">Pour tout votre portefeuille</p></div><div className="rounded-2xl border border-white/10 bg-white/[.06] p-5"><p className="text-3xl font-bold text-emerald-300">100%</p><p className="mt-2 text-sm text-slate-300">Données organisées</p></div></div></section><section id="services" className="bg-[#0b1728] px-6 py-20"><div className="mx-auto max-w-7xl"><div className="max-w-xl"><p className="text-xs font-bold uppercase tracking-[.25em] text-cyan-300">Une gestion plus claire</p><h2 className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">Tout ce qu’il faut pour piloter vos locations.</h2></div><div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{services.map(([number, title, description]) => <article key={number} className="rounded-2xl border border-white/10 bg-white/[.05] p-6 transition hover:-translate-y-1 hover:border-cyan-300/30"><span className="text-xs font-bold text-cyan-300">{number}</span><h3 className="mt-12 text-lg font-bold">{title}</h3><p className="mt-3 text-sm leading-6 text-slate-400">{description}</p></article>)}</div></div></section><section className="px-6 py-20"><div className="mx-auto flex max-w-7xl flex-col justify-between gap-8 rounded-3xl border border-cyan-300/20 bg-gradient-to-r from-cyan-400/15 to-blue-500/10 p-8 sm:p-12 md:flex-row md:items-center"><div><p className="text-xs font-bold uppercase tracking-[.25em] text-cyan-300">Rejoignez le réseau</p><h2 className="mt-3 text-3xl font-bold">Vous êtes agence, conciergerie ou propriétaire ?</h2><p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300">Envoyez votre demande. Notre équipe l’examine et vous invite après validation.</p></div><Link href="/devenir-partenaire" className="shrink-0 rounded-xl bg-white px-5 py-3.5 text-center text-sm font-bold text-slate-950 hover:bg-cyan-50">Déposer une demande</Link></div></section><footer className="border-t border-white/10 px-6 py-7"><div className="mx-auto flex max-w-7xl flex-wrap justify-between gap-4 text-xs text-slate-500"><span>© 2026 Easy Location IMMO</span><div className="flex gap-5"><Link href="/pricing" className="hover:text-white">Tarifs</Link><Link href="/login" className="hover:text-white">Connexion</Link></div></div></footer></main>;
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      setProgress(max ? window.scrollY / max : 0);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  return (
+    <main className="immo-cinema" style={{ "--scroll": progress } as React.CSSProperties}>
+      <div className="cinema-glow" />
+      <div className="cinema-grid" aria-hidden="true"><i /><i /><i /><i /><i /></div>
+      <div className="cinema-progress" aria-hidden="true"><span style={{ height: `${progress * 100}%` }} /></div>
+
+      <header className="cinema-header">
+        <Link href="/" className="cinema-brand">Easy Location <em>IMMO</em></Link>
+        <nav>
+          <a href="#vision">Vision</a><b />
+          <a href="#services">Services</a><b />
+          <a href="#network">Réseau</a>
+        </nav>
+        <div className="cinema-actions"><Link href="/login">Connexion</Link><Link href="/devenir-partenaire" className="contact-pill">Commencer <span>↗</span></Link></div>
+      </header>
+
+      <section id="vision" className="cinema-hero">
+        <div className="hero-kicker">La gestion immobilière, autrement <span>—</span> Maroc</div>
+        <h1>Patrimoine<br /><i>en mouvement.</i></h1>
+        <p className="hero-copy">Une matière vivante, comme vos locations. Easy Location IMMO donne une forme claire à chaque bien, chaque loyer et chaque décision.</p>
+        <div className="hero-meta"><span>01 — 04</span><span>Défiler pour explorer</span></div>
+        <div className="orbit-object" aria-hidden="true"><div className="object-ring ring-one" /><div className="object-ring ring-two" /><div className="object-core" /></div>
+      </section>
+
+      <section className="cinema-chapter chapter-two"><div className="chapter-image"><img src="/properties/villa-targa.jpg" alt="Villa gérée par Easy Location IMMO" /></div><div><span className="chapter-number">02 / Matière</span><h2>Chaque détail<br /><i>compte.</i></h2><p>Centralisez votre portefeuille et retrouvez instantanément ce qui fait la valeur de votre activité.</p><Link href="/devenir-partenaire" className="text-link">Découvrir l’espace <span>↗</span></Link></div></section>
+      <section id="services" className="cinema-services"><div className="section-label">03 / Instruments de gestion</div><h2>La maîtrise<br /><i>du quotidien.</i></h2><div className="service-list">{services.map(([num, title, text]) => <article key={num}><span>{num}</span><div><h3>{title}</h3><p>{text}</p></div><b>↗</b></article>)}</div></section>
+      <section id="network" className="cinema-end"><span className="chapter-number">04 / Continuum</span><h2>Construisons<br /><i>la suite.</i></h2><p>Propriétaire, agence ou conciergerie : votre réseau immobilier mérite un espace à sa mesure.</p><Link href="/devenir-partenaire" className="contact-pill large">Devenir partenaire <span>↗</span></Link></section>
+      <footer className="cinema-footer"><span>© 2026 Easy Location IMMO</span><span>Une plateforme pensée au Maroc</span><Link href="/pricing">Tarifs</Link></footer>
+    </main>
+  );
 }
